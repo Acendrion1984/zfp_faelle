@@ -1070,12 +1070,13 @@
     </div>
 
     <script>
-        // Supabase Konfiguration
-        const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzM5MjE4ODAwLAogICJleHAiOiAxODk2OTg1MjAwCn0.6Jj5dZLxI7N1bF0mN0d8J9Xqy0iPXLcVnLpMygW2KrA';
+// Supabase Konfiguration - KORRIGIERT
+const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_jkkaIcAKxMhkXSdnJY1Oiw_U-xPWr68';
+
+// Supabase Client initialisieren
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Supabase Client initialisieren
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Globale Variablen
         let compressedImages = [];
@@ -1814,3 +1815,4 @@
     </script>
 </body>
 </html>
+
