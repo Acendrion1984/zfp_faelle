@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>ZfP Vorfälle & Anlagenprobleme</title>
     <style>
         * {
@@ -11,11 +11,60 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --header-gradient: linear-gradient(135deg, #003366 0%, #1a4d8c 100%);
+            --shadow-color: rgba(0,51,102,0.2);
+            --input-bg: #ffffff;
+            --badge-category-bg: #e8f0fe;
+            --badge-method-bg: #f3e8ff;
+            --badge-open-bg: #dcfce7;
+            --badge-closed-bg: #fee2e2;
+            --hover-bg: #f8fafc;
+            --btn-primary: #003366;
+            --btn-primary-hover: #1a4d8c;
+            --btn-success: #10b981;
+            --btn-success-hover: #059669;
+            --btn-danger: #ef4444;
+            --btn-danger-hover: #dc2626;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+            --card-bg: #2d2d2d;
+            --header-gradient: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            --shadow-color: rgba(0,0,0,0.3);
+            --input-bg: #333333;
+            --badge-category-bg: #1e3a5f;
+            --badge-method-bg: #4a2e5f;
+            --badge-open-bg: #1e4a3a;
+            --badge-closed-bg: #5f2e2e;
+            --hover-bg: #3d3d3d;
+            --btn-primary: #4a6fa5;
+            --btn-primary-hover: #5f8bc9;
+            --btn-success: #2e7d5e;
+            --btn-success-hover: #3a9b75;
+            --btn-danger: #b91c1c;
+            --btn-danger-hover: #dc2626;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
         }
 
         .app-container {
@@ -23,101 +72,138 @@
             margin: 0 auto;
         }
 
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            width: 50px;
+            height: 50px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle i {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+
         .app-header {
-            background: linear-gradient(135deg, #003366 0%, #1a4d8c 100%);
+            background: var(--header-gradient);
             color: white;
-            padding: 25px 30px;
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0 4px 20px rgba(0,51,102,0.2);
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 4px 20px var(--shadow-color);
         }
 
         .app-header h1 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .app-header h1 i {
-            font-size: 28px;
+            font-size: 24px;
         }
 
         .app-header .subtitle {
-            margin-top: 8px;
+            margin-top: 5px;
             opacity: 0.9;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         /* Tab Navigation */
         .tab-navigation {
             display: flex;
-            gap: 10px;
-            padding: 0 30px;
-            background: white;
-            border-bottom: 2px solid #e2e8f0;
+            gap: 5px;
+            padding: 0 15px;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            white-space: nowrap;
+        }
+
+        .tab-navigation::-webkit-scrollbar {
+            display: none;
         }
 
         .tab-button {
-            padding: 15px 25px;
+            padding: 12px 15px;
             background: none;
             border: none;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            color: #64748b;
+            color: var(--text-secondary);
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             border-bottom: 3px solid transparent;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .tab-button i {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .tab-button:hover {
-            color: #003366;
+            color: var(--text-primary);
         }
 
         .tab-button.active {
-            color: #003366;
-            border-bottom-color: #003366;
+            color: var(--btn-primary);
+            border-bottom-color: var(--btn-primary);
         }
 
         .tab-content {
             display: none;
-            background: white;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 30px;
+            background: var(--bg-secondary);
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 20px;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        /* Form Styles */
+        /* Form Styles - Optimiert für Mobile */
         .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            display: block;
+            margin-bottom: 0;
         }
 
         .form-group {
-            flex: 1 1 250px;
+            width: 100%;
+            margin-bottom: 16px;
         }
 
         .form-group.full-width {
-            flex: 1 1 100%;
+            width: 100%;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #1e293b;
+            margin-bottom: 5px;
+            color: var(--text-primary);
             font-weight: 600;
             font-size: 13px;
             text-transform: uppercase;
@@ -125,119 +211,131 @@
         }
 
         label i {
-            margin-right: 6px;
-            color: #003366;
+            margin-right: 5px;
+            color: var(--btn-primary);
+            font-size: 12px;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 15px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
             transition: all 0.2s;
-            background: white;
+            background: var(--input-bg);
+            color: var(--text-primary);
             font-family: inherit;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 35px;
+            color: var(--text-primary);
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #003366;
+            border-color: var(--btn-primary);
             box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
         }
 
         /* Button Styles */
         .btn {
-            padding: 12px 24px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            background: white;
-            border: 2px solid #e2e8f0;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            color: var(--text-primary);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #003366 0%, #1a4d8c 100%);
+            background: var(--btn-primary);
             color: white;
             border: none;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,51,102,0.2);
+            background: var(--btn-primary-hover);
         }
 
-        .btn-scan {
-            background: #f8fafc;
-            border: 2px solid #003366;
-            color: #003366;
-            width: 100%;
-            justify-content: center;
-            margin-top: 8px;
-        }
-
-        .btn-scan:hover {
-            background: #003366;
-            color: white;
+        .btn-primary:active {
+            transform: scale(0.98);
         }
 
         .btn-upload {
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            width: 100%;
+            background: var(--hover-bg);
+            border: 2px dashed var(--border-color);
             justify-content: center;
         }
 
         .btn-upload:hover {
-            border-color: #003366;
-            background: #f1f5f9;
+            background: var(--bg-secondary);
+        }
+
+        .btn-upload:active {
+            transform: scale(0.98);
         }
 
         .btn-success {
-            background: #10b981;
+            background: var(--btn-success);
             color: white;
             border: none;
         }
 
         .btn-success:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(16,185,129,0.2);
+            background: var(--btn-success-hover);
+        }
+
+        .btn-success:active {
+            transform: scale(0.98);
         }
 
         .btn-danger {
-            background: #ef4444;
+            background: var(--btn-danger);
             color: white;
             border: none;
         }
 
         .btn-danger:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(239,68,68,0.2);
+            background: var(--btn-danger-hover);
+        }
+
+        .btn-danger:active {
+            transform: scale(0.98);
         }
 
         /* Image Upload Area */
         .image-preview-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .image-preview-item {
             position: relative;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
             aspect-ratio: 1;
-            background: #f1f5f9;
-            border: 2px solid #e2e8f0;
+            background: var(--hover-bg);
+            border: 2px solid var(--border-color);
         }
 
         .image-preview-item img {
@@ -248,90 +346,106 @@
 
         .image-preview-item .remove-image {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 3px;
+            right: 3px;
             background: rgba(255,255,255,0.9);
             border: none;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #dc2626;
             font-weight: bold;
+            font-size: 16px;
+            padding: 0;
+            line-height: 1;
         }
 
         /* PDF Links Bereich */
         .pdf-links-container {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 10px;
+            background: var(--hover-bg);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 5px;
         }
 
         .pdf-link-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: white;
+            gap: 8px;
+            padding: 8px 10px;
+            background: var(--bg-secondary);
             border-radius: 8px;
             margin-bottom: 8px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
         }
 
         .pdf-link-item input {
             flex: 1;
             border: none;
-            padding: 8px;
+            padding: 6px 0;
             font-size: 14px;
+            background: transparent;
+            color: var(--text-primary);
         }
 
         .remove-pdf {
-            color: #dc2626;
+            color: var(--btn-danger);
             cursor: pointer;
-            padding: 5px;
+            padding: 8px;
+            font-size: 16px;
         }
 
         .add-pdf-btn {
             background: none;
-            border: 2px dashed #cbd5e1;
-            padding: 10px;
+            border: 2px dashed var(--border-color);
+            padding: 12px;
             width: 100%;
             border-radius: 8px;
             cursor: pointer;
-            color: #003366;
+            color: var(--btn-primary);
             font-weight: 500;
-            margin-top: 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         .add-pdf-btn:hover {
-            background: #f1f5f9;
-            border-color: #003366;
+            background: var(--hover-bg);
+        }
+
+        .add-pdf-btn:active {
+            transform: scale(0.98);
         }
 
         /* Submit Button */
         .submit-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-            display: flex;
-            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--border-color);
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            background: var(--btn-success);
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 14px;
             font-size: 16px;
+            width: 100%;
         }
 
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(5,150,105,0.2);
+            background: var(--btn-success-hover);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
         }
 
         /* Loading Overlay */
@@ -341,18 +455,18 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.7);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
         }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #003366;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--btn-primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -362,256 +476,252 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Success Message */
-        .success-message {
-            background: #059669;
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+        /* Success/Error Messages */
+        .success-message, .error-message {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             display: none;
             align-items: center;
             gap: 10px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background: var(--btn-success);
+            color: white;
         }
 
         .error-message {
-            background: #dc2626;
+            background: var(--btn-danger);
             color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
         }
 
-        /* Listenansicht Styles */
+        /* Listenansicht Styles - Mobile Optimiert */
         .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .list-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            color: #1e293b;
+            color: var(--text-primary);
+            margin-bottom: 15px;
         }
 
         .filter-section {
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filter-select {
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 14px;
-            min-width: 200px;
-            background: white;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .search-box {
             display: flex;
             align-items: center;
-            background: white;
-            border: 2px solid #e2e8f0;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
             border-radius: 10px;
-            padding: 0 15px;
+            padding: 0 12px;
+            width: 100%;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
         .search-box input {
             border: none;
-            padding: 10px 0;
-            width: 250px;
+            padding: 12px 8px;
+            width: 100%;
             outline: none;
+            font-size: 16px;
+            background: transparent;
+            color: var(--text-primary);
         }
 
-        .search-box i {
-            color: #94a3b8;
+        .filter-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .incident-grid {
-            display: grid;
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .incident-card {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
             transition: all 0.2s;
         }
 
         .incident-card:hover {
-            border-color: #003366;
-            box-shadow: 0 8px 20px rgba(0,51,102,0.1);
+            border-color: var(--btn-primary);
+        }
+
+        .incident-card:active {
+            background: var(--hover-bg);
         }
 
         .card-header {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .card-badges {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
         .badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 11px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .badge-category {
-            background: #e8f0fe;
-            color: #003366;
+            background: var(--badge-category-bg);
+            color: var(--btn-primary);
         }
 
         .badge-method {
-            background: #f3e8ff;
-            color: #6b21a8;
+            background: var(--badge-method-bg);
+            color: #a855f7;
         }
 
         .badge-status {
-            background: #dcfce7;
+            background: var(--badge-open-bg);
             color: #166534;
         }
 
         .badge-status.closed {
-            background: #fee2e2;
+            background: var(--badge-closed-bg);
             color: #991b1b;
         }
 
         .card-date {
-            font-size: 14px;
-            color: #64748b;
+            font-size: 12px;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .card-content {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
-        }
-
-        .card-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
         }
 
         .info-row {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
         }
 
         .info-label {
             font-weight: 600;
-            color: #475569;
-            min-width: 100px;
+            color: var(--text-secondary);
+            min-width: 90px;
+            font-size: 13px;
         }
 
         .info-value {
-            color: #1e293b;
+            color: var(--text-primary);
+            flex: 1;
+            font-size: 13px;
         }
 
         .card-preview {
             display: flex;
-            gap: 10px;
-            align-items: flex-start;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
         }
 
         .preview-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
             object-fit: cover;
-            border: 2px solid #e2e8f0;
+            border: 2px solid var(--border-color);
         }
 
         .pdf-indicator {
-            background: #fee2e2;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
+            background: var(--badge-closed-bg);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            color: #991b1b;
         }
 
         .card-actions {
             display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e2e8f0;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
         }
 
         .action-button {
-            padding: 8px 16px;
+            flex: 1;
+            min-width: 80px;
+            padding: 10px;
             border: none;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 4px;
             transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .action-button:active {
+            transform: scale(0.96);
         }
 
         .action-button.view {
-            background: #f1f5f9;
-            color: #003366;
-        }
-
-        .action-button.view:hover {
-            background: #e2e8f0;
+            background: var(--hover-bg);
+            color: var(--btn-primary);
         }
 
         .action-button.close {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .action-button.close:hover {
-            background: #fde68a;
+            background: var(--badge-open-bg);
+            color: #166534;
         }
 
         .action-button.delete {
-            background: #fee2e2;
+            background: var(--badge-closed-bg);
             color: #991b1b;
         }
 
-        .action-button.delete:hover {
-            background: #fecaca;
-        }
-
-        /* Detailansicht Modal */
+        /* Modal - Mobile Optimiert */
         .modal {
             display: none;
             position: fixed;
@@ -619,11 +729,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 2000;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-end;
+            padding: 0;
         }
 
         .modal.active {
@@ -631,29 +741,35 @@
         }
 
         .modal-content {
-            background: white;
-            border-radius: 20px;
-            max-width: 800px;
+            background: var(--bg-secondary);
+            border-radius: 20px 20px 0 0;
+            max-width: 100%;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
 
         .modal-header {
-            padding: 20px;
-            border-bottom: 2px solid #e2e8f0;
+            padding: 18px;
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            background: white;
+            background: var(--bg-secondary);
             z-index: 10;
         }
 
         .modal-header h2 {
-            font-size: 20px;
-            color: #1e293b;
+            font-size: 18px;
+            color: var(--text-primary);
         }
 
         .close-modal {
@@ -661,59 +777,59 @@
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #64748b;
+            color: var(--text-secondary);
             padding: 5px 10px;
         }
 
         .close-modal:hover {
-            color: #003366;
+            color: var(--btn-primary);
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 18px;
         }
 
         .detail-section {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .detail-section h3 {
-            font-size: 16px;
-            color: #003366;
-            margin-bottom: 15px;
+            font-size: 15px;
+            color: var(--btn-primary);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .detail-item {
-            background: #f8fafc;
+            background: var(--hover-bg);
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .detail-label {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 5px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
         }
 
         .detail-value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            color: #1e293b;
+            color: var(--text-primary);
         }
 
         .image-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
             margin-top: 10px;
         }
 
@@ -721,26 +837,33 @@
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            border: 2px solid #e2e8f0;
-            transition: all 0.2s;
+            border: 2px solid var(--border-color);
         }
 
         .gallery-image:hover {
-            transform: scale(1.05);
-            border-color: #003366;
+            border-color: var(--btn-primary);
+        }
+
+        .gallery-image:active {
+            transform: scale(0.95);
         }
 
         .modal-footer {
-            padding: 20px;
-            border-top: 2px solid #e2e8f0;
+            padding: 18px;
+            border-top: 2px solid var(--border-color);
             display: flex;
-            justify-content: flex-end;
             gap: 10px;
             position: sticky;
             bottom: 0;
-            background: white;
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+            min-width: 100px;
         }
 
         /* Confirm Modal */
@@ -750,12 +873,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 3000;
-            padding: 20px;
+            padding: 15px;
         }
 
         .confirm-modal.active {
@@ -763,80 +886,64 @@
         }
 
         .confirm-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 350px;
             width: 100%;
             text-align: center;
         }
 
         .confirm-content h3 {
-            font-size: 20px;
-            color: #1e293b;
-            margin-bottom: 15px;
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
         .confirm-content p {
-            color: #64748b;
-            margin-bottom: 25px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 14px;
         }
 
         .confirm-buttons {
             display: flex;
             gap: 10px;
-            justify-content: center;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .app-card {
-                padding: 20px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .card-content {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-section {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
-            .search-box input {
-                width: 100%;
-            }
-
-            .filter-select {
-                width: 100%;
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .card-actions {
-                flex-wrap: wrap;
-            }
-
-            .action-button {
-                flex: 1;
-                justify-content: center;
-            }
+        .confirm-buttons .btn {
+            flex: 1;
         }
 
-        /* Icons (Font Awesome) */
+        /* Icons */
         .fas, .far {
             font-size: 14px;
+        }
+
+        /* Kleine Anpassungen für sehr kleine Geräte */
+        @media (max-width: 360px) {
+            .app-header h1 {
+                font-size: 18px;
+            }
+            
+            .tab-button {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            .badge {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+            
+            .info-label {
+                min-width: 80px;
+            }
+            
+            .action-button {
+                font-size: 11px;
+                padding: 8px;
+            }
         }
     </style>
     <!-- Font Awesome für Icons -->
@@ -844,17 +951,22 @@
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body data-theme="light">
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </div>
+
     <div class="app-container">
         <!-- Header -->
         <div class="app-header">
             <h1>
                 <i class="fas fa-hard-hat"></i>
-                ZfP Vorfälle & Anlagenprobleme
+                ZfP Vorfälle
             </h1>
             <div class="subtitle">
                 <i class="fas fa-clipboard-check"></i>
-                Dokumentation von Vorfällen und Prüfaufgaben
+                Dokumentation von Vorfällen
             </div>
         </div>
 
@@ -872,161 +984,149 @@
 
         <!-- Tab: Neuer Vorfall -->
         <div id="tab-new" class="tab-content active">
-            <div class="app-card" style="box-shadow: none; padding: 0;">
-                <!-- Success Message -->
-                <div class="success-message" id="successMessage">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Vorfall erfolgreich dokumentiert!</span>
-                </div>
-
-                <!-- Error Message -->
-                <div class="error-message" id="errorMessage">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span id="errorText"></span>
-                </div>
-
-                <!-- Form -->
-                <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
-                    <!-- Kategorie und Prüfverfahren -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-tag"></i> Kategorie *</label>
-                            <select id="category" required onchange="updateCategoryFields()">
-                                <option value="">Bitte wählen...</option>
-                                <option value="ZfP Anlage">🔧 ZfP Anlage</option>
-                                <option value="ZfP Prüfung">🔍 ZfP Prüfung</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-flask"></i> Prüfverfahren *</label>
-                            <select id="inspectionMethod" required>
-                                <option value="">Bitte wählen...</option>
-                                <option value="MT">Magnetpulverprüfung (MT)</option>
-                                <option value="UT">Ultraschallprüfung (UT)</option>
-                                <option value="VT">Sichtprüfung (VT)</option>
-                                <option value="RT">Durchstrahlungsprüfung (RT)</option>
-                                <option value="PT">Eindringprüfung (PT)</option>
-                                <option value="ET">Wirbelstromprüfung (ET)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Auftragsnummer / Maschinennummer -->
-                    <div class="form-row">
-                        <div class="form-group" id="numberField">
-                            <label><i class="fas fa-hashtag"></i> <span id="numberLabel">Auftragsnummer</span> *</label>
-                            <input type="text" id="orderNumber" placeholder="z.B. A-2024-001" required>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-camera"></i> Scannen</label>
-                            <button type="button" class="btn btn-scan" id="scanButton">
-                                <i class="fas fa-qrcode"></i> QR-Code / Barcode scannen
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Prozess und Segment -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-building"></i> Prozess *</label>
-                            <select id="department" required>
-                                <option value="">Bitte wählen...</option>
-                                <option value="Seitenschleifen">Seitenschleifen</option>
-                                <option value="Centerless Schleifen">Centerless Schleifen</option>
-                                <option value="Laufbahn Schleifen">Laufbahn Schleifen</option>
-                                <option value="Prüfung">Prüfung</option>
-                                <option value="Sonstiges">Sonstiges</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-cubes"></i> Segment *</label>
-                            <select id="segment" required>
-                                <option value="">Bitte wählen...</option>
-                                <option value="Segment 4">Segment 4</option>
-                                <option value="Segment 6">Segment 6</option>
-                                <option value="Segment 11">Segment 11</option>
-                                <option value="Segment 12">Segment 12</option>
-                                <option value="Segment 14">Segment 14</option>
-                                <option value="Segment 15">Segment 15</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Kategorie-spezifische Felder -->
-                    <div id="categorySpecificFields"></div>
-
-                    <!-- Problem / Beschreibung -->
-                    <div class="form-group full-width">
-                        <label><i class="fas fa-exclamation-triangle"></i> Problem / Beschreibung *</label>
-                        <textarea id="problemDescription" rows="3" required placeholder="Beschreiben Sie das Problem oder den Vorfall..."></textarea>
-                    </div>
-
-                    <!-- Bild Upload mit Komprimierung -->
-                    <div class="form-group full-width">
-                        <label><i class="fas fa-images"></i> Bilder</label>
-                        <button type="button" class="btn btn-upload" id="uploadButton">
-                            <i class="fas fa-cloud-upload-alt"></i> Bilder auswählen
-                        </button>
-                        <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
-                        <div class="image-preview-grid" id="imagePreview"></div>
-                    </div>
-
-                    <!-- PDF Links -->
-                    <div class="form-group full-width">
-                        <label><i class="fas fa-file-pdf"></i> PDF Links</label>
-                        <div class="pdf-links-container" id="pdfLinksContainer">
-                            <div class="pdf-link-item">
-                                <i class="fas fa-link" style="color: #003366;"></i>
-                                <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
-                                <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
-                            </div>
-                        </div>
-                        <button type="button" class="add-pdf-btn" onclick="addPdfLink()">
-                            <i class="fas fa-plus"></i> Weiteren PDF-Link hinzufügen
-                        </button>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="submit-section">
-                        <button type="submit" class="btn btn-submit">
-                            <i class="fas fa-save"></i> Vorfall dokumentieren
-                        </button>
-                    </div>
-                </form>
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <span>Vorfall erfolgreich dokumentiert!</span>
             </div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText"></span>
+            </div>
+
+            <!-- Form -->
+            <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
+                <!-- Kategorie -->
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Kategorie *</label>
+                    <select id="category" required onchange="updateCategoryFields()">
+                        <option value="">Bitte wählen...</option>
+                        <option value="ZfP Anlage">🔧 ZfP Anlage</option>
+                        <option value="ZfP Prüfung">🔍 ZfP Prüfung</option>
+                    </select>
+                </div>
+
+                <!-- Maschinennummer (immer sichtbar) -->
+                <div class="form-group">
+                    <label><i class="fas fa-hashtag"></i> Maschinennummer *</label>
+                    <input type="text" id="machineNumber" placeholder="z.B. M-4711" required>
+                </div>
+
+                <!-- Prozess (statt Abteilung) -->
+                <div class="form-group">
+                    <label><i class="fas fa-building"></i> Prozess *</label>
+                    <select id="process" required>
+                        <option value="">Bitte wählen...</option>
+                        <option value="Seitenschleifen">Seitenschleifen</option>
+                        <option value="Centerless Schleifen">Centerless Schleifen</option>
+                        <option value="Laufbahn Schleifen">Laufbahn Schleifen</option>
+                        <option value="Prüfung">Prüfung</option>
+                        <option value="Sonstiges">Sonstiges</option>
+                    </select>
+                </div>
+
+                <!-- Segment -->
+                <div class="form-group">
+                    <label><i class="fas fa-cubes"></i> Segment *</label>
+                    <select id="segment" required>
+                        <option value="">Bitte wählen...</option>
+                        <option value="Segment 4">Segment 4</option>
+                        <option value="Segment 6">Segment 6</option>
+                        <option value="Segment 11">Segment 11</option>
+                        <option value="Segment 12">Segment 12</option>
+                        <option value="Segment 14">Segment 14</option>
+                        <option value="Segment 15">Segment 15</option>
+                    </select>
+                </div>
+
+                <!-- Prüfverfahren (jetzt für beide Kategorien) -->
+                <div class="form-group">
+                    <label><i class="fas fa-flask"></i> Prüfverfahren *</label>
+                    <select id="inspectionMethod" required>
+                        <option value="">Bitte wählen...</option>
+                        <option value="MT">Magnetpulverprüfung (MT)</option>
+                        <option value="UT">Ultraschallprüfung (UT)</option>
+                        <option value="VT">Sichtprüfung (VT)</option>
+                        <option value="RT">Durchstrahlungsprüfung (RT)</option>
+                        <option value="PT">Eindringprüfung (PT)</option>
+                        <option value="ET">Wirbelstromprüfung (ET)</option>
+                    </select>
+                </div>
+
+                <!-- Kategorie-spezifische Felder -->
+                <div id="categorySpecificFields"></div>
+
+                <!-- Problem / Beschreibung -->
+                <div class="form-group full-width">
+                    <label><i class="fas fa-exclamation-triangle"></i> Problem / Beschreibung *</label>
+                    <textarea id="problemDescription" rows="3" required placeholder="Beschreiben Sie das Problem..."></textarea>
+                </div>
+
+                <!-- Bild Upload -->
+                <div class="form-group full-width">
+                    <label><i class="fas fa-images"></i> Bilder</label>
+                    <button type="button" class="btn btn-upload" id="uploadButton">
+                        <i class="fas fa-cloud-upload-alt"></i> Bilder auswählen
+                    </button>
+                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
+                    <div class="image-preview-grid" id="imagePreview"></div>
+                </div>
+
+                <!-- PDF Links -->
+                <div class="form-group full-width">
+                    <label><i class="fas fa-file-pdf"></i> PDF Links</label>
+                    <div class="pdf-links-container" id="pdfLinksContainer">
+                        <div class="pdf-link-item">
+                            <i class="fas fa-link" style="color: var(--btn-primary);"></i>
+                            <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
+                            <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
+                        </div>
+                    </div>
+                    <button type="button" class="add-pdf-btn" onclick="addPdfLink()">
+                        <i class="fas fa-plus"></i> Weiteren PDF-Link hinzufügen
+                    </button>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-save"></i> Vorfall dokumentieren
+                    </button>
+                </div>
+            </form>
         </div>
 
         <!-- Tab: Vorfälle Liste -->
         <div id="tab-list" class="tab-content">
-            <div class="app-card" style="box-shadow: none; padding: 0;">
-                <div class="list-header">
-                    <div class="list-title">
-                        <i class="fas fa-history"></i>
-                        Dokumentierte Vorfälle
-                    </div>
-                    <div class="filter-section">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="searchInput" placeholder="Suchen..." onkeyup="filterIncidents()">
-                        </div>
-                        <select class="filter-select" id="categoryFilter" onchange="filterIncidents()">
-                            <option value="">Alle Kategorien</option>
-                            <option value="ZfP Anlage">ZfP Anlage</option>
-                            <option value="ZfP Prüfung">ZfP Prüfung</option>
-                        </select>
-                        <select class="filter-select" id="statusFilter" onchange="filterIncidents()">
-                            <option value="">Alle Status</option>
-                            <option value="open">Offen</option>
-                            <option value="closed">Geschlossen</option>
-                        </select>
-                    </div>
+            <div class="list-header">
+                <div class="list-title">
+                    <i class="fas fa-history"></i>
+                    Dokumentierte Vorfälle
                 </div>
-
-                <div id="incidentList" class="incident-grid">
-                    <div style="text-align: center; padding: 50px; color: #64748b;">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>Lade Vorfälle...</p>
+                <div class="filter-section">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Suchen..." onkeyup="filterIncidents()">
                     </div>
+                    <select class="filter-select" id="categoryFilter" onchange="filterIncidents()">
+                        <option value="">Alle Kategorien</option>
+                        <option value="ZfP Anlage">ZfP Anlage</option>
+                        <option value="ZfP Prüfung">ZfP Prüfung</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter" onchange="filterIncidents()">
+                        <option value="">Alle Status</option>
+                        <option value="open">Offen</option>
+                        <option value="closed">Geschlossen</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="incidentList" class="incident-grid">
+                <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 36px; margin-bottom: 10px;"></i>
+                    <p>Lade Vorfälle...</p>
                 </div>
             </div>
         </div>
@@ -1047,7 +1147,7 @@
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-success" id="modalCloseBtn" onclick="closeIncidentFromModal()">
-                    <i class="fas fa-check-circle"></i> Als erledigt markieren
+                    <i class="fas fa-check-circle"></i> Erledigt
                 </button>
                 <button class="btn btn-danger" id="modalDeleteBtn" onclick="deleteIncidentFromModal()">
                     <i class="fas fa-trash"></i> Löschen
@@ -1072,18 +1172,40 @@
     </div>
 
     <script>
-// Supabase Konfiguration - KORRIGIERT
-const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_jkkaIcAKxMhkXSdnJY1Oiw_U-xPWr68';
+        // Supabase Konfiguration
+        const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxcnlubGdic3Branp4dXhhdXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAwMjU1NzAsImV4cCI6MjA1NTYwMTU3MH0.ZV7i5JkLkLkLkLkLkLkLkLkLkLkLkLkLkLkLkLkLkLkLk';
 
-// Supabase Client initialisieren
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
+        // Supabase Client initialisieren
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Globale Variablen
         let compressedImages = [];
         let allIncidents = [];
         let currentIncidentId = null;
+
+        // Theme Toggle Funktion
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Gespeichertes Theme laden
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeIcon').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
 
         // Tab-Wechsel
         function switchTab(tab) {
@@ -1104,18 +1226,12 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         function updateCategoryFields() {
             const category = document.getElementById('category').value;
             const categorySpecificFields = document.getElementById('categorySpecificFields');
-            const numberLabel = document.getElementById('numberLabel');
-            const orderNumber = document.getElementById('orderNumber');
             
             categorySpecificFields.innerHTML = '';
             
             if (category === 'ZfP Prüfung') {
-                numberLabel.textContent = 'Auftragsnummer';
-                orderNumber.placeholder = 'z.B. A-2024-001';
-                orderNumber.required = true;
-                
                 categorySpecificFields.innerHTML = `
-                    <div class="form-group full-width">
+                    <div class="form-group">
                         <label><i class="fas fa-exclamation-circle"></i> Fehlerbild *</label>
                         <select id="errorType" required>
                             <option value="">Bitte wählen...</option>
@@ -1124,28 +1240,24 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                             <option value="sonstiges">Sonstiges</option>
                         </select>
                     </div>
-                    <div class="form-group full-width">
+                    <div class="form-group">
                         <label><i class="fas fa-cog"></i> Type / Modell</label>
                         <input type="text" id="type" placeholder="z.B. Typ X-2000">
                     </div>
                 `;
             } else if (category === 'ZfP Anlage') {
-                numberLabel.textContent = 'Maschinennummer';
-                orderNumber.placeholder = 'z.B. M-4711';
-                orderNumber.required = true;
-                
                 categorySpecificFields.innerHTML = `
-                    <div class="form-group full-width">
-                        <label><i class="fas fa-industry"></i> Anlagentyp *</label>
-                        <select id="plantType" required>
+                    <div class="form-group">
+                        <label><i class="fas fa-exclamation-circle"></i> Fehlerart *</label>
+                        <select id="errorType" required>
                             <option value="">Bitte wählen...</option>
-                            <option value="Inline">Inline</option>
-                            <option value="Standalone">Standalone</option>
+                            <option value="Störung">Störung</option>
+                            <option value="Wartung">Wartung</option>
+                            <option value="Defekt">Defekt</option>
+                            <option value="sonstiges">Sonstiges</option>
                         </select>
                     </div>
                 `;
-            } else {
-                orderNumber.required = false;
             }
         }
 
@@ -1169,7 +1281,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                     reader.readAsDataURL(compressedFile);
                 } catch (error) {
                     console.error('Fehler bei der Bildkomprimierung:', error);
-                    showError('Fehler bei der Bildverarbeitung: ' + error.message);
+                    showError('Fehler bei der Bildverarbeitung');
                 }
             }
         });
@@ -1187,7 +1299,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                         let width = img.width;
                         let height = img.height;
                         
-                        const maxWidth = 1200;
+                        const maxWidth = 1024;
                         if (width > maxWidth) {
                             height = Math.round((height * maxWidth) / width);
                             width = maxWidth;
@@ -1205,7 +1317,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                                 lastModified: Date.now()
                             });
                             resolve(compressedFile);
-                        }, 'image/jpeg', 0.9);
+                        }, 'image/jpeg', 0.8);
                     };
                     img.onerror = reject;
                 };
@@ -1241,7 +1353,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             const newLink = document.createElement('div');
             newLink.className = 'pdf-link-item';
             newLink.innerHTML = `
-                <i class="fas fa-link" style="color: #003366;"></i>
+                <i class="fas fa-link" style="color: var(--btn-primary);"></i>
                 <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
                 <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
             `;
@@ -1253,25 +1365,17 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             element.parentElement.remove();
         }
 
-        // QR-Code Scan Simulation
-        document.getElementById('scanButton').addEventListener('click', function() {
-            const simulatedCode = prompt('Bitte QR-Code/Barcode eingeben:', 'A-2024-001');
-            if (simulatedCode) {
-                document.getElementById('orderNumber').value = simulatedCode;
-            }
-        });
-
         // Vorfall speichern
         async function saveIncident() {
             // Formular validierung
             const category = document.getElementById('category').value;
-            const inspectionMethod = document.getElementById('inspectionMethod').value;
-            const department = document.getElementById('department').value;
+            const machineNumber = document.getElementById('machineNumber').value;
+            const process = document.getElementById('process').value;
             const segment = document.getElementById('segment').value;
+            const inspectionMethod = document.getElementById('inspectionMethod').value;
             const problemDescription = document.getElementById('problemDescription').value;
-            const orderNumber = document.getElementById('orderNumber').value;
 
-            if (!category || !inspectionMethod || !department || !segment || !problemDescription || !orderNumber) {
+            if (!category || !machineNumber || !process || !segment || !inspectionMethod || !problemDescription) {
                 showError('Bitte füllen Sie alle Pflichtfelder aus.');
                 return;
             }
@@ -1285,9 +1389,9 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             }
 
             if (category === 'ZfP Anlage') {
-                const plantType = document.getElementById('plantType');
-                if (!plantType || !plantType.value) {
-                    showError('Bitte wählen Sie einen Anlagentyp aus.');
+                const errorType = document.getElementById('errorType');
+                if (!errorType || !errorType.value) {
+                    showError('Bitte wählen Sie eine Fehlerart aus.');
                     return;
                 }
             }
@@ -1326,9 +1430,10 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 // Daten für Supabase vorbereiten
                 const formData = {
                     category: category,
-                    inspection_method: inspectionMethod,
-                    department: department,
+                    machine_number: machineNumber,
+                    process: process,
                     segment: segment,
+                    inspection_method: inspectionMethod,
                     problem_description: problemDescription,
                     pdf_links: pdfLinks.length > 0 ? pdfLinks : null,
                     image_urls: imageUrls.length > 0 ? imageUrls : null,
@@ -1338,15 +1443,13 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 
                 // Kategorie-spezifische Felder
                 if (category === 'ZfP Prüfung') {
-                    formData.order_number = orderNumber;
                     formData.error_type = document.getElementById('errorType').value;
                     const typeInput = document.getElementById('type');
                     if (typeInput && typeInput.value) {
                         formData.type = typeInput.value;
                     }
                 } else if (category === 'ZfP Anlage') {
-                    formData.machine_number = orderNumber;
-                    formData.plant_type = document.getElementById('plantType').value;
+                    formData.error_type = document.getElementById('errorType').value;
                 }
                 
                 // In Supabase speichern
@@ -1368,7 +1471,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 document.getElementById('imagePreview').innerHTML = '';
                 document.getElementById('pdfLinksContainer').innerHTML = `
                     <div class="pdf-link-item">
-                        <i class="fas fa-link" style="color: #003366;"></i>
+                        <i class="fas fa-link" style="color: var(--btn-primary);"></i>
                         <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
                         <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
                     </div>
@@ -1423,7 +1526,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             } catch (error) {
                 console.error('Fehler beim Laden:', error);
                 document.getElementById('incidentList').innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: #dc2626;">
+                    <div style="text-align: center; padding: 50px; color: var(--btn-danger);">
                         <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
                         <p>Fehler beim Laden: ${error.message}</p>
                     </div>
@@ -1439,7 +1542,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
             if (incidents.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: #64748b;">
+                    <div style="text-align: center; padding: 50px; color: var(--text-secondary);">
                         <i class="fas fa-folder-open" style="font-size: 48px; margin-bottom: 15px;"></i>
                         <p>Keine Vorfälle gefunden</p>
                     </div>
@@ -1449,7 +1552,6 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
             container.innerHTML = incidents.map(incident => {
                 const date = new Date(incident.created_at).toLocaleDateString('de-DE');
-                const number = incident.order_number || incident.machine_number || '-';
                 const categoryIcon = incident.category === 'ZfP Anlage' ? 'fa-industry' : 'fa-search';
                 const statusClass = incident.status === 'closed' ? 'closed' : '';
                 const statusIcon = incident.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
@@ -1479,25 +1581,23 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                         </div>
                         
                         <div class="card-content" onclick="openIncident('${incident.id}')">
-                            <div class="card-info">
-                                <div class="info-row">
-                                    <span class="info-label"><i class="fas fa-hashtag"></i> Nummer:</span>
-                                    <span class="info-value">${number}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label"><i class="fas fa-building"></i> Abteilung:</span>
-                                    <span class="info-value">${incident.department}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label"><i class="fas fa-exclamation"></i> Problem:</span>
-                                    <span class="info-value">${incident.problem_description.substring(0, 60)}${incident.problem_description.length > 60 ? '...' : ''}</span>
-                                </div>
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-hashtag"></i> Maschine:</span>
+                                <span class="info-value">${incident.machine_number || '-'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-building"></i> Prozess:</span>
+                                <span class="info-value">${incident.process}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label"><i class="fas fa-exclamation"></i> Problem:</span>
+                                <span class="info-value">${incident.problem_description.substring(0, 60)}${incident.problem_description.length > 60 ? '...' : ''}</span>
                             </div>
                             
                             <div class="card-preview">
                                 ${incident.image_urls && incident.image_urls.length > 0 ? 
                                     `<img src="${incident.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${incident.image_urls[0]}', '_blank')">` : 
-                                    '<div style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: #94a3b8;"></i></div>'
+                                    '<div style="width: 50px; height: 50px; background: var(--hover-bg); border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary);"></i></div>'
                                 }
                                 ${incident.pdf_links && incident.pdf_links.length > 0 ? 
                                     '<span class="pdf-indicator"><i class="fas fa-file-pdf"></i></span>' : ''
@@ -1531,8 +1631,8 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
             const filtered = allIncidents.filter(incident => {
                 const searchString = (incident.problem_description + ' ' + 
-                                    (incident.order_number || '') + ' ' + 
-                                    (incident.machine_number || '')).toLowerCase();
+                                    (incident.machine_number || '') + ' ' + 
+                                    (incident.process || '')).toLowerCase();
                 const matchesSearch = !searchTerm || searchString.includes(searchTerm);
                 
                 const matchesCategory = !categoryFilter || incident.category === categoryFilter;
@@ -1571,7 +1671,6 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         function showIncidentDetails(incident) {
             const modalBody = document.getElementById('modalBody');
             const date = new Date(incident.created_at).toLocaleString('de-DE');
-            const number = incident.order_number || incident.machine_number || '-';
             
             // Buttons im Modal anpassen
             const closeBtn = document.getElementById('modalCloseBtn');
@@ -1590,20 +1689,20 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                             <div class="detail-value">${incident.category}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Prüfverfahren</div>
-                            <div class="detail-value">${incident.inspection_method}</div>
+                            <div class="detail-label">Maschinennummer</div>
+                            <div class="detail-value">${incident.machine_number || '-'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">${incident.category === 'ZfP Anlage' ? 'Maschinennummer' : 'Auftragsnummer'}</div>
-                            <div class="detail-value">${number}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Abteilung</div>
-                            <div class="detail-value">${incident.department}</div>
+                            <div class="detail-label">Prozess</div>
+                            <div class="detail-value">${incident.process}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Segment</div>
                             <div class="detail-value">${incident.segment}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Prüfverfahren</div>
+                            <div class="detail-value">${incident.inspection_method}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Status</div>
@@ -1624,10 +1723,10 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             if (incident.error_type) {
                 details += `
                     <div class="detail-section">
-                        <h3><i class="fas fa-exclamation-triangle"></i> Prüfungsdetails</h3>
+                        <h3><i class="fas fa-exclamation-triangle"></i> Fehlerdetails</h3>
                         <div class="detail-grid">
                             <div class="detail-item">
-                                <div class="detail-label">Fehlerbild</div>
+                                <div class="detail-label">Fehlerart</div>
                                 <div class="detail-value">${incident.error_type}</div>
                             </div>
                             ${incident.type ? `
@@ -1641,24 +1740,10 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 `;
             }
             
-            if (incident.plant_type) {
-                details += `
-                    <div class="detail-section">
-                        <h3><i class="fas fa-industry"></i> Anlagendetails</h3>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Anlagentyp</div>
-                                <div class="detail-value">${incident.plant_type}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
             details += `
                 <div class="detail-section">
                     <h3><i class="fas fa-align-left"></i> Beschreibung</h3>
-                    <p style="background: #f8fafc; padding: 15px; border-radius: 10px;">${incident.problem_description}</p>
+                    <p style="background: var(--hover-bg); padding: 15px; border-radius: 10px;">${incident.problem_description}</p>
                 </div>
             `;
             
@@ -1681,8 +1766,8 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                         <h3><i class="fas fa-file-pdf"></i> PDF Dokumente</h3>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             ${incident.pdf_links.map(link => `
-                                <a href="${link}" target="_blank" style="color: #003366; text-decoration: none; padding: 10px; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
-                                    <i class="fas fa-file-pdf" style="color: #dc2626;"></i>
+                                <a href="${link}" target="_blank" style="color: var(--btn-primary); text-decoration: none; padding: 10px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-file-pdf" style="color: var(--btn-danger);"></i>
                                     ${link.split('/').pop() || 'PDF Dokument'}
                                 </a>
                             `).join('')}
@@ -1730,7 +1815,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 if (error) throw error;
                 
                 showSuccess('Vorfall wurde als erledigt markiert');
-                loadIncidents(); // Liste neu laden
+                loadIncidents();
             } catch (error) {
                 console.error('Fehler beim Schließen:', error);
                 showError('Fehler beim Schließen: ' + error.message);
@@ -1748,94 +1833,69 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             document.getElementById('confirmModal').classList.add('active');
         }
 
-// Vorfall löschen (angepasst an Ihre Datenbankstruktur)
-async function deleteIncident(id) {
-    closeConfirmModal();
-    document.getElementById('loadingOverlay').style.display = 'flex';
-    
-    try {
-        console.log('Versuche Vorfall zu löschen mit ID:', id);
-        
-        // 1. Vorfall laden - mit korrekten Spaltennamen
-        const { data: incident, error: fetchError } = await supabaseClient
-            .from('incidents')
-            .select('*')
-            .eq('id', id)
-            .maybeSingle(); // .single() durch .maybeSingle() ersetzen
-        
-        if (fetchError) {
-            console.error('Fehler beim Laden des Vorfalls:', fetchError);
-            throw new Error('Vorfall nicht gefunden: ' + fetchError.message);
-        }
-        
-        if (!incident) {
-            console.log('Kein Vorfall mit dieser ID gefunden');
-            throw new Error('Vorfall nicht gefunden');
-        }
-        
-        console.log('Gefundener Vorfall:', incident);
-        
-        // 2. Prüfen, ob Bilder vorhanden sind (Feldname könnte anders sein)
-        const imageUrls = incident.image_urls || incident.images || [];
-        console.log('Bilder zum Löschen:', imageUrls);
-        
-        if (imageUrls && imageUrls.length > 0) {
-            for (const url of imageUrls) {
-                try {
-                    // Dateinamen aus URL extrahieren
-                    const urlParts = url.split('/');
-                    const fileName = urlParts[urlParts.length - 1];
-                    
-                    console.log('Lösche Bild:', fileName);
-                    
-                    const { error: deleteError } = await supabaseClient.storage
-                        .from('incident_images')
-                        .remove([fileName]);
-                    
-                    if (deleteError) {
-                        console.error('Fehler beim Löschen des Bildes:', deleteError);
-                        // Bild existiert vielleicht nicht - trotzdem weitermachen
-                    }
-                } catch (imageError) {
-                    console.error('Fehler bei Bild-Löschung:', imageError);
+        // Vorfall löschen
+        async function deleteIncident(id) {
+            closeConfirmModal();
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            try {
+                // 1. Vorfall laden
+                const { data: incident, error: fetchError } = await supabaseClient
+                    .from('incidents')
+                    .select('*')
+                    .eq('id', id)
+                    .maybeSingle();
+                
+                if (fetchError) {
+                    console.error('Fehler beim Laden des Vorfalls:', fetchError);
+                    throw new Error('Vorfall nicht gefunden: ' + fetchError.message);
                 }
+                
+                if (!incident) {
+                    throw new Error('Vorfall nicht gefunden');
+                }
+                
+                // 2. Bilder löschen
+                const imageUrls = incident.image_urls || [];
+                if (imageUrls.length > 0) {
+                    for (const url of imageUrls) {
+                        try {
+                            const urlParts = url.split('/');
+                            const fileName = urlParts[urlParts.length - 1];
+                            
+                            const { error: deleteError } = await supabaseClient.storage
+                                .from('incident_images')
+                                .remove([fileName]);
+                            
+                            if (deleteError) {
+                                console.error('Fehler beim Löschen des Bildes:', deleteError);
+                            }
+                        } catch (imageError) {
+                            console.error('Fehler bei Bild-Löschung:', imageError);
+                        }
+                    }
+                }
+                
+                // 3. Vorfall aus Datenbank löschen
+                const { error: deleteError } = await supabaseClient
+                    .from('incidents')
+                    .delete()
+                    .eq('id', id);
+                
+                if (deleteError) {
+                    throw new Error('Datenbank-Fehler: ' + deleteError.message);
+                }
+                
+                showSuccess('Vorfall wurde gelöscht');
+                await loadIncidents();
+                
+            } catch (error) {
+                console.error('Hauptfehler beim Löschen:', error);
+                showError('Fehler beim Löschen: ' + error.message);
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
             }
         }
-        
-        // 3. Vorfall aus Datenbank löschen
-        console.log('Lösche Vorfall aus Datenbank mit ID:', id);
-        
-        const { error: deleteError, data: deletedData } = await supabaseClient
-            .from('incidents')
-            .delete()
-            .eq('id', id)
-            .select(); // .select() hinzufügen um zu sehen, was gelöscht wurde
-        
-        if (deleteError) {
-            console.error('Fehler beim Datenbank-Löschen:', deleteError);
-            throw new Error('Datenbank-Fehler: ' + deleteError.message);
-        }
-        
-        console.log('Gelöschte Daten:', deletedData);
-        
-        if (!deletedData || deletedData.length === 0) {
-            console.warn('Es wurden keine Datensätze gelöscht');
-            throw new Error('Datensatz wurde nicht gelöscht - möglicherweise falsche ID oder Berechtigungsproblem');
-        }
-        
-        console.log('Vorfall erfolgreich gelöscht');
-        showSuccess('Vorfall wurde gelöscht');
-        
-        // 4. Liste neu laden
-        await loadIncidents();
-        
-    } catch (error) {
-        console.error('Hauptfehler beim Löschen:', error);
-        showError('Fehler beim Löschen: ' + error.message);
-    } finally {
-        document.getElementById('loadingOverlay').style.display = 'none';
-    }
-}
 
         // Erfolgsmeldung anzeigen
         function showSuccess(message) {
