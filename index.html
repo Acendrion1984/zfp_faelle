@@ -12,49 +12,60 @@
         }
 
         :root {
+            /* Light Mode - Verbesserte Kontraste */
             --bg-primary: #f5f5f7;
             --bg-secondary: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
+            --text-primary: #0f172a; /* Dunkler für besseren Kontrast */
+            --text-secondary: #334155; /* Dunkler für besseren Kontrast */
+            --border-color: #cbd5e1;
             --card-bg: #ffffff;
             --header-gradient: linear-gradient(135deg, #003366 0%, #1a4d8c 100%);
             --shadow-color: rgba(0,51,102,0.2);
             --input-bg: #ffffff;
-            --badge-category-bg: #e8f0fe;
-            --badge-method-bg: #f3e8ff;
-            --badge-open-bg: #dcfce7;
-            --badge-closed-bg: #fee2e2;
-            --hover-bg: #f8fafc;
+            --badge-category-bg: #dbeafe;
+            --badge-method-bg: #ede9fe;
+            --badge-open-bg: #bbf7d0;
+            --badge-closed-bg: #fecaca;
+            --hover-bg: #f1f5f9;
             --btn-primary: #003366;
-            --btn-primary-hover: #1a4d8c;
-            --btn-success: #10b981;
-            --btn-success-hover: #059669;
-            --btn-danger: #ef4444;
-            --btn-danger-hover: #dc2626;
+            --btn-primary-hover: #002244;
+            --btn-success: #059669;
+            --btn-success-hover: #047857;
+            --btn-danger: #dc2626;
+            --btn-danger-hover: #b91c1c;
+            --btn-warning: #d97706;
+            --btn-warning-hover: #b45309;
+            --link-color: #2563eb;
+            --text-on-badge: #0f172a;
         }
 
         [data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #e5e5e5;
-            --text-secondary: #a0a0a0;
-            --border-color: #404040;
-            --card-bg: #2d2d2d;
-            --header-gradient: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
-            --shadow-color: rgba(0,0,0,0.3);
-            --input-bg: #333333;
-            --badge-category-bg: #1e3a5f;
-            --badge-method-bg: #4a2e5f;
-            --badge-open-bg: #1e4a3a;
-            --badge-closed-bg: #5f2e2e;
-            --hover-bg: #3d3d3d;
-            --btn-primary: #4a6fa5;
-            --btn-primary-hover: #5f8bc9;
-            --btn-success: #2e7d5e;
-            --btn-success-hover: #3a9b75;
-            --btn-danger: #b91c1c;
+            /* Dark Mode - Stark verbesserte Kontraste */
+            --bg-primary: #0a0a0a; /* Noch dunkler */
+            --bg-secondary: #1e1e1e; /* Dunkler */
+            --text-primary: #ffffff; /* Reines Weiß für maximalen Kontrast */
+            --text-secondary: #e0e0e0; /* Helles Grau für gute Lesbarkeit */
+            --border-color: #4a4a4a; /* Heller für bessere Sichtbarkeit */
+            --card-bg: #2a2a2a; /* Dunkelgrau */
+            --header-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --shadow-color: rgba(0,0,0,0.5);
+            --input-bg: #2d2d2d;
+            --input-text: #ffffff;
+            --badge-category-bg: #1e3a8a; /* Kräftiges Blau */
+            --badge-method-bg: #5b21b6; /* Kräftiges Lila */
+            --badge-open-bg: #065f46; /* Kräftiges Grün */
+            --badge-closed-bg: #991b1b; /* Kräftiges Rot */
+            --hover-bg: #374151; /* Heller für bessere Sichtbarkeit */
+            --btn-primary: #3b82f6; /* Helles Blau */
+            --btn-primary-hover: #2563eb;
+            --btn-success: #10b981; /* Helles Grün */
+            --btn-success-hover: #059669;
+            --btn-danger: #ef4444; /* Helles Rot */
             --btn-danger-hover: #dc2626;
+            --btn-warning: #f59e0b; /* Helles Orange */
+            --btn-warning-hover: #d97706;
+            --link-color: #60a5fa; /* Helles Blau für Links */
+            --text-on-badge: #ffffff; /* Weißer Text auf farbigen Badges */
         }
 
         body {
@@ -115,6 +126,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: white;
         }
 
         .app-header h1 i {
@@ -125,6 +137,7 @@
             margin-top: 5px;
             opacity: 0.9;
             font-size: 13px;
+            color: rgba(255,255,255,0.9);
         }
 
         /* Tab Navigation */
@@ -185,12 +198,7 @@
             display: block;
         }
 
-        /* Form Styles - Optimiert für Mobile */
-        .form-row {
-            display: block;
-            margin-bottom: 0;
-        }
-
+        /* Form Styles */
         .form-group {
             width: 100%;
             margin-bottom: 16px;
@@ -231,7 +239,7 @@
         }
 
         select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 10px center;
             background-size: 16px;
@@ -239,10 +247,14 @@
             color: var(--text-primary);
         }
 
+        [data-theme="dark"] select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        }
+
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--btn-primary);
-            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
         }
 
         /* Button Styles */
@@ -279,20 +291,6 @@
             transform: scale(0.98);
         }
 
-        .btn-upload {
-            background: var(--hover-bg);
-            border: 2px dashed var(--border-color);
-            justify-content: center;
-        }
-
-        .btn-upload:hover {
-            background: var(--bg-secondary);
-        }
-
-        .btn-upload:active {
-            transform: scale(0.98);
-        }
-
         .btn-success {
             background: var(--btn-success);
             color: white;
@@ -303,8 +301,14 @@
             background: var(--btn-success-hover);
         }
 
-        .btn-success:active {
-            transform: scale(0.98);
+        .btn-warning {
+            background: var(--btn-warning);
+            color: white;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background: var(--btn-warning-hover);
         }
 
         .btn-danger {
@@ -317,8 +321,15 @@
             background: var(--btn-danger-hover);
         }
 
-        .btn-danger:active {
-            transform: scale(0.98);
+        .btn-upload {
+            background: var(--hover-bg);
+            border: 2px dashed var(--border-color);
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        .btn-upload:hover {
+            background: var(--bg-secondary);
         }
 
         /* Image Upload Area */
@@ -348,7 +359,7 @@
             position: absolute;
             top: 3px;
             right: 3px;
-            background: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.7);
             border: none;
             border-radius: 50%;
             width: 22px;
@@ -357,7 +368,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #dc2626;
+            color: white;
             font-weight: bold;
             font-size: 16px;
             padding: 0;
@@ -420,10 +431,6 @@
             background: var(--hover-bg);
         }
 
-        .add-pdf-btn:active {
-            transform: scale(0.98);
-        }
-
         /* Submit Button */
         .submit-section {
             margin-top: 20px;
@@ -444,10 +451,6 @@
             background: var(--btn-success-hover);
         }
 
-        .btn-submit:active {
-            transform: scale(0.98);
-        }
-
         /* Loading Overlay */
         .loading-overlay {
             position: fixed;
@@ -455,7 +458,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             display: none;
             justify-content: center;
             align-items: center;
@@ -485,6 +488,7 @@
             align-items: center;
             gap: 10px;
             font-size: 14px;
+            font-weight: 500;
         }
 
         .success-message {
@@ -497,7 +501,7 @@
             color: white;
         }
 
-        /* Listenansicht Styles - Mobile Optimiert */
+        /* Listenansicht Styles */
         .list-header {
             margin-bottom: 20px;
         }
@@ -568,10 +572,6 @@
             border-color: var(--btn-primary);
         }
 
-        .incident-card:active {
-            background: var(--hover-bg);
-        }
-
         .card-header {
             display: flex;
             flex-direction: column;
@@ -593,26 +593,23 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            color: var(--text-on-badge);
         }
 
         .badge-category {
             background: var(--badge-category-bg);
-            color: var(--btn-primary);
         }
 
         .badge-method {
             background: var(--badge-method-bg);
-            color: #a855f7;
         }
 
         .badge-status {
             background: var(--badge-open-bg);
-            color: #166534;
         }
 
         .badge-status.closed {
             background: var(--badge-closed-bg);
-            color: #991b1b;
         }
 
         .card-date {
@@ -673,7 +670,7 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            color: #991b1b;
+            color: var(--text-on-badge);
         }
 
         .card-actions {
@@ -687,7 +684,7 @@
 
         .action-button {
             flex: 1;
-            min-width: 80px;
+            min-width: 70px;
             padding: 10px;
             border: none;
             border-radius: 8px;
@@ -708,20 +705,25 @@
 
         .action-button.view {
             background: var(--hover-bg);
-            color: var(--btn-primary);
+            color: var(--text-primary);
+        }
+
+        .action-button.edit {
+            background: var(--btn-warning);
+            color: white;
         }
 
         .action-button.close {
-            background: var(--badge-open-bg);
-            color: #166534;
+            background: var(--btn-success);
+            color: white;
         }
 
         .action-button.delete {
-            background: var(--badge-closed-bg);
-            color: #991b1b;
+            background: var(--btn-danger);
+            color: white;
         }
 
-        /* Modal - Mobile Optimiert */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -729,11 +731,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 2000;
             justify-content: center;
-            align-items: flex-end;
-            padding: 0;
+            align-items: center;
+            padding: 15px;
         }
 
         .modal.active {
@@ -742,17 +744,11 @@
 
         .modal-content {
             background: var(--bg-secondary);
-            border-radius: 20px 20px 0 0;
-            max-width: 100%;
+            border-radius: 16px;
+            max-width: 600px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
         }
 
         .modal-header {
@@ -789,6 +785,23 @@
             padding: 18px;
         }
 
+        .modal-footer {
+            padding: 18px;
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        /* Detail View Styles */
         .detail-section {
             margin-bottom: 20px;
         }
@@ -846,26 +859,6 @@
             border-color: var(--btn-primary);
         }
 
-        .gallery-image:active {
-            transform: scale(0.95);
-        }
-
-        .modal-footer {
-            padding: 18px;
-            border-top: 2px solid var(--border-color);
-            display: flex;
-            gap: 10px;
-            position: sticky;
-            bottom: 0;
-            background: var(--bg-secondary);
-            flex-wrap: wrap;
-        }
-
-        .modal-footer .btn {
-            flex: 1;
-            min-width: 100px;
-        }
-
         /* Confirm Modal */
         .confirm-modal {
             position: fixed;
@@ -873,7 +866,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             display: none;
             justify-content: center;
             align-items: center;
@@ -920,7 +913,7 @@
             font-size: 14px;
         }
 
-        /* Kleine Anpassungen für sehr kleine Geräte */
+        /* Mobile Optimierungen */
         @media (max-width: 360px) {
             .app-header h1 {
                 font-size: 18px;
@@ -942,7 +935,7 @@
             
             .action-button {
                 font-size: 11px;
-                padding: 8px;
+                padding: 8px 6px;
             }
         }
     </style>
@@ -998,6 +991,8 @@
 
             <!-- Form -->
             <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
+                <input type="hidden" id="editId" value="">
+                
                 <!-- Kategorie -->
                 <div class="form-group">
                     <label><i class="fas fa-tag"></i> Kategorie *</label>
@@ -1008,13 +1003,13 @@
                     </select>
                 </div>
 
-                <!-- Maschinennummer (immer sichtbar) -->
+                <!-- Maschinennummer -->
                 <div class="form-group">
                     <label><i class="fas fa-hashtag"></i> Maschinennummer *</label>
                     <input type="text" id="machineNumber" placeholder="z.B. M-4711" required>
                 </div>
 
-                <!-- Prozess (statt Abteilung) -->
+                <!-- Prozess -->
                 <div class="form-group">
                     <label><i class="fas fa-building"></i> Prozess *</label>
                     <select id="process" required>
@@ -1041,7 +1036,7 @@
                     </select>
                 </div>
 
-                <!-- Prüfverfahren (jetzt für beide Kategorien) -->
+                <!-- Prüfverfahren -->
                 <div class="form-group">
                     <label><i class="fas fa-flask"></i> Prüfverfahren *</label>
                     <select id="inspectionMethod" required>
@@ -1091,7 +1086,7 @@
 
                 <!-- Submit Button -->
                 <div class="submit-section">
-                    <button type="submit" class="btn btn-submit">
+                    <button type="submit" class="btn btn-submit" id="submitButton">
                         <i class="fas fa-save"></i> Vorfall dokumentieren
                     </button>
                 </div>
@@ -1146,6 +1141,9 @@
             </div>
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
+                <button class="btn btn-warning" id="modalEditBtn" onclick="editIncidentFromModal()">
+                    <i class="fas fa-edit"></i> Bearbeiten
+                </button>
                 <button class="btn btn-success" id="modalCloseBtn" onclick="closeIncidentFromModal()">
                     <i class="fas fa-check-circle"></i> Erledigt
                 </button>
@@ -1173,15 +1171,15 @@
 
     <script>
         // Supabase Konfiguration
-const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_jkkaIcAKxMhkXSdnJY1Oiw_U-xPWr68';
-const SUPABASE_PASSWORD = 'ZfPReviewAudit';
+        const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxcnlubGdic3Branp4dXhhdXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAwMjU1NzAsImV4cCI6MjA1NTYwMTU3MH0.2HP9X7WgkZ7qWjYQKQKQKQKQKQKQKQKQKQKQKQKQKQKQ';
 
         // Supabase Client initialisieren
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Globale Variablen
         let compressedImages = [];
+        let existingImages = [];
         let allIncidents = [];
         let currentIncidentId = null;
 
@@ -1216,11 +1214,33 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             if (tab === 'new') {
                 document.querySelectorAll('.tab-button')[0].classList.add('active');
                 document.getElementById('tab-new').classList.add('active');
+                // Formular zurücksetzen wenn kein Bearbeitungsmodus
+                if (!document.getElementById('editId').value) {
+                    resetForm();
+                }
             } else {
                 document.querySelectorAll('.tab-button')[1].classList.add('active');
                 document.getElementById('tab-list').classList.add('active');
                 loadIncidents();
             }
+        }
+
+        // Formular zurücksetzen
+        function resetForm() {
+            document.getElementById('incidentForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('categorySpecificFields').innerHTML = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('pdfLinksContainer').innerHTML = `
+                <div class="pdf-link-item">
+                    <i class="fas fa-link" style="color: var(--btn-primary);"></i>
+                    <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
+                    <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
+                </div>
+            `;
+            compressedImages = [];
+            existingImages = [];
+            document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Vorfall dokumentieren';
         }
 
         // Kategorie-Felder aktualisieren
@@ -1238,7 +1258,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                             <option value="">Bitte wählen...</option>
                             <option value="Schleifbrand">Schleifbrand</option>
                             <option value="Risse">Risse</option>
-                            <option value="sonstiges">Sonstiges</option>
+                            <option value="Sonstiges">Sonstiges</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1255,7 +1275,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                             <option value="Störung">Störung</option>
                             <option value="Wartung">Wartung</option>
                             <option value="Defekt">Defekt</option>
-                            <option value="sonstiges">Sonstiges</option>
+                            <option value="Sonstiges">Sonstiges</option>
                         </select>
                     </div>
                 `;
@@ -1277,7 +1297,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                     
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        addImagePreview(e.target.result);
+                        addImagePreview(e.target.result, false);
                     };
                     reader.readAsDataURL(compressedFile);
                 } catch (error) {
@@ -1327,24 +1347,30 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
         }
 
         // Bild-Preview hinzufügen
-        function addImagePreview(imageData) {
+        function addImagePreview(imageData, isExisting = false) {
             const previewGrid = document.getElementById('imagePreview');
             const previewItem = document.createElement('div');
             previewItem.className = 'image-preview-item';
             
             previewItem.innerHTML = `
                 <img src="${imageData}" alt="Preview">
-                <button class="remove-image" onclick="removeImage(this)">×</button>
+                <button class="remove-image" onclick="removeImage(this, ${isExisting})">×</button>
             `;
             
             previewGrid.appendChild(previewItem);
         }
 
         // Bild entfernen
-        function removeImage(button) {
+        function removeImage(button, isExisting = false) {
             const previewItem = button.parentElement;
             const index = Array.from(previewItem.parentElement.children).indexOf(previewItem);
-            compressedImages.splice(index, 1);
+            
+            if (isExisting) {
+                existingImages.splice(index, 1);
+            } else {
+                compressedImages.splice(index, 1);
+            }
+            
             previewItem.remove();
         }
 
@@ -1366,9 +1392,10 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             element.parentElement.remove();
         }
 
-        // Vorfall speichern
+        // Vorfall speichern (neu oder bearbeiten)
         async function saveIncident() {
             // Formular validierung
+            const editId = document.getElementById('editId').value;
             const category = document.getElementById('category').value;
             const machineNumber = document.getElementById('machineNumber').value;
             const process = document.getElementById('process').value;
@@ -1401,8 +1428,9 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             hideError();
             
             try {
-                // Bilder hochladen
-                const imageUrls = [];
+                let imageUrls = [...existingImages];
+                
+                // Neue Bilder hochladen
                 for (const image of compressedImages) {
                     const fileName = `incident_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
                     
@@ -1438,8 +1466,6 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                     problem_description: problemDescription,
                     pdf_links: pdfLinks.length > 0 ? pdfLinks : null,
                     image_urls: imageUrls.length > 0 ? imageUrls : null,
-                    status: 'open',
-                    created_at: new Date().toISOString()
                 };
                 
                 // Kategorie-spezifische Felder
@@ -1453,36 +1479,32 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                     formData.error_type = document.getElementById('errorType').value;
                 }
                 
-                // In Supabase speichern
-                const { data, error } = await supabaseClient
-                    .from('incidents')
-                    .insert([formData]);
+                let result;
                 
-                if (error) {
-                    console.error('Insert Error:', error);
-                    throw new Error('Fehler beim Speichern: ' + error.message);
+                if (editId) {
+                    // Update existing incident
+                    result = await supabaseClient
+                        .from('incidents')
+                        .update(formData)
+                        .eq('id', editId);
+                    
+                    if (result.error) throw result.error;
+                    showSuccess('Vorfall erfolgreich aktualisiert!');
+                } else {
+                    // Insert new incident
+                    formData.status = 'open';
+                    formData.created_at = new Date().toISOString();
+                    
+                    result = await supabaseClient
+                        .from('incidents')
+                        .insert([formData]);
+                    
+                    if (result.error) throw result.error;
+                    showSuccess('Vorfall erfolgreich dokumentiert!');
                 }
                 
-                // Erfolgsmeldung anzeigen
-                document.getElementById('successMessage').style.display = 'flex';
-                
                 // Formular zurücksetzen
-                document.getElementById('incidentForm').reset();
-                document.getElementById('categorySpecificFields').innerHTML = '';
-                document.getElementById('imagePreview').innerHTML = '';
-                document.getElementById('pdfLinksContainer').innerHTML = `
-                    <div class="pdf-link-item">
-                        <i class="fas fa-link" style="color: var(--btn-primary);"></i>
-                        <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
-                        <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
-                    </div>
-                `;
-                compressedImages = [];
-                
-                // Erfolgsmeldung ausblenden nach 3 Sekunden
-                setTimeout(() => {
-                    document.getElementById('successMessage').style.display = 'none';
-                }, 3000);
+                resetForm();
                 
                 // Zur Liste wechseln
                 switchTab('list');
@@ -1508,6 +1530,16 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
         // Fehlermeldung ausblenden
         function hideError() {
             document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Erfolgsmeldung anzeigen
+        function showSuccess(message) {
+            document.getElementById('successMessage').querySelector('span').textContent = message;
+            document.getElementById('successMessage').style.display = 'flex';
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
         }
 
         // Vorfälle laden
@@ -1610,9 +1642,12 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                             <button class="action-button view" onclick="openIncident('${incident.id}')">
                                 <i class="fas fa-eye"></i> Details
                             </button>
+                            <button class="action-button edit" onclick="editIncident('${incident.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
                             ${incident.status === 'open' ? `
                                 <button class="action-button close" onclick="closeIncident('${incident.id}')">
-                                    <i class="fas fa-check-circle"></i> Erledigt
+                                    <i class="fas fa-check-circle"></i> Fertig
                                 </button>
                             ` : ''}
                             <button class="action-button delete" onclick="confirmDelete('${incident.id}')">
@@ -1675,6 +1710,8 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             
             // Buttons im Modal anpassen
             const closeBtn = document.getElementById('modalCloseBtn');
+            const editBtn = document.getElementById('modalEditBtn');
+            
             if (incident.status === 'closed') {
                 closeBtn.style.display = 'none';
             } else {
@@ -1767,7 +1804,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                         <h3><i class="fas fa-file-pdf"></i> PDF Dokumente</h3>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             ${incident.pdf_links.map(link => `
-                                <a href="${link}" target="_blank" style="color: var(--btn-primary); text-decoration: none; padding: 10px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <a href="${link}" target="_blank" style="color: var(--link-color); text-decoration: none; padding: 10px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; gap: 10px;">
                                     <i class="fas fa-file-pdf" style="color: var(--btn-danger);"></i>
                                     ${link.split('/').pop() || 'PDF Dokument'}
                                 </a>
@@ -1785,6 +1822,106 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
             currentIncidentId = null;
+        }
+
+        // Vorfall bearbeiten (vom Modal aus)
+        function editIncidentFromModal() {
+            if (currentIncidentId) {
+                closeModal();
+                editIncident(currentIncidentId);
+            }
+        }
+
+        // Vorfall bearbeiten
+        async function editIncident(id) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('incidents')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+                
+                if (error) throw error;
+                
+                // Zum Eingabe-Tab wechseln
+                switchTab('new');
+                
+                // Formular mit den Daten füllen
+                document.getElementById('editId').value = data.id;
+                document.getElementById('category').value = data.category || '';
+                document.getElementById('machineNumber').value = data.machine_number || '';
+                document.getElementById('process').value = data.process || '';
+                document.getElementById('segment').value = data.segment || '';
+                document.getElementById('inspectionMethod').value = data.inspection_method || '';
+                document.getElementById('problemDescription').value = data.problem_description || '';
+                
+                // Kategorie-spezifische Felder aktualisieren
+                updateCategoryFields();
+                
+                // Kurze Pause damit die Felder gerendert werden
+                setTimeout(() => {
+                    if (data.category === 'ZfP Prüfung' || data.category === 'ZfP Anlage') {
+                        const errorTypeSelect = document.getElementById('errorType');
+                        if (errorTypeSelect && data.error_type) {
+                            errorTypeSelect.value = data.error_type;
+                        }
+                        
+                        if (data.category === 'ZfP Prüfung') {
+                            const typeInput = document.getElementById('type');
+                            if (typeInput && data.type) {
+                                typeInput.value = data.type;
+                            }
+                        }
+                    }
+                }, 100);
+                
+                // Vorhandene Bilder anzeigen
+                existingImages = data.image_urls || [];
+                const previewGrid = document.getElementById('imagePreview');
+                previewGrid.innerHTML = '';
+                
+                existingImages.forEach(url => {
+                    addImagePreview(url, true);
+                });
+                
+                // PDF Links anzeigen
+                const pdfContainer = document.getElementById('pdfLinksContainer');
+                pdfContainer.innerHTML = '';
+                
+                if (data.pdf_links && data.pdf_links.length > 0) {
+                    data.pdf_links.forEach(link => {
+                        const pdfItem = document.createElement('div');
+                        pdfItem.className = 'pdf-link-item';
+                        pdfItem.innerHTML = `
+                            <i class="fas fa-link" style="color: var(--btn-primary);"></i>
+                            <input type="url" value="${link}" placeholder="https://.../dokument.pdf" class="pdf-input">
+                            <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
+                        `;
+                        pdfContainer.appendChild(pdfItem);
+                    });
+                } else {
+                    pdfContainer.innerHTML = `
+                        <div class="pdf-link-item">
+                            <i class="fas fa-link" style="color: var(--btn-primary);"></i>
+                            <input type="url" placeholder="https://.../dokument.pdf" class="pdf-input">
+                            <i class="fas fa-times remove-pdf" onclick="removePdfLink(this)"></i>
+                        </div>
+                    `;
+                }
+                
+                // Submit Button Text ändern
+                document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Änderungen speichern';
+                
+                showSuccess('Vorfall kann bearbeitet werden');
+                
+            } catch (error) {
+                console.error('Fehler beim Laden für Bearbeitung:', error);
+                showError('Fehler beim Laden: ' + error.message);
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
         }
 
         // Vorfall als erledigt markieren (vom Modal aus)
@@ -1898,16 +2035,6 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             }
         }
 
-        // Erfolgsmeldung anzeigen
-        function showSuccess(message) {
-            document.getElementById('successMessage').querySelector('span').textContent = message;
-            document.getElementById('successMessage').style.display = 'flex';
-            
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 3000);
-        }
-
         // Confirm Modal schließen
         function closeConfirmModal() {
             document.getElementById('confirmModal').classList.remove('active');
@@ -1917,9 +2044,16 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
         document.addEventListener('DOMContentLoaded', function() {
             // Event-Listener für Kategorie-Änderung
             document.getElementById('category').addEventListener('change', updateCategoryFields);
+            
+            // Prüfen ob ein Edit im Gange ist
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('edit');
+            if (editId) {
+                setTimeout(() => {
+                    editIncident(editId);
+                }, 500);
+            }
         });
     </script>
 </body>
 </html>
-
-
