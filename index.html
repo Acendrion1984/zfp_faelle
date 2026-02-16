@@ -12,11 +12,10 @@
         }
 
         :root {
-            /* Light Mode - Verbesserte Kontraste */
             --bg-primary: #f5f5f7;
             --bg-secondary: #ffffff;
-            --text-primary: #0f172a; /* Dunkler für besseren Kontrast */
-            --text-secondary: #334155; /* Dunkler für besseren Kontrast */
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
             --border-color: #cbd5e1;
             --card-bg: #ffffff;
             --header-gradient: linear-gradient(135deg, #003366 0%, #1a4d8c 100%);
@@ -35,37 +34,39 @@
             --btn-danger-hover: #b91c1c;
             --btn-warning: #d97706;
             --btn-warning-hover: #b45309;
+            --btn-reopen: #4f46e5;
+            --btn-reopen-hover: #4338ca;
             --link-color: #2563eb;
             --text-on-badge: #0f172a;
         }
 
         [data-theme="dark"] {
-            /* Dark Mode - Stark verbesserte Kontraste */
-            --bg-primary: #0a0a0a; /* Noch dunkler */
-            --bg-secondary: #1e1e1e; /* Dunkler */
-            --text-primary: #ffffff; /* Reines Weiß für maximalen Kontrast */
-            --text-secondary: #e0e0e0; /* Helles Grau für gute Lesbarkeit */
-            --border-color: #4a4a4a; /* Heller für bessere Sichtbarkeit */
-            --card-bg: #2a2a2a; /* Dunkelgrau */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --border-color: #4a4a4a;
+            --card-bg: #2a2a2a;
             --header-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             --shadow-color: rgba(0,0,0,0.5);
             --input-bg: #2d2d2d;
-            --input-text: #ffffff;
-            --badge-category-bg: #1e3a8a; /* Kräftiges Blau */
-            --badge-method-bg: #5b21b6; /* Kräftiges Lila */
-            --badge-open-bg: #065f46; /* Kräftiges Grün */
-            --badge-closed-bg: #991b1b; /* Kräftiges Rot */
-            --hover-bg: #374151; /* Heller für bessere Sichtbarkeit */
-            --btn-primary: #3b82f6; /* Helles Blau */
+            --badge-category-bg: #1e3a8a;
+            --badge-method-bg: #5b21b6;
+            --badge-open-bg: #065f46;
+            --badge-closed-bg: #991b1b;
+            --hover-bg: #374151;
+            --btn-primary: #3b82f6;
             --btn-primary-hover: #2563eb;
-            --btn-success: #10b981; /* Helles Grün */
+            --btn-success: #10b981;
             --btn-success-hover: #059669;
-            --btn-danger: #ef4444; /* Helles Rot */
+            --btn-danger: #ef4444;
             --btn-danger-hover: #dc2626;
-            --btn-warning: #f59e0b; /* Helles Orange */
+            --btn-warning: #f59e0b;
             --btn-warning-hover: #d97706;
-            --link-color: #60a5fa; /* Helles Blau für Links */
-            --text-on-badge: #ffffff; /* Weißer Text auf farbigen Badges */
+            --btn-reopen: #6366f1;
+            --btn-reopen-hover: #4f46e5;
+            --link-color: #60a5fa;
+            --text-on-badge: #ffffff;
         }
 
         body {
@@ -241,10 +242,9 @@
         select {
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-position: right 12px center;
             background-size: 16px;
-            padding-right: 35px;
-            color: var(--text-primary);
+            padding-right: 40px;
         }
 
         [data-theme="dark"] select {
@@ -255,6 +255,46 @@
             outline: none;
             border-color: var(--btn-primary);
             box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+        }
+
+        /* Filter Select Styles */
+        .filter-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        [data-theme="dark"] .filter-select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        }
+
+        .filter-select:hover {
+            border-color: var(--btn-primary);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--btn-primary);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+        }
+
+        .filter-select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 10px;
         }
 
         /* Button Styles */
@@ -287,10 +327,6 @@
             background: var(--btn-primary-hover);
         }
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
         .btn-success {
             background: var(--btn-success);
             color: white;
@@ -319,6 +355,16 @@
 
         .btn-danger:hover {
             background: var(--btn-danger-hover);
+        }
+
+        .btn-reopen {
+            background: var(--btn-reopen);
+            color: white;
+            border: none;
+        }
+
+        .btn-reopen:hover {
+            background: var(--btn-reopen-hover);
         }
 
         .btn-upload {
@@ -544,59 +590,6 @@
             color: var(--text-primary);
         }
 
-<!-- Im Head-Bereich, bei den Styles, ersetzen Sie den .filter-select Bereich: -->
-
-.filter-select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 16px;
-    background: var(--input-bg);
-    color: var(--text-primary);
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px;
-}
-
-[data-theme="dark"] .filter-select {
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    color: var(--text-primary);
-    background-color: var(--input-bg);
-}
-
-.filter-select:hover {
-    border-color: var(--btn-primary);
-}
-
-.filter-select:focus {
-    outline: none;
-    border-color: var(--btn-primary);
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
-}
-
-.filter-select option {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    padding: 10px;
-}
-
-/* Für Firefox */
-.filter-select::-moz-focus-inner {
-    border: 0;
-}
-
-/* Für IE/Edge */
-.filter-select::-ms-expand {
-    display: none;
-}
-
         .incident-grid {
             display: flex;
             flex-direction: column;
@@ -758,6 +751,11 @@
 
         .action-button.close {
             background: var(--btn-success);
+            color: white;
+        }
+
+        .action-button.reopen {
+            background: var(--btn-reopen);
             color: white;
         }
 
@@ -1046,10 +1044,18 @@
                     </select>
                 </div>
 
-                <!-- Maschinennummer -->
-                <div class="form-group">
-                    <label><i class="fas fa-hashtag"></i> Maschinennummer *</label>
-                    <input type="text" id="machineNumber" placeholder="z.B. M-4711" required>
+                <!-- Maschinennummer (für Anlagen) -->
+                <div class="form-group" id="machineNumberGroup">
+                    <label><i class="fas fa-industry"></i> Maschinennummer</label>
+                    <input type="text" id="machineNumber" placeholder="z.B. M-4711">
+                    <small style="color: var(--text-secondary); font-size: 12px;">Nur bei ZfP Anlage</small>
+                </div>
+
+                <!-- Auftragsnummer (für Prüfungen) -->
+                <div class="form-group" id="orderNumberGroup" style="display: none;">
+                    <label><i class="fas fa-hashtag"></i> Auftragsnummer *</label>
+                    <input type="text" id="orderNumber" placeholder="z.B. A-2024-001">
+                    <small style="color: var(--text-secondary); font-size: 12px;">Nur bei ZfP Prüfung</small>
                 </div>
 
                 <!-- Prozess -->
@@ -1190,6 +1196,9 @@
                 <button class="btn btn-success" id="modalCloseBtn" onclick="closeIncidentFromModal()">
                     <i class="fas fa-check-circle"></i> Erledigt
                 </button>
+                <button class="btn btn-reopen" id="modalReopenBtn" onclick="reopenIncidentFromModal()" style="display: none;">
+                    <i class="fas fa-undo-alt"></i> Wieder öffnen
+                </button>
                 <button class="btn btn-danger" id="modalDeleteBtn" onclick="deleteIncidentFromModal()">
                     <i class="fas fa-trash"></i> Löschen
                 </button>
@@ -1213,7 +1222,6 @@
     </div>
 
     <script>
-        // Supabase Konfiguration
 const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_jkkaIcAKxMhkXSdnJY1Oiw_U-xPWr68';
 const SUPABASE_PASSWORD = 'ZfPReviewAudit';
@@ -1285,16 +1293,30 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             compressedImages = [];
             existingImages = [];
             document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Vorfall dokumentieren';
+            
+            // Nummern-Felder zurücksetzen
+            document.getElementById('machineNumberGroup').style.display = 'block';
+            document.getElementById('orderNumberGroup').style.display = 'none';
+            document.getElementById('machineNumber').required = false;
+            document.getElementById('orderNumber').required = false;
         }
 
         // Kategorie-Felder aktualisieren
         function updateCategoryFields() {
             const category = document.getElementById('category').value;
             const categorySpecificFields = document.getElementById('categorySpecificFields');
+            const machineGroup = document.getElementById('machineNumberGroup');
+            const orderGroup = document.getElementById('orderNumberGroup');
             
             categorySpecificFields.innerHTML = '';
             
             if (category === 'ZfP Prüfung') {
+                // Prüfungs-Felder anzeigen
+                machineGroup.style.display = 'none';
+                orderGroup.style.display = 'block';
+                document.getElementById('machineNumber').required = false;
+                document.getElementById('orderNumber').required = true;
+                
                 categorySpecificFields.innerHTML = `
                     <div class="form-group">
                         <label><i class="fas fa-exclamation-circle"></i> Fehlerbild *</label>
@@ -1311,6 +1333,12 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                     </div>
                 `;
             } else if (category === 'ZfP Anlage') {
+                // Anlagen-Felder anzeigen
+                machineGroup.style.display = 'block';
+                orderGroup.style.display = 'none';
+                document.getElementById('machineNumber').required = true;
+                document.getElementById('orderNumber').required = false;
+                
                 categorySpecificFields.innerHTML = `
                     <div class="form-group">
                         <label><i class="fas fa-exclamation-circle"></i> Fehlerart *</label>
@@ -1323,6 +1351,11 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                         </select>
                     </div>
                 `;
+            } else {
+                machineGroup.style.display = 'block';
+                orderGroup.style.display = 'none';
+                document.getElementById('machineNumber').required = false;
+                document.getElementById('orderNumber').required = false;
             }
         }
 
@@ -1442,30 +1475,33 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             const editId = document.getElementById('editId').value;
             const category = document.getElementById('category').value;
             const machineNumber = document.getElementById('machineNumber').value;
+            const orderNumber = document.getElementById('orderNumber').value;
             const process = document.getElementById('process').value;
             const segment = document.getElementById('segment').value;
             const inspectionMethod = document.getElementById('inspectionMethod').value;
             const problemDescription = document.getElementById('problemDescription').value;
 
-            if (!category || !machineNumber || !process || !segment || !inspectionMethod || !problemDescription) {
+            if (!category || !process || !segment || !inspectionMethod || !problemDescription) {
                 showError('Bitte füllen Sie alle Pflichtfelder aus.');
                 return;
             }
 
-            if (category === 'ZfP Prüfung') {
-                const errorType = document.getElementById('errorType');
-                if (!errorType || !errorType.value) {
-                    showError('Bitte wählen Sie ein Fehlerbild aus.');
-                    return;
-                }
+            // Kategorie-spezifische Validierung
+            if (category === 'ZfP Anlage' && !machineNumber) {
+                showError('Bitte geben Sie eine Maschinennummer ein.');
+                return;
             }
 
-            if (category === 'ZfP Anlage') {
-                const errorType = document.getElementById('errorType');
-                if (!errorType || !errorType.value) {
-                    showError('Bitte wählen Sie eine Fehlerart aus.');
-                    return;
-                }
+            if (category === 'ZfP Prüfung' && !orderNumber) {
+                showError('Bitte geben Sie eine Auftragsnummer ein.');
+                return;
+            }
+
+            // Fehlerbild/Fehlerart validieren
+            const errorType = document.getElementById('errorType');
+            if (errorType && !errorType.value) {
+                showError('Bitte wählen Sie ein Fehlerbild / eine Fehlerart aus.');
+                return;
             }
 
             document.getElementById('loadingOverlay').style.display = 'flex';
@@ -1503,7 +1539,6 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                 // Daten für Supabase vorbereiten
                 const formData = {
                     category: category,
-                    machine_number: machineNumber,
                     process: process,
                     segment: segment,
                     inspection_method: inspectionMethod,
@@ -1511,6 +1546,15 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                     pdf_links: pdfLinks.length > 0 ? pdfLinks : null,
                     image_urls: imageUrls.length > 0 ? imageUrls : null,
                 };
+                
+                // Nummern je nach Kategorie
+                if (category === 'ZfP Anlage') {
+                    formData.machine_number = machineNumber;
+                    formData.order_number = null;
+                } else if (category === 'ZfP Prüfung') {
+                    formData.order_number = orderNumber;
+                    formData.machine_number = null;
+                }
                 
                 // Kategorie-spezifische Felder
                 if (category === 'ZfP Prüfung') {
@@ -1634,6 +1678,14 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                 const statusIcon = incident.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
                 const statusText = incident.status === 'open' ? 'Offen' : 'Geschlossen';
                 
+                // Anzeigenummer je nach Kategorie
+                let numberDisplay = '';
+                if (incident.category === 'ZfP Anlage' && incident.machine_number) {
+                    numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-industry"></i> Maschine:</span><span class="info-value">${incident.machine_number}</span></div>`;
+                } else if (incident.category === 'ZfP Prüfung' && incident.order_number) {
+                    numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-hashtag"></i> Auftrag:</span><span class="info-value">${incident.order_number}</span></div>`;
+                }
+                
                 return `
                     <div class="incident-card">
                         <div class="card-header">
@@ -1658,10 +1710,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                         </div>
                         
                         <div class="card-content" onclick="openIncident('${incident.id}')">
-                            <div class="info-row">
-                                <span class="info-label"><i class="fas fa-hashtag"></i> Maschine:</span>
-                                <span class="info-value">${incident.machine_number || '-'}</span>
-                            </div>
+                            ${numberDisplay}
                             <div class="info-row">
                                 <span class="info-label"><i class="fas fa-building"></i> Prozess:</span>
                                 <span class="info-value">${incident.process}</span>
@@ -1693,7 +1742,11 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                                 <button class="action-button close" onclick="closeIncident('${incident.id}')">
                                     <i class="fas fa-check-circle"></i> Fertig
                                 </button>
-                            ` : ''}
+                            ` : `
+                                <button class="action-button reopen" onclick="reopenIncident('${incident.id}')">
+                                    <i class="fas fa-undo-alt"></i> Wieder öffnen
+                                </button>
+                            `}
                             <button class="action-button delete" onclick="confirmDelete('${incident.id}')">
                                 <i class="fas fa-trash"></i> Löschen
                             </button>
@@ -1712,6 +1765,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             const filtered = allIncidents.filter(incident => {
                 const searchString = (incident.problem_description + ' ' + 
                                     (incident.machine_number || '') + ' ' + 
+                                    (incident.order_number || '') + ' ' + 
                                     (incident.process || '')).toLowerCase();
                 const matchesSearch = !searchTerm || searchString.includes(searchTerm);
                 
@@ -1754,12 +1808,23 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             
             // Buttons im Modal anpassen
             const closeBtn = document.getElementById('modalCloseBtn');
+            const reopenBtn = document.getElementById('modalReopenBtn');
             const editBtn = document.getElementById('modalEditBtn');
             
             if (incident.status === 'closed') {
                 closeBtn.style.display = 'none';
+                reopenBtn.style.display = 'inline-flex';
             } else {
                 closeBtn.style.display = 'inline-flex';
+                reopenBtn.style.display = 'none';
+            }
+            
+            // Nummer anzeigen
+            let numberDisplay = '';
+            if (incident.category === 'ZfP Anlage' && incident.machine_number) {
+                numberDisplay = `<div class="detail-item"><div class="detail-label">Maschinennummer</div><div class="detail-value">${incident.machine_number}</div></div>`;
+            } else if (incident.category === 'ZfP Prüfung' && incident.order_number) {
+                numberDisplay = `<div class="detail-item"><div class="detail-label">Auftragsnummer</div><div class="detail-value">${incident.order_number}</div></div>`;
             }
             
             let details = `
@@ -1770,10 +1835,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                             <div class="detail-label">Kategorie</div>
                             <div class="detail-value">${incident.category}</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Maschinennummer</div>
-                            <div class="detail-value">${incident.machine_number || '-'}</div>
-                        </div>
+                        ${numberDisplay}
                         <div class="detail-item">
                             <div class="detail-label">Prozess</div>
                             <div class="detail-value">${incident.process}</div>
@@ -1895,29 +1957,31 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
                 // Formular mit den Daten füllen
                 document.getElementById('editId').value = data.id;
                 document.getElementById('category').value = data.category || '';
-                document.getElementById('machineNumber').value = data.machine_number || '';
-                document.getElementById('process').value = data.process || '';
-                document.getElementById('segment').value = data.segment || '';
-                document.getElementById('inspectionMethod').value = data.inspection_method || '';
-                document.getElementById('problemDescription').value = data.problem_description || '';
                 
                 // Kategorie-spezifische Felder aktualisieren
                 updateCategoryFields();
                 
                 // Kurze Pause damit die Felder gerendert werden
                 setTimeout(() => {
-                    if (data.category === 'ZfP Prüfung' || data.category === 'ZfP Anlage') {
-                        const errorTypeSelect = document.getElementById('errorType');
-                        if (errorTypeSelect && data.error_type) {
-                            errorTypeSelect.value = data.error_type;
-                        }
+                    if (data.category === 'ZfP Anlage') {
+                        document.getElementById('machineNumber').value = data.machine_number || '';
+                    } else if (data.category === 'ZfP Prüfung') {
+                        document.getElementById('orderNumber').value = data.order_number || '';
                         
-                        if (data.category === 'ZfP Prüfung') {
-                            const typeInput = document.getElementById('type');
-                            if (typeInput && data.type) {
-                                typeInput.value = data.type;
-                            }
+                        const typeInput = document.getElementById('type');
+                        if (typeInput && data.type) {
+                            typeInput.value = data.type;
                         }
+                    }
+                    
+                    document.getElementById('process').value = data.process || '';
+                    document.getElementById('segment').value = data.segment || '';
+                    document.getElementById('inspectionMethod').value = data.inspection_method || '';
+                    document.getElementById('problemDescription').value = data.problem_description || '';
+                    
+                    const errorTypeSelect = document.getElementById('errorType');
+                    if (errorTypeSelect && data.error_type) {
+                        errorTypeSelect.value = data.error_type;
                     }
                 }, 100);
                 
@@ -1976,6 +2040,14 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             }
         }
 
+        // Vorfall wieder öffnen (vom Modal aus)
+        async function reopenIncidentFromModal() {
+            if (currentIncidentId) {
+                await reopenIncident(currentIncidentId);
+                closeModal();
+            }
+        }
+
         // Vorfall löschen (vom Modal aus)
         async function deleteIncidentFromModal() {
             if (currentIncidentId) {
@@ -2001,6 +2073,28 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
             } catch (error) {
                 console.error('Fehler beim Schließen:', error);
                 showError('Fehler beim Schließen: ' + error.message);
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+        }
+
+        // Vorfall wieder öffnen
+        async function reopenIncident(id) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('incidents')
+                    .update({ status: 'open' })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                showSuccess('Vorfall wurde wieder geöffnet');
+                loadIncidents();
+            } catch (error) {
+                console.error('Fehler beim Öffnen:', error);
+                showError('Fehler beim Öffnen: ' + error.message);
             } finally {
                 document.getElementById('loadingOverlay').style.display = 'none';
             }
@@ -2088,18 +2182,7 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
         document.addEventListener('DOMContentLoaded', function() {
             // Event-Listener für Kategorie-Änderung
             document.getElementById('category').addEventListener('change', updateCategoryFields);
-            
-            // Prüfen ob ein Edit im Gange ist
-            const urlParams = new URLSearchParams(window.location.search);
-            const editId = urlParams.get('edit');
-            if (editId) {
-                setTimeout(() => {
-                    editIncident(editId);
-                }, 500);
-            }
         });
     </script>
 </body>
 </html>
-
-
