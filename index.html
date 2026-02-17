@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -1236,27 +1235,39 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
         let currentIncidentId = null;
 
         // Theme Toggle Funktion
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('themeIcon');
-            
-            if (body.getAttribute('data-theme') === 'light') {
-                body.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'light');
-            }
-        }
+ // Theme Toggle Funktion
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.getElementById('themeIcon');
+    
+    if (body.getAttribute('data-theme') === 'light') {
+        body.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('zfp-theme-preference', 'dark');  // ← mit Bindestrich!
+    } else {
+        body.setAttribute('data-theme', 'light');
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('zfp-theme-preference', 'light'); // ← mit Bindestrich!
+    }
+}
 
-        // Gespeichertes Theme laden
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            document.body.setAttribute('data-theme', savedTheme);
-            document.getElementById('themeIcon').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+// Gespeichertes Theme laden
+const savedTheme = localStorage.getItem('zfp-theme-preference'); // ← mit Bindestrich!
+if (savedTheme) {
+    document.body.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeIcon').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// Auf Änderungen in anderen Tabs reagieren
+window.addEventListener('storage', function(e) {
+    if (e.key === 'zfp-theme-preference') {
+        const newTheme = e.newValue;
+        if (newTheme) {
+            document.body.setAttribute('data-theme', newTheme);
+            document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
+    }
+});
 
         // Tab-Wechsel
         function switchTab(tab) {
@@ -2186,3 +2197,5 @@ const SUPABASE_PASSWORD = 'ZfPReviewAudit';
     </script>
 </body>
 </html>
+
+
