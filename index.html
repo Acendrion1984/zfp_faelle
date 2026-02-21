@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ZfP Vorfälle + Themen · Komplett · Supabase Sync</title>
+    <title>ZfP Vorfälle + Themen · Komplett · Supabase Sync</title><!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ZfP Vorfälle + Themen · Löschen FIX · Supabase Sync</title>
     <style>
         * {
             margin: 0;
@@ -761,6 +766,7 @@
             color: white;
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -1062,7 +1068,7 @@
             </h1>
             <div class="subtitle">
                 <i class="fas fa-clipboard-check"></i>
-                Vorfälle (KW) + Langfristige/Kurzfristige Themen mit Digitalisierung
+                Vorfälle + Langfristige/Kurzfristige Themen · Löschen ENDGÜLTIG FIX
             </div>
         </div>
 
@@ -1220,7 +1226,7 @@
             </div>
         </div>
 
-        <!-- Haupt-Tab: Themen (JETZT AUCH IN SUPABASE) -->
+        <!-- Haupt-Tab: Themen -->
         <div id="main-tab-themen" class="main-tab-content">
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchThemesTab('langfristig')">
@@ -1336,29 +1342,16 @@
         <div class="loading-spinner"></div>
     </div>
 
+    <!-- EIN EINZIGES MODAL FÜR BEIDE (Vorfälle UND Themen) - OHNE BEARBEITEN BUTTON -->
     <div class="modal" id="detailModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2><i class="fas fa-file-alt"></i> Vorfall Details</h2>
+                <h2 id="modalTitle"><i class="fas fa-file-alt"></i> Details</h2>
                 <button class="close-modal" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer">
-                <button class="btn btn-warning" id="modalEditBtn" onclick="editIncidentFromModal()">
-                    <i class="fas fa-edit"></i> Bearbeiten
-                </button>
-                <button class="btn btn-success" id="modalCloseBtn" onclick="closeIncidentFromModal()">
-                    <i class="fas fa-check-circle"></i> Erledigt
-                </button>
-                <button class="btn btn-reopen" id="modalReopenBtn" onclick="reopenIncidentFromModal()" style="display: none;">
-                    <i class="fas fa-undo-alt"></i> Wieder öffnen
-                </button>
-                <button class="btn btn-danger" id="modalDeleteBtn" onclick="showPasswordModal('delete')">
-                    <i class="fas fa-trash"></i> Löschen
-                </button>
-                <button class="btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i> Schließen
-                </button>
+            <div class="modal-footer" id="modalFooter">
+                <!-- Dynamisch befüllt - OHNE Bearbeiten Button -->
             </div>
         </div>
     </div>
@@ -1405,10 +1398,10 @@
             let compressedImages = [];
             let existingImages = [];
             let allIncidents = [];
-            let allTopics = []; // Themen jetzt auch in Supabase
+            let allTopics = [];
             let currentIncidentId = null;
             let currentTopicId = null;
-            let pendingAction = null;
+            let pendingAction = null; // 'deleteIncident' oder 'deleteTopic'
 
             // Theme Toggle
             window.toggleTheme = function() {
@@ -1443,7 +1436,7 @@
                 } else {
                     document.querySelectorAll('.main-tab-button')[1].classList.add('active');
                     document.getElementById('main-tab-themen').classList.add('active');
-                    loadTopics(); // Themen aus Supabase laden
+                    loadTopics();
                 }
             };
 
@@ -1483,7 +1476,7 @@
                 }
             };
 
-            // ----- VORFÄLLE (incidents) - original mit Supabase -----
+            // ----- VORFÄLLE -----
             
             window.updateCategoryFields = function() {
                 const category = document.getElementById('category').value;
@@ -1923,18 +1916,13 @@
 
             function showIncidentDetails(incident) {
                 const modalBody = document.getElementById('modalBody');
+                const modalFooter = document.getElementById('modalFooter');
+                const modalTitle = document.getElementById('modalTitle');
+                
+                modalTitle.innerHTML = '<i class="fas fa-file-alt"></i> Vorfall Details';
+                
                 const date = new Date(incident.created_at).toLocaleString('de-DE');
                 const week = getCalendarWeekIncident(incident.created_at);
-                
-                const closeBtn = document.getElementById('modalCloseBtn');
-                const reopenBtn = document.getElementById('modalReopenBtn');
-                if (incident.status === 'closed') {
-                    closeBtn.style.display = 'none';
-                    reopenBtn.style.display = 'inline-flex';
-                } else {
-                    closeBtn.style.display = 'inline-flex';
-                    reopenBtn.style.display = 'none';
-                }
                 
                 let numberDisplay = '';
                 if (incident.category === 'ZfP Anlage' && incident.machine_number) {
@@ -1990,19 +1978,32 @@
                 }
                 
                 modalBody.innerHTML = details;
+                
+                // Footer Buttons - OHNE Bearbeiten Button
+                modalFooter.innerHTML = `
+                    ${incident.status === 'open' ? 
+                        `<button class="btn btn-success" onclick="closeIncidentFromModal()">
+                            <i class="fas fa-check-circle"></i> Erledigt
+                        </button>` : 
+                        `<button class="btn btn-reopen" onclick="reopenIncidentFromModal()">
+                            <i class="fas fa-undo-alt"></i> Wieder öffnen
+                        </button>`
+                    }
+                    <button class="btn btn-danger" onclick="showPasswordModalForIncident('${incident.id}')">
+                        <i class="fas fa-trash"></i> Löschen
+                    </button>
+                    <button class="btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Schließen
+                    </button>
+                `;
+                
                 document.getElementById('detailModal').classList.add('active');
             }
 
             window.closeModal = function() {
                 document.getElementById('detailModal').classList.remove('active');
                 currentIncidentId = null;
-            };
-
-            window.editIncidentFromModal = function() {
-                if (currentIncidentId) {
-                    closeModal();
-                    editIncident(currentIncidentId);
-                }
+                currentTopicId = null;
             };
 
             window.editIncident = async function(id) {
@@ -2011,7 +2012,10 @@
                     const { data, error } = await supabase.from('incidents').select('*').eq('id', id).single();
                     if (error) throw error;
                     
+                    // Zum Vorfälle-Tab und Neuer-Vorfall-Tab wechseln
+                    switchMainTab('vorfaelle');
                     switchSubTab('new');
+                    
                     setTimeout(() => {
                         document.getElementById('editId').value = data.id;
                         document.getElementById('category').value = data.category || '';
@@ -2067,6 +2071,7 @@
                     if (error) throw error;
                     showSuccess('Vorfall wurde als erledigt markiert');
                     loadIncidents();
+                    closeModal();
                 } catch (error) {
                     showError('Fehler beim Schließen: ' + error.message);
                 } finally {
@@ -2081,6 +2086,7 @@
                     if (error) throw error;
                     showSuccess('Vorfall wurde wieder geöffnet');
                     loadIncidents();
+                    closeModal();
                 } catch (error) {
                     showError('Fehler beim Öffnen: ' + error.message);
                 } finally {
@@ -2088,7 +2094,7 @@
                 }
             };
 
-            // ----- THEMEN (topics) - JETZT AUCH IN SUPABASE -----
+            // ----- THEMEN -----
             
             async function loadTopics() {
                 document.getElementById('loadingOverlay').style.display = 'flex';
@@ -2099,11 +2105,38 @@
                         .select('*')
                         .order('created_at', { ascending: false });
                     
-                    if (error) throw error;
+                    if (error) {
+                        if (error.message.includes('relation "topics" does not exist')) {
+                            document.getElementById('langfristigList').innerHTML = `
+                                <div style="text-align: center; padding: 40px; color: var(--btn-danger);">
+                                    <i class="fas fa-database" style="font-size: 48px; margin-bottom: 15px;"></i>
+                                    <p><strong>Tabelle "topics" existiert nicht in Supabase!</strong></p>
+                                    <p style="font-size: 14px;">Bitte führen Sie folgenden SQL-Befehl aus:</p>
+                                    <pre style="background: var(--bg-primary); padding: 15px; border-radius: 8px; text-align: left; margin-top: 15px; font-size: 12px;">
+CREATE TABLE topics (
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    horizon TEXT NOT NULL,
+    category TEXT NOT NULL,
+    title TEXT NOT NULL,
+    process TEXT,
+    description TEXT NOT NULL,
+    measures TEXT,
+    status TEXT DEFAULT 'open'
+);
+ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
+                                    </pre>
+                                </div>
+                            `;
+                            document.getElementById('kurzfristigList').innerHTML = '';
+                            document.getElementById('loadingOverlay').style.display = 'none';
+                            return;
+                        }
+                        throw error;
+                    }
                     
                     allTopics = data || [];
                     
-                    // Falls keine Themen vorhanden, Demo-Daten einfügen
                     if (allTopics.length === 0) {
                         const demoTopics = [
                             { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', created_at: new Date().toISOString() },
@@ -2116,14 +2149,19 @@
                             await supabase.from('topics').insert([topic]);
                         }
                         
-                        // Neu laden
                         const { data: newData } = await supabase.from('topics').select('*').order('created_at', { ascending: false });
                         allTopics = newData || [];
                     }
                     
-                    filterLongTerm(); // Aktuelle Ansicht aktualisieren
+                    filterLongTerm();
                 } catch (error) {
                     console.error('Fehler beim Laden der Themen:', error);
+                    document.getElementById('langfristigList').innerHTML = `
+                        <div style="text-align: center; padding: 50px; color: var(--btn-danger);">
+                            <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+                            <p>Fehler beim Laden: ${error.message}</p>
+                        </div>
+                    `;
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
@@ -2190,13 +2228,14 @@
                                     </div>
                                     <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
                                 </div>
-                                <div class="card-content" onclick="openTopicDetail('${t.id}')">
+                                <div class="card-content" onclick="openTopic('${t.id}')">
                                     <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
                                     ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
                                     <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}...</span></div>
+                                    ${t.measures ? `<div class="info-row"><span class="info-label">Maßnahmen:</span><span class="info-value">${t.measures.substring(0,50)}...</span></div>` : ''}
                                 </div>
                                 <div class="card-actions">
-                                    <button class="action-button view" onclick="openTopicDetail('${t.id}')"><i class="fas fa-eye"></i> Details</button>
+                                    <button class="action-button view" onclick="openTopic('${t.id}')"><i class="fas fa-eye"></i> Details</button>
                                     <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
                                     ${t.status === 'open' ? 
                                         `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
@@ -2248,12 +2287,10 @@
                         title,
                         process: process || null,
                         description,
-                        measures: measures || null,
-                        status: editId ? undefined : 'open' // Bei Neu: open, bei Update: nicht ändern
+                        measures: measures || null
                     };
                     
                     if (editId) {
-                        // Update
                         const { error } = await supabase
                             .from('topics')
                             .update(topicData)
@@ -2261,9 +2298,8 @@
                         
                         if (error) throw error;
                     } else {
-                        // Neu
-                        topicData.created_at = new Date().toISOString();
                         topicData.status = 'open';
+                        topicData.created_at = new Date().toISOString();
                         
                         const { error } = await supabase
                             .from('topics')
@@ -2279,7 +2315,6 @@
                     document.getElementById('topicForm').reset();
                     document.getElementById('themeEditId').value = '';
                     
-                    // Themen neu laden
                     await loadTopics();
                     
                     if (horizon === 'langfristig') switchThemesTab('langfristig');
@@ -2293,17 +2328,120 @@
                 }
             };
 
-            window.openTopicDetail = function(id) {
-                const t = allTopics.find(t => t.id == id);
-                if (!t) return;
-                alert(`Thema: ${t.title}\nKategorie: ${t.category}\nHorizont: ${t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig'}\nBeschreibung: ${t.description}\nMaßnahmen: ${t.measures || 'keine'}\nStatus: ${t.status === 'open' ? 'Offen' : 'Geschlossen'}`);
+            window.openTopic = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { data, error } = await supabase.from('topics').select('*').eq('id', id).single();
+                    if (error) throw error;
+                    currentTopicId = id;
+                    showTopicDetails(data);
+                } catch (error) {
+                    showError('Fehler beim Laden der Details: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
             };
 
-            window.editTopic = async function(id) {
+            function showTopicDetails(topic) {
+                const modalBody = document.getElementById('modalBody');
+                const modalFooter = document.getElementById('modalFooter');
+                const modalTitle = document.getElementById('modalTitle');
+                
+                modalTitle.innerHTML = '<i class="fas fa-tasks"></i> Thema Details';
+                
+                const date = new Date(topic.created_at).toLocaleString('de-DE');
+                const week = getCalendarWeek(topic.created_at);
+                
+                let horizonClass = topic.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
+                let horizonText = topic.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig';
+                
+                let catClass = 'badge-category';
+                if (topic.category.includes('Digitalisierung')) catClass = 'badge-digital';
+                else if (topic.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
+                
+                let details = `
+                    <div class="detail-section">
+                        <h3><i class="fas fa-info-circle"></i> Allgemeine Informationen</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Horizont</div>
+                                <div class="detail-value"><span class="badge ${horizonClass}">${horizonText}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Kategorie</div>
+                                <div class="detail-value"><span class="badge ${catClass}">${topic.category}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Titel</div>
+                                <div class="detail-value">${topic.title}</div>
+                            </div>
+                            ${topic.process ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Prozess</div>
+                                <div class="detail-value">${topic.process}</div>
+                            </div>
+                            ` : ''}
+                            <div class="detail-item">
+                                <div class="detail-label">Kalenderwoche</div>
+                                <div class="detail-value">${week}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Status</div>
+                                <div class="detail-value"><span class="badge badge-status ${topic.status === 'closed' ? 'closed' : ''}">${topic.status === 'open' ? 'Offen' : 'Geschlossen'}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Erstellt am</div>
+                                <div class="detail-value">${date}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3><i class="fas fa-align-left"></i> Beschreibung</h3>
+                        <p style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">${topic.description}</p>
+                    </div>
+                `;
+                
+                if (topic.measures) {
+                    details += `
+                        <div class="detail-section">
+                            <h3><i class="fas fa-tasks"></i> Maßnahmen / nächste Schritte</h3>
+                            <p style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">${topic.measures}</p>
+                        </div>
+                    `;
+                }
+                
+                modalBody.innerHTML = details;
+                
+                // Footer Buttons - OHNE Bearbeiten Button
+                modalFooter.innerHTML = `
+                    ${topic.status === 'open' ? 
+                        `<button class="btn btn-success" onclick="closeTopicFromModal()">
+                            <i class="fas fa-check-circle"></i> Erledigt
+                        </button>` : 
+                        `<button class="btn btn-reopen" onclick="reopenTopicFromModal()">
+                            <i class="fas fa-undo-alt"></i> Wieder öffnen
+                        </button>`
+                    }
+                    <button class="btn btn-danger" onclick="showPasswordModalForTopic('${topic.id}')">
+                        <i class="fas fa-trash"></i> Löschen
+                    </button>
+                    <button class="btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Schließen
+                    </button>
+                `;
+                
+                document.getElementById('detailModal').classList.add('active');
+            }
+
+            window.editTopic = function(id) {
                 const t = allTopics.find(t => t.id == id);
                 if (!t) return;
                 
+                // Zum Themen-Tab und Neues-Thema-Tab wechseln
+                switchMainTab('themen');
                 switchThemesTab('neu');
+                
                 setTimeout(() => {
                     document.getElementById('themeEditId').value = t.id;
                     document.getElementById('horizon').value = t.horizon;
@@ -2313,6 +2451,13 @@
                     document.getElementById('description').value = t.description;
                     document.getElementById('measures').value = t.measures || '';
                 }, 100);
+            };
+
+            window.closeTopicFromModal = function() {
+                if (currentTopicId) {
+                    closeTopic(currentTopicId);
+                    closeModal();
+                }
             };
 
             window.closeTopic = async function(id) {
@@ -2327,10 +2472,18 @@
                     
                     await loadTopics();
                     showSuccess('Thema erledigt');
+                    closeModal();
                 } catch (error) {
                     showError('Fehler: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            window.reopenTopicFromModal = function() {
+                if (currentTopicId) {
+                    reopenTopic(currentTopicId);
+                    closeModal();
                 }
             };
             
@@ -2346,6 +2499,7 @@
                     
                     await loadTopics();
                     showSuccess('Thema wieder geöffnet');
+                    closeModal();
                 } catch (error) {
                     showError('Fehler: ' + error.message);
                 } finally {
@@ -2353,9 +2507,10 @@
                 }
             };
 
-            // ----- PASSWORT & LÖSCHEN (für beide Bereiche) -----
+            // ----- PASSWORT & LÖSCHEN (ENDGÜLTIG FIX) -----
             
             window.showPasswordModalForIncident = function(id) {
+                console.log('Löschen für Vorfall:', id);
                 currentIncidentId = id;
                 currentTopicId = null;
                 pendingAction = 'deleteIncident';
@@ -2365,6 +2520,7 @@
             };
 
             window.showPasswordModalForTopic = function(id) {
+                console.log('Löschen für Thema:', id);
                 currentTopicId = id;
                 currentIncidentId = null;
                 pendingAction = 'deleteTopic';
@@ -2375,7 +2531,7 @@
 
             window.closePasswordModal = function() {
                 document.getElementById('passwordModal').classList.remove('active');
-                pendingAction = null;
+                // pendingAction nicht zurücksetzen, da wir sie noch brauchen
             };
 
             window.checkPasswordAndDelete = async function() {
@@ -2386,52 +2542,82 @@
                     return;
                 }
                 
-                document.getElementById('loadingOverlay').style.display = 'flex';
+                // Passwort korrekt - Modal schließen
                 closePasswordModal();
+                
+                // Loading anzeigen
+                document.getElementById('loadingOverlay').style.display = 'flex';
                 
                 try {
                     if (pendingAction === 'deleteIncident' && currentIncidentId) {
-                        // Incident löschen
+                        console.log('Lösche Vorfall mit ID:', currentIncidentId);
+                        
+                        // Erst die Bilder laden
                         const { data: incident, error: fetchError } = await supabase
                             .from('incidents')
                             .select('*')
                             .eq('id', currentIncidentId)
-                            .maybeSingle();
+                            .single();
                         
-                        if (fetchError) throw fetchError;
+                        if (fetchError) {
+                            console.error('Fehler beim Laden des Vorfalls:', fetchError);
+                            throw fetchError;
+                        }
                         
-                        if (incident && incident.image_urls) {
+                        // Bilder löschen (falls vorhanden)
+                        if (incident && incident.image_urls && incident.image_urls.length > 0) {
                             for (const url of incident.image_urls) {
                                 try {
                                     const fileName = url.split('/').pop();
+                                    console.log('Lösche Bild:', fileName);
                                     await supabase.storage.from('incident_images').remove([fileName]);
-                                } catch (e) { /* ignore */ }
+                                } catch (e) {
+                                    console.error('Fehler beim Löschen eines Bildes:', e);
+                                    // Weiter machen, auch wenn Bild nicht gelöscht werden kann
+                                }
                             }
                         }
                         
+                        // Dann den Vorfall löschen
                         const { error: deleteError } = await supabase
                             .from('incidents')
                             .delete()
                             .eq('id', currentIncidentId);
                         
-                        if (deleteError) throw deleteError;
+                        if (deleteError) {
+                            console.error('Fehler beim Löschen des Vorfalls:', deleteError);
+                            throw deleteError;
+                        }
                         
+                        console.log('Vorfall erfolgreich gelöscht');
                         showSuccess('Vorfall gelöscht');
-                        loadIncidents();
+                        
+                        // Modal schließen und Liste neu laden
+                        closeModal();
+                        await loadIncidents();
                         
                     } else if (pendingAction === 'deleteTopic' && currentTopicId) {
-                        // Topic löschen
+                        console.log('Lösche Thema mit ID:', currentTopicId);
+                        
                         const { error } = await supabase
                             .from('topics')
                             .delete()
                             .eq('id', currentTopicId);
                         
-                        if (error) throw error;
+                        if (error) {
+                            console.error('Fehler beim Löschen des Themas:', error);
+                            throw error;
+                        }
                         
+                        console.log('Thema erfolgreich gelöscht');
                         showSuccess('Thema gelöscht');
+                        
+                        // Modal schließen und Liste neu laden
+                        closeModal();
                         await loadTopics();
                     }
                 } catch (error) {
+                    console.error('Fehler beim Löschen:', error);
                     showError('Fehler beim Löschen: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
@@ -2445,8 +2631,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('category')?.addEventListener('change', updateCategoryFields);
                 updateCategoryFields();
-                loadIncidents(); // Vorfälle laden
-                // Themen werden erst beim Tab-Wechsel geladen
+                loadIncidents();
             });
         })();
     </script>
