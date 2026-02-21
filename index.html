@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ZfP Vorfälle + Themen · Komplett · Download & Nutzen</title>
+    <title>ZfP Vorfälle + Themen · Komplett · Supabase Sync</title>
     <style>
         * {
             margin: 0;
@@ -25,10 +25,10 @@
             --badge-method-bg: #ede9fe;
             --badge-open-bg: #bbf7d0;
             --badge-closed-bg: #fecaca;
-            --badge-long-bg: #dbeafe;       /* langfristig */
-            --badge-short-bg: #fef3c7;      /* kurzfristig */
-            --badge-digital-bg: #ede9fe;    /* Digitalisierung */
-            --badge-opt-bg: #d1fae5;        /* Prüfprozessoptimierung */
+            --badge-long-bg: #dbeafe;
+            --badge-short-bg: #fef3c7;
+            --badge-digital-bg: #ede9fe;
+            --badge-opt-bg: #d1fae5;
             --hover-bg: #f1f5f9;
             --btn-primary: #003366;
             --btn-primary-hover: #002244;
@@ -151,7 +151,7 @@
             color: rgba(255,255,255,0.9);
         }
 
-        /* Haupt-Tab Navigation (Vorfälle + Themen) */
+        /* Haupt-Tab Navigation */
         .main-tab-navigation {
             display: flex;
             gap: 10px;
@@ -209,7 +209,7 @@
             display: block;
         }
 
-        /* Unter-Tab Navigation für Vorfälle (original) */
+        /* Unter-Tab Navigation */
         .sub-tab-navigation {
             display: flex;
             gap: 10px;
@@ -244,7 +244,7 @@
             display: block;
         }
 
-        /* Originale Form Styles für Vorfälle */
+        /* Form Styles */
         .form-row {
             display: flex;
             gap: 20px;
@@ -311,7 +311,6 @@
             box-shadow: 0 0 0 4px rgba(59,130,246,0.3);
         }
 
-        /* Filter Select Styles */
         .filter-select {
             width: 100%;
             padding: 14px;
@@ -322,8 +321,6 @@
             color: var(--text-primary);
             cursor: pointer;
             appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 16px center;
@@ -335,23 +332,6 @@
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
         }
 
-        .filter-select:hover {
-            border-color: var(--btn-primary);
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--btn-primary);
-            box-shadow: 0 0 0 4px rgba(59,130,246,0.3);
-        }
-
-        .filter-select option {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            padding: 10px;
-        }
-
-        /* Button Styles */
         .btn {
             padding: 14px 25px;
             border: none;
@@ -446,7 +426,6 @@
             background: var(--btn-success-hover);
         }
 
-        /* Image Upload Area (original) */
         .image-preview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -489,7 +468,6 @@
             line-height: 1;
         }
 
-        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -517,7 +495,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Success/Error Messages */
         .success-message, .error-message {
             padding: 15px 20px;
             border-radius: 12px;
@@ -539,7 +516,6 @@
             color: white;
         }
 
-        /* Listenansicht Styles (original) */
         .list-header {
             margin-bottom: 25px;
         }
@@ -584,7 +560,6 @@
             color: var(--text-primary);
         }
 
-        /* KW Gruppen Styling */
         .kw-group {
             margin-bottom: 30px;
         }
@@ -677,7 +652,6 @@
             background: var(--badge-closed-bg);
         }
 
-        /* Badges für Themen */
         .badge-long { background: var(--badge-long-bg); }
         .badge-short { background: var(--badge-short-bg); }
         .badge-digital { background: var(--badge-digital-bg); }
@@ -756,7 +730,6 @@
             justify-content: center;
             gap: 5px;
             transition: all 0.2s;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .action-button:active {
@@ -788,7 +761,6 @@
             color: white;
         }
 
-        /* Modal Styles (original) */
         .modal {
             display: none;
             position: fixed;
@@ -867,7 +839,6 @@
             min-width: 120px;
         }
 
-        /* Detail View Styles (original) */
         .detail-section {
             margin-bottom: 25px;
         }
@@ -927,7 +898,6 @@
             border-color: var(--btn-primary);
         }
 
-        /* Confirm Modal (original) */
         .confirm-modal {
             position: fixed;
             top: 0;
@@ -976,7 +946,6 @@
             flex: 1;
         }
 
-        /* Password Modal (original) */
         .password-modal {
             position: fixed;
             top: 0;
@@ -1042,12 +1011,10 @@
             display: block;
         }
 
-        /* Icons */
         .fas, .far {
             font-size: 16px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -1079,19 +1046,15 @@
             }
         }
     </style>
-    <!-- Font Awesome für Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Supabase JS (original) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body data-theme="light">
-    <!-- Theme Toggle Button -->
     <div class="theme-toggle" onclick="toggleTheme()">
         <i class="fas fa-moon" id="themeIcon"></i>
     </div>
 
     <div class="app-container">
-        <!-- Header -->
         <div class="app-header">
             <h1>
                 <i class="fas fa-hard-hat"></i>
@@ -1103,11 +1066,11 @@
             </div>
         </div>
 
-        <!-- Haupt-Tab Navigation: Vorfälle / Themen -->
+        <!-- Haupt-Tab Navigation -->
         <div class="main-tab-navigation">
             <button class="main-tab-button active" onclick="switchMainTab('vorfaelle')">
                 <i class="fas fa-exclamation-triangle"></i>
-                Vorfälle (Original)
+                Vorfälle
             </button>
             <button class="main-tab-button" onclick="switchMainTab('themen')">
                 <i class="fas fa-tasks"></i>
@@ -1115,9 +1078,8 @@
             </button>
         </div>
 
-        <!-- Haupt-Tab: Vorfälle (ORIGINAL vollständig) -->
+        <!-- Haupt-Tab: Vorfälle -->
         <div id="main-tab-vorfaelle" class="main-tab-content active">
-            <!-- Originale Tab Navigation für Vorfälle -->
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchSubTab('new')">
                     <i class="fas fa-plus-circle"></i>
@@ -1129,21 +1091,16 @@
                 </button>
             </div>
 
-            <!-- Tab: Neuer Vorfall (original) -->
             <div id="subtab-new" class="sub-tab-content active">
-                <!-- Success Message -->
                 <div class="success-message" id="successMessage">
                     <i class="fas fa-check-circle"></i>
                     <span>Vorfall erfolgreich dokumentiert!</span>
                 </div>
-
-                <!-- Error Message -->
                 <div class="error-message" id="errorMessage">
                     <i class="fas fa-exclamation-circle"></i>
                     <span id="errorText"></span>
                 </div>
 
-                <!-- Form (original) -->
                 <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
                     <input type="hidden" id="editId" value="">
                     
@@ -1196,28 +1153,23 @@
                         </div>
                     </div>
 
-                    <!-- Maschinennummer (für Anlagen) -->
                     <div class="form-group" id="machineNumberGroup" style="display: none;">
                         <label><i class="fas fa-industry"></i> Maschinennummer *</label>
                         <input type="text" id="machineNumber" placeholder="z.B. M-4711">
                     </div>
 
-                    <!-- Auftragsnummer (für Prüfungen) -->
                     <div class="form-group" id="orderNumberGroup" style="display: none;">
                         <label><i class="fas fa-hashtag"></i> Auftragsnummer *</label>
                         <input type="text" id="orderNumber" placeholder="z.B. A-2024-001">
                     </div>
 
-                    <!-- Kategorie-spezifische Felder -->
                     <div id="categorySpecificFields"></div>
 
-                    <!-- Problem / Beschreibung -->
                     <div class="form-group full-width">
                         <label><i class="fas fa-exclamation-triangle"></i> Problem / Beschreibung *</label>
                         <textarea id="problemDescription" rows="4" required placeholder="Beschreiben Sie das Problem..."></textarea>
                     </div>
 
-                    <!-- Bild Upload -->
                     <div class="form-group full-width">
                         <label><i class="fas fa-images"></i> Bilder</label>
                         <button type="button" class="btn btn-upload" id="uploadButton">
@@ -1227,7 +1179,6 @@
                         <div class="image-preview-grid" id="imagePreview"></div>
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="submit-section">
                         <button type="submit" class="btn btn-submit" id="submitButton">
                             <i class="fas fa-save"></i> Vorfall dokumentieren
@@ -1236,7 +1187,6 @@
                 </form>
             </div>
 
-            <!-- Tab: Vorfälle Liste (original) -->
             <div id="subtab-list" class="sub-tab-content">
                 <div class="list-header">
                     <div class="list-title">
@@ -1270,9 +1220,8 @@
             </div>
         </div>
 
-        <!-- Haupt-Tab: Themen (langfristig / kurzfristig) NEU -->
+        <!-- Haupt-Tab: Themen (JETZT AUCH IN SUPABASE) -->
         <div id="main-tab-themen" class="main-tab-content">
-            <!-- Unter-Navigation für Themen -->
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchThemesTab('langfristig')">
                     <i class="fas fa-calendar-alt"></i> Langfristige Themen
@@ -1285,7 +1234,6 @@
                 </button>
             </div>
 
-            <!-- Langfristige Themen -->
             <div id="themes-langfristig" class="sub-tab-content active">
                 <div class="filter-section">
                     <select class="filter-select" id="filterLangCategory" onchange="filterLongTerm()">
@@ -1309,7 +1257,6 @@
                 </div>
             </div>
 
-            <!-- Kurzfristige Themen -->
             <div id="themes-kurzfristig" class="sub-tab-content">
                 <div class="filter-section">
                     <select class="filter-select" id="filterShortCategory" onchange="filterShortTerm()">
@@ -1333,7 +1280,6 @@
                 </div>
             </div>
 
-            <!-- Neues Thema erfassen -->
             <div id="themes-neu" class="sub-tab-content">
                 <div class="success-message" id="themeSuccessMessage"><i class="fas fa-check-circle"></i> <span>Gespeichert</span></div>
                 <div class="error-message" id="themeErrorMessage"><i class="fas fa-exclamation-circle"></i> <span id="themeErrorText"></span></div>
@@ -1386,12 +1332,10 @@
         </div>
     </div>
 
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Detail Modal (original) -->
     <div class="modal" id="detailModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1419,7 +1363,6 @@
         </div>
     </div>
 
-    <!-- Confirm Modal (original) -->
     <div class="confirm-modal" id="confirmModal">
         <div class="confirm-content">
             <h3 id="confirmTitle">Bestätigung</h3>
@@ -1431,11 +1374,10 @@
         </div>
     </div>
 
-    <!-- Password Modal für Löschen (original) -->
     <div class="password-modal" id="passwordModal">
         <div class="password-content">
             <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
-            <p>Bitte geben Sie das Supervisor-Passwort ein, um diesen Vorfall zu löschen.</p>
+            <p>Bitte geben Sie das Supervisor-Passwort ein.</p>
             <input type="password" id="passwordInput" class="password-input" placeholder="Passwort">
             <div class="password-error" id="passwordError">Falsches Passwort!</div>
             <div class="password-buttons">
@@ -1451,270 +1393,24 @@
 
     <script>
         (function() {
-            // Supabase Konfiguration (original)
+            // Supabase Konfiguration
             const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
             const SUPABASE_ANON_KEY = 'sb_publishable_jkkaIcAKxMhkXSdnJY1Oiw_U-xPWr68';
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
-            const SUPERVIOR_PASSWORD = 'Supervisor'; // Das festgelegte Passwort
+            const SUPERVIOR_PASSWORD = 'Supervisor';
 
-            // Globale Variablen (original)
+            // Globale Variablen
             let compressedImages = [];
             let existingImages = [];
             let allIncidents = [];
+            let allTopics = []; // Themen jetzt auch in Supabase
             let currentIncidentId = null;
+            let currentTopicId = null;
             let pendingAction = null;
 
-            // ----- NEU: Themen-Management (langfristig/kurzfristig) -----
-            let topics = [];  // { id, horizon, category, title, process, description, measures, status, created_at }
-
-            // Themen aus localStorage laden
-            function loadTopics() {
-                const stored = localStorage.getItem('zfp_topics');
-                if (stored) {
-                    topics = JSON.parse(stored);
-                } else {
-                    // Demo-Einträge
-                    topics = [
-                        { id: 't1', horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', created_at: new Date().toISOString() },
-                        { id: 't2', horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: 'Ultraschall automatisieren', measures: 'Angebote einholen', status: 'open', created_at: new Date().toISOString() },
-                        { id: 't3', horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: 'Jährliche Kalibrierung', measures: 'Servicetermin', status: 'open', created_at: new Date().toISOString() },
-                        { id: 't4', horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: 'Rissverdacht bei Charge X', measures: 'Nachprüfung', status: 'closed', created_at: new Date().toISOString() },
-                    ];
-                    localStorage.setItem('zfp_topics', JSON.stringify(topics));
-                }
-            }
-            function saveTopics() {
-                localStorage.setItem('zfp_topics', JSON.stringify(topics));
-            }
-
-            // Kalenderwoche (für Themenanzeige)
-            function getCalendarWeek(dateStr) {
-                const d = new Date(dateStr);
-                d.setHours(0,0,0,0);
-                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
-                const week1 = new Date(d.getFullYear(), 0, 4);
-                const weekNum = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-                return `KW ${weekNum} - ${d.getFullYear()}`;
-            }
-
-            function groupByWeek(items) {
-                const groups = {};
-                items.forEach(t => {
-                    const wk = getCalendarWeek(t.created_at);
-                    if (!groups[wk]) groups[wk] = [];
-                    groups[wk].push(t);
-                });
-                return Object.keys(groups).sort((a,b) => {
-                    const aNum = parseInt(a.split(' ')[1]) + (parseInt(a.split(' - ')[1])*100);
-                    const bNum = parseInt(b.split(' ')[1]) + (parseInt(b.split(' - ')[1])*100);
-                    return bNum - aNum;
-                }).reduce((acc, key) => { acc[key] = groups[key]; return acc; }, {});
-            }
-
-            // Themen rendern
-            function renderThemeList(horizon, containerId, filterCat='', filterStatus='') {
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                let filtered = topics.filter(t => t.horizon === horizon);
-                if (filterCat) filtered = filtered.filter(t => t.category === filterCat);
-                if (filterStatus) filtered = filtered.filter(t => t.status === filterStatus);
-
-                if (filtered.length === 0) {
-                    container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-secondary);"><i class="fas fa-folder-open fa-3x"></i><p>Keine Themen</p></div>`;
-                    return;
-                }
-
-                const grouped = groupByWeek(filtered);
-                let html = '';
-                for (let week in grouped) {
-                    html += `<div class="kw-group"><div class="kw-header"><i class="fas fa-calendar-week"></i> ${week} <span class="kw-count">${grouped[week].length}</span></div><div class="incident-grid">`;
-                    grouped[week].forEach(t => {
-                        const statusClass = t.status === 'closed' ? 'closed' : '';
-                        const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
-                        const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
-                        const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
-
-                        let catClass = 'badge-category';
-                        if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
-                        else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
-                        else catClass = 'badge-category';
-
-                        html += `
-                            <div class="incident-card">
-                                <div class="card-header">
-                                    <div class="card-badges">
-                                        <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${t.horizon}</span>
-                                        <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
-                                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
-                                    </div>
-                                    <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
-                                </div>
-                                <div class="card-content" onclick="openTopicDetail('${t.id}')">
-                                    <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
-                                    ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
-                                    <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}...</span></div>
-                                </div>
-                                <div class="card-actions">
-                                    <button class="action-button view" onclick="openTopicDetail('${t.id}')"><i class="fas fa-eye"></i> Details</button>
-                                    <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
-                                    ${t.status === 'open' ? 
-                                        `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
-                                        `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
-                                    <button class="action-button delete" onclick="showTopicPasswordModal('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += '</div></div>';
-                }
-                container.innerHTML = html;
-            }
-
-            // Themen-Filter
-            window.filterLongTerm = function() {
-                const cat = document.getElementById('filterLangCategory').value;
-                const stat = document.getElementById('filterLangStatus').value;
-                renderThemeList('langfristig', 'langfristigList', cat, stat);
-            };
-            window.filterShortTerm = function() {
-                const cat = document.getElementById('filterShortCategory').value;
-                const stat = document.getElementById('filterShortStatus').value;
-                renderThemeList('kurzfristig', 'kurzfristigList', cat, stat);
-            };
-
-            // Themen speichern
-            window.saveTopic = function() {
-                const horizon = document.getElementById('horizon').value;
-                const category = document.getElementById('themeCategory').value;
-                const title = document.getElementById('title').value.trim();
-                const process = document.getElementById('themeProcess').value.trim();
-                const description = document.getElementById('description').value.trim();
-                const measures = document.getElementById('measures').value.trim();
-                const editId = document.getElementById('themeEditId').value;
-
-                if (!horizon || !category || !title || !description) {
-                    document.getElementById('themeErrorText').innerText = 'Bitte alle Pflichtfelder ausfüllen';
-                    document.getElementById('themeErrorMessage').style.display = 'flex';
-                    setTimeout(() => document.getElementById('themeErrorMessage').style.display = 'none', 3000);
-                    return;
-                }
-
-                document.getElementById('loadingOverlay').style.display = 'flex';
-                setTimeout(() => {
-                    if (editId) {
-                        const idx = topics.findIndex(t => t.id === editId);
-                        if (idx !== -1) {
-                            topics[idx] = { ...topics[idx], horizon, category, title, process, description, measures };
-                        }
-                    } else {
-                        const newTopic = {
-                            id: Date.now().toString(),
-                            horizon, category, title, process, description, measures,
-                            status: 'open',
-                            created_at: new Date().toISOString()
-                        };
-                        topics.push(newTopic);
-                    }
-                    saveTopics();
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    document.getElementById('themeSuccessMessage').style.display = 'flex';
-                    setTimeout(() => document.getElementById('themeSuccessMessage').style.display = 'none', 2000);
-                    document.getElementById('topicForm').reset();
-                    document.getElementById('themeEditId').value = '';
-                    if (horizon === 'langfristig') switchThemesTab('langfristig');
-                    else switchThemesTab('kurzfristig');
-                }, 300);
-            };
-
-            window.openTopicDetail = function(id) {
-                const t = topics.find(t => t.id === id);
-                if (!t) return;
-                alert(`Thema: ${t.title}\nKategorie: ${t.category}\nHorizont: ${t.horizon}\nBeschreibung: ${t.description}\nMaßnahmen: ${t.measures || 'keine'}\nStatus: ${t.status}`);
-            };
-
-            window.editTopic = function(id) {
-                const t = topics.find(t => t.id === id);
-                if (!t) return;
-                switchThemesTab('neu');
-                setTimeout(() => {
-                    document.getElementById('themeEditId').value = t.id;
-                    document.getElementById('horizon').value = t.horizon;
-                    document.getElementById('themeCategory').value = t.category;
-                    document.getElementById('title').value = t.title;
-                    document.getElementById('themeProcess').value = t.process || '';
-                    document.getElementById('description').value = t.description;
-                    document.getElementById('measures').value = t.measures || '';
-                }, 100);
-            };
-
-            window.closeTopic = function(id) {
-                const idx = topics.findIndex(t => t.id === id);
-                if (idx !== -1) {
-                    topics[idx].status = 'closed';
-                    saveTopics();
-                    refreshThemesTab();
-                }
-            };
-            window.reopenTopic = function(id) {
-                const idx = topics.findIndex(t => t.id === id);
-                if (idx !== -1) {
-                    topics[idx].status = 'open';
-                    saveTopics();
-                    refreshThemesTab();
-                }
-            };
-
-            let currentTopicDeleteId = null;
-            window.showTopicPasswordModal = function(id) {
-                currentTopicDeleteId = id;
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordError').classList.remove('show');
-                document.getElementById('passwordModal').classList.add('active');
-                // überschreiben der checkPasswordAndDelete für Themen
-                window.checkPasswordAndDelete = function() {
-                    const pw = document.getElementById('passwordInput').value;
-                    if (pw === SUPERVIOR_PASSWORD) {
-                        if (currentTopicDeleteId) {
-                            topics = topics.filter(t => t.id !== currentTopicDeleteId);
-                            saveTopics();
-                            closePasswordModal();
-                            refreshThemesTab();
-                        }
-                    } else {
-                        document.getElementById('passwordError').classList.add('show');
-                    }
-                };
-            };
-
-            function refreshThemesTab() {
-                const active = document.querySelector('#main-tab-themen .sub-tab-button.active')?.innerText;
-                if (active?.includes('Langfristig')) filterLongTerm();
-                else if (active?.includes('Kurzfristig')) filterShortTerm();
-            }
-
-            // Themen-Tab Umschaltung
-            window.switchThemesTab = function(tab) {
-                document.querySelectorAll('#main-tab-themen .sub-tab-button').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('#main-tab-themen .sub-tab-content').forEach(c => c.classList.remove('active'));
-                if (tab === 'langfristig') {
-                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[0].classList.add('active');
-                    document.getElementById('themes-langfristig').classList.add('active');
-                    filterLongTerm();
-                } else if (tab === 'kurzfristig') {
-                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[1].classList.add('active');
-                    document.getElementById('themes-kurzfristig').classList.add('active');
-                    filterShortTerm();
-                } else if (tab === 'neu') {
-                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[2].classList.add('active');
-                    document.getElementById('themes-neu').classList.add('active');
-                    document.getElementById('themeEditId').value = '';
-                    document.getElementById('topicForm').reset();
-                }
-            };
-
-            // ----- ORIGINAL FUNKTIONEN (vollständig übernommen) -----
+            // Theme Toggle
             window.toggleTheme = function() {
                 const body = document.body;
                 const themeIcon = document.getElementById('themeIcon');
@@ -1740,14 +1436,14 @@
             window.switchMainTab = function(tab) {
                 document.querySelectorAll('.main-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.main-tab-content').forEach(c => c.classList.remove('active'));
+                
                 if (tab === 'vorfaelle') {
                     document.querySelectorAll('.main-tab-button')[0].classList.add('active');
                     document.getElementById('main-tab-vorfaelle').classList.add('active');
                 } else {
                     document.querySelectorAll('.main-tab-button')[1].classList.add('active');
                     document.getElementById('main-tab-themen').classList.add('active');
-                    loadTopics();
-                    filterLongTerm();
+                    loadTopics(); // Themen aus Supabase laden
                 }
             };
 
@@ -1755,6 +1451,7 @@
             window.switchSubTab = function(tab) {
                 document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('#main-tab-vorfaelle .sub-tab-content').forEach(c => c.classList.remove('active'));
+                
                 if (tab === 'new') {
                     document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[0].classList.add('active');
                     document.getElementById('subtab-new').classList.add('active');
@@ -1765,7 +1462,29 @@
                 }
             };
 
-            // Kategorie-Felder aktualisieren (original)
+            // Themen-Tab Umschaltung
+            window.switchThemesTab = function(tab) {
+                document.querySelectorAll('#main-tab-themen .sub-tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#main-tab-themen .sub-tab-content').forEach(c => c.classList.remove('active'));
+                
+                if (tab === 'langfristig') {
+                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[0].classList.add('active');
+                    document.getElementById('themes-langfristig').classList.add('active');
+                    filterLongTerm();
+                } else if (tab === 'kurzfristig') {
+                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[1].classList.add('active');
+                    document.getElementById('themes-kurzfristig').classList.add('active');
+                    filterShortTerm();
+                } else if (tab === 'neu') {
+                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[2].classList.add('active');
+                    document.getElementById('themes-neu').classList.add('active');
+                    document.getElementById('themeEditId').value = '';
+                    document.getElementById('topicForm').reset();
+                }
+            };
+
+            // ----- VORFÄLLE (incidents) - original mit Supabase -----
+            
             window.updateCategoryFields = function() {
                 const category = document.getElementById('category').value;
                 const categorySpecificFields = document.getElementById('categorySpecificFields');
@@ -1821,7 +1540,6 @@
                 }
             };
 
-            // Bild Upload (original)
             document.getElementById('uploadButton')?.addEventListener('click', function() {
                 document.getElementById('imageUpload').click();
             });
@@ -1910,7 +1628,6 @@
                 previewItem.remove();
             };
 
-            // Vorfall speichern (original)
             window.saveIncident = async function() {
                 const editId = document.getElementById('editId').value;
                 const category = document.getElementById('category').value;
@@ -2059,7 +1776,6 @@
                 }, 3000);
             }
 
-            // Vorfälle laden und anzeigen (original)
             async function loadIncidents() {
                 document.getElementById('loadingOverlay').style.display = 'flex';
                 
@@ -2166,7 +1882,7 @@
                                     ${incident.status === 'open' ? 
                                         `<button class="action-button close" onclick="closeIncident('${incident.id}')"><i class="fas fa-check-circle"></i> Fertig</button>` : 
                                         `<button class="action-button reopen" onclick="reopenIncident('${incident.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
-                                    <button class="action-button delete" onclick="showPasswordModalForId('${incident.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                                    <button class="action-button delete" onclick="showPasswordModalForIncident('${incident.id}')"><i class="fas fa-trash"></i> Löschen</button>
                                 </div>
                             </div>
                         `;
@@ -2336,66 +2052,13 @@
                     closeModal();
                 }
             };
+            
             window.reopenIncidentFromModal = function() {
                 if (currentIncidentId) {
                     reopenIncident(currentIncidentId);
                     closeModal();
                 }
             };
-
-            window.showPasswordModalForId = function(id) {
-                currentIncidentId = id;
-                pendingAction = 'delete';
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordError').classList.remove('show');
-                document.getElementById('passwordModal').classList.add('active');
-                window.checkPasswordAndDelete = function() {
-                    const password = document.getElementById('passwordInput').value;
-                    if (password === SUPERVIOR_PASSWORD) {
-                        closePasswordModal();
-                        if (currentIncidentId) deleteIncident(currentIncidentId);
-                    } else {
-                        document.getElementById('passwordError').classList.add('show');
-                    }
-                };
-            };
-
-            window.showPasswordModal = function() {
-                // wird überschrieben
-            };
-
-            window.closePasswordModal = function() {
-                document.getElementById('passwordModal').classList.remove('active');
-                pendingAction = null;
-            };
-
-            async function deleteIncident(id) {
-                document.getElementById('loadingOverlay').style.display = 'flex';
-                try {
-                    const { data: incident, error: fetchError } = await supabase.from('incidents').select('*').eq('id', id).maybeSingle();
-                    if (fetchError) throw new Error('Vorfall nicht gefunden: ' + fetchError.message);
-                    if (!incident) throw new Error('Vorfall nicht gefunden');
-                    
-                    const imageUrls = incident.image_urls || [];
-                    for (const url of imageUrls) {
-                        try {
-                            const fileName = url.split('/').pop();
-                            await supabase.storage.from('incident_images').remove([fileName]);
-                        } catch (imageError) { console.error('Bild löschen fehlgeschlagen'); }
-                    }
-                    
-                    const { error: deleteError } = await supabase.from('incidents').delete().eq('id', id);
-                    if (deleteError) throw new Error('Datenbank-Fehler: ' + deleteError.message);
-                    
-                    showSuccess('Vorfall wurde gelöscht');
-                    closeModal();
-                    loadIncidents();
-                } catch (error) {
-                    showError('Fehler beim Löschen: ' + error.message);
-                } finally {
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                }
-            }
 
             window.closeIncident = async function(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
@@ -2425,26 +2088,365 @@
                 }
             };
 
-            window.confirmDelete = function(id) {
-                currentIncidentId = id;
-                document.getElementById('confirmTitle').textContent = 'Vorfall löschen';
-                document.getElementById('confirmMessage').textContent = 'Möchten Sie diesen Vorfall wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.';
-                document.getElementById('confirmYesBtn').onclick = () => {
-                    closeConfirmModal();
-                    deleteIncident(id);
-                };
-                document.getElementById('confirmModal').classList.add('active');
+            // ----- THEMEN (topics) - JETZT AUCH IN SUPABASE -----
+            
+            async function loadTopics() {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                try {
+                    const { data, error } = await supabase
+                        .from('topics')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    
+                    if (error) throw error;
+                    
+                    allTopics = data || [];
+                    
+                    // Falls keine Themen vorhanden, Demo-Daten einfügen
+                    if (allTopics.length === 0) {
+                        const demoTopics = [
+                            { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', created_at: new Date().toISOString() },
+                            { horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: 'Ultraschall automatisieren', measures: 'Angebote einholen', status: 'open', created_at: new Date().toISOString() },
+                            { horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: 'Jährliche Kalibrierung', measures: 'Servicetermin', status: 'open', created_at: new Date().toISOString() },
+                            { horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: 'Rissverdacht bei Charge X', measures: 'Nachprüfung', status: 'closed', created_at: new Date().toISOString() },
+                        ];
+                        
+                        for (const topic of demoTopics) {
+                            await supabase.from('topics').insert([topic]);
+                        }
+                        
+                        // Neu laden
+                        const { data: newData } = await supabase.from('topics').select('*').order('created_at', { ascending: false });
+                        allTopics = newData || [];
+                    }
+                    
+                    filterLongTerm(); // Aktuelle Ansicht aktualisieren
+                } catch (error) {
+                    console.error('Fehler beim Laden der Themen:', error);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            }
+
+            function getCalendarWeek(dateStr) {
+                const d = new Date(dateStr);
+                d.setHours(0,0,0,0);
+                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+                const week1 = new Date(d.getFullYear(), 0, 4);
+                const weekNum = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+                return `KW ${weekNum} - ${d.getFullYear()}`;
+            }
+
+            function groupTopicsByWeek(items) {
+                const groups = {};
+                items.forEach(t => {
+                    const wk = getCalendarWeek(t.created_at);
+                    if (!groups[wk]) groups[wk] = [];
+                    groups[wk].push(t);
+                });
+                return Object.keys(groups).sort((a,b) => {
+                    const aNum = parseInt(a.split(' ')[1]) + (parseInt(a.split(' - ')[1])*100);
+                    const bNum = parseInt(b.split(' ')[1]) + (parseInt(b.split(' - ')[1])*100);
+                    return bNum - aNum;
+                }).reduce((acc, key) => { acc[key] = groups[key]; return acc; }, {});
+            }
+
+            function renderThemeList(horizon, containerId, filterCat='', filterStatus='') {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                let filtered = allTopics.filter(t => t.horizon === horizon);
+                if (filterCat) filtered = filtered.filter(t => t.category === filterCat);
+                if (filterStatus) filtered = filtered.filter(t => t.status === filterStatus);
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-secondary);"><i class="fas fa-folder-open fa-3x"></i><p>Keine Themen</p></div>`;
+                    return;
+                }
+
+                const grouped = groupTopicsByWeek(filtered);
+                let html = '';
+                for (let week in grouped) {
+                    html += `<div class="kw-group"><div class="kw-header"><i class="fas fa-calendar-week"></i> ${week} <span class="kw-count">${grouped[week].length}</span></div><div class="incident-grid">`;
+                    grouped[week].forEach(t => {
+                        const statusClass = t.status === 'closed' ? 'closed' : '';
+                        const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+                        const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
+                        const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
+
+                        let catClass = 'badge-category';
+                        if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
+                        else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
+                        else catClass = 'badge-category';
+
+                        html += `
+                            <div class="incident-card">
+                                <div class="card-header">
+                                    <div class="card-badges">
+                                        <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig'}</span>
+                                        <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
+                                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
+                                    </div>
+                                    <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
+                                </div>
+                                <div class="card-content" onclick="openTopicDetail('${t.id}')">
+                                    <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
+                                    ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
+                                    <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}...</span></div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="action-button view" onclick="openTopicDetail('${t.id}')"><i class="fas fa-eye"></i> Details</button>
+                                    <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                    ${t.status === 'open' ? 
+                                        `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
+                                        `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
+                                    <button class="action-button delete" onclick="showPasswordModalForTopic('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+                container.innerHTML = html;
+            }
+
+            window.filterLongTerm = function() {
+                const cat = document.getElementById('filterLangCategory').value;
+                const stat = document.getElementById('filterLangStatus').value;
+                renderThemeList('langfristig', 'langfristigList', cat, stat);
+            };
+            
+            window.filterShortTerm = function() {
+                const cat = document.getElementById('filterShortCategory').value;
+                const stat = document.getElementById('filterShortStatus').value;
+                renderThemeList('kurzfristig', 'kurzfristigList', cat, stat);
             };
 
-            window.closeConfirmModal = function() {
-                document.getElementById('confirmModal').classList.remove('active');
+            window.saveTopic = async function() {
+                const horizon = document.getElementById('horizon').value;
+                const category = document.getElementById('themeCategory').value;
+                const title = document.getElementById('title').value.trim();
+                const process = document.getElementById('themeProcess').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const measures = document.getElementById('measures').value.trim();
+                const editId = document.getElementById('themeEditId').value;
+
+                if (!horizon || !category || !title || !description) {
+                    document.getElementById('themeErrorText').innerText = 'Bitte alle Pflichtfelder ausfüllen';
+                    document.getElementById('themeErrorMessage').style.display = 'flex';
+                    setTimeout(() => document.getElementById('themeErrorMessage').style.display = 'none', 3000);
+                    return;
+                }
+
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                try {
+                    const topicData = {
+                        horizon,
+                        category,
+                        title,
+                        process: process || null,
+                        description,
+                        measures: measures || null,
+                        status: editId ? undefined : 'open' // Bei Neu: open, bei Update: nicht ändern
+                    };
+                    
+                    if (editId) {
+                        // Update
+                        const { error } = await supabase
+                            .from('topics')
+                            .update(topicData)
+                            .eq('id', editId);
+                        
+                        if (error) throw error;
+                    } else {
+                        // Neu
+                        topicData.created_at = new Date().toISOString();
+                        topicData.status = 'open';
+                        
+                        const { error } = await supabase
+                            .from('topics')
+                            .insert([topicData]);
+                        
+                        if (error) throw error;
+                    }
+                    
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.getElementById('themeSuccessMessage').style.display = 'flex';
+                    setTimeout(() => document.getElementById('themeSuccessMessage').style.display = 'none', 2000);
+                    
+                    document.getElementById('topicForm').reset();
+                    document.getElementById('themeEditId').value = '';
+                    
+                    // Themen neu laden
+                    await loadTopics();
+                    
+                    if (horizon === 'langfristig') switchThemesTab('langfristig');
+                    else switchThemesTab('kurzfristig');
+                    
+                } catch (error) {
+                    console.error('Fehler beim Speichern:', error);
+                    document.getElementById('themeErrorText').innerText = 'Fehler: ' + error.message;
+                    document.getElementById('themeErrorMessage').style.display = 'flex';
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            window.openTopicDetail = function(id) {
+                const t = allTopics.find(t => t.id == id);
+                if (!t) return;
+                alert(`Thema: ${t.title}\nKategorie: ${t.category}\nHorizont: ${t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig'}\nBeschreibung: ${t.description}\nMaßnahmen: ${t.measures || 'keine'}\nStatus: ${t.status === 'open' ? 'Offen' : 'Geschlossen'}`);
+            };
+
+            window.editTopic = async function(id) {
+                const t = allTopics.find(t => t.id == id);
+                if (!t) return;
+                
+                switchThemesTab('neu');
+                setTimeout(() => {
+                    document.getElementById('themeEditId').value = t.id;
+                    document.getElementById('horizon').value = t.horizon;
+                    document.getElementById('themeCategory').value = t.category;
+                    document.getElementById('title').value = t.title;
+                    document.getElementById('themeProcess').value = t.process || '';
+                    document.getElementById('description').value = t.description;
+                    document.getElementById('measures').value = t.measures || '';
+                }, 100);
+            };
+
+            window.closeTopic = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { error } = await supabase
+                        .from('topics')
+                        .update({ status: 'closed' })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    await loadTopics();
+                    showSuccess('Thema erledigt');
+                } catch (error) {
+                    showError('Fehler: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+            
+            window.reopenTopic = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { error } = await supabase
+                        .from('topics')
+                        .update({ status: 'open' })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    await loadTopics();
+                    showSuccess('Thema wieder geöffnet');
+                } catch (error) {
+                    showError('Fehler: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            // ----- PASSWORT & LÖSCHEN (für beide Bereiche) -----
+            
+            window.showPasswordModalForIncident = function(id) {
+                currentIncidentId = id;
+                currentTopicId = null;
+                pendingAction = 'deleteIncident';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordError').classList.remove('show');
+                document.getElementById('passwordModal').classList.add('active');
+            };
+
+            window.showPasswordModalForTopic = function(id) {
+                currentTopicId = id;
+                currentIncidentId = null;
+                pendingAction = 'deleteTopic';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordError').classList.remove('show');
+                document.getElementById('passwordModal').classList.add('active');
+            };
+
+            window.closePasswordModal = function() {
+                document.getElementById('passwordModal').classList.remove('active');
+                pendingAction = null;
+            };
+
+            window.checkPasswordAndDelete = async function() {
+                const password = document.getElementById('passwordInput').value;
+                
+                if (password !== SUPERVIOR_PASSWORD) {
+                    document.getElementById('passwordError').classList.add('show');
+                    return;
+                }
+                
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                closePasswordModal();
+                
+                try {
+                    if (pendingAction === 'deleteIncident' && currentIncidentId) {
+                        // Incident löschen
+                        const { data: incident, error: fetchError } = await supabase
+                            .from('incidents')
+                            .select('*')
+                            .eq('id', currentIncidentId)
+                            .maybeSingle();
+                        
+                        if (fetchError) throw fetchError;
+                        
+                        if (incident && incident.image_urls) {
+                            for (const url of incident.image_urls) {
+                                try {
+                                    const fileName = url.split('/').pop();
+                                    await supabase.storage.from('incident_images').remove([fileName]);
+                                } catch (e) { /* ignore */ }
+                            }
+                        }
+                        
+                        const { error: deleteError } = await supabase
+                            .from('incidents')
+                            .delete()
+                            .eq('id', currentIncidentId);
+                        
+                        if (deleteError) throw deleteError;
+                        
+                        showSuccess('Vorfall gelöscht');
+                        loadIncidents();
+                        
+                    } else if (pendingAction === 'deleteTopic' && currentTopicId) {
+                        // Topic löschen
+                        const { error } = await supabase
+                            .from('topics')
+                            .delete()
+                            .eq('id', currentTopicId);
+                        
+                        if (error) throw error;
+                        
+                        showSuccess('Thema gelöscht');
+                        await loadTopics();
+                    }
+                } catch (error) {
+                    showError('Fehler beim Löschen: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    pendingAction = null;
+                    currentIncidentId = null;
+                    currentTopicId = null;
+                }
             };
 
             // Initialisierung
             document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('category')?.addEventListener('change', updateCategoryFields);
                 updateCategoryFields();
-                loadTopics(); // Themen für später
+                loadIncidents(); // Vorfälle laden
+                // Themen werden erst beim Tab-Wechsel geladen
             });
         })();
     </script>
