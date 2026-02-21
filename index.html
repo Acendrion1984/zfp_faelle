@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ZfP Vorfälle · Gruppiert nach KW · Löschen mit Passwort</title>
+    <title>ZfP Vorfälle + Themen · Komplett · Download & Nutzen</title>
     <style>
         * {
             margin: 0;
@@ -25,6 +25,10 @@
             --badge-method-bg: #ede9fe;
             --badge-open-bg: #bbf7d0;
             --badge-closed-bg: #fecaca;
+            --badge-long-bg: #dbeafe;       /* langfristig */
+            --badge-short-bg: #fef3c7;      /* kurzfristig */
+            --badge-digital-bg: #ede9fe;    /* Digitalisierung */
+            --badge-opt-bg: #d1fae5;        /* Prüfprozessoptimierung */
             --hover-bg: #f1f5f9;
             --btn-primary: #003366;
             --btn-primary-hover: #002244;
@@ -55,6 +59,10 @@
             --badge-method-bg: #5b21b6;
             --badge-open-bg: #065f46;
             --badge-closed-bg: #991b1b;
+            --badge-long-bg: #1e3a8a;
+            --badge-short-bg: #92400e;
+            --badge-digital-bg: #5b21b6;
+            --badge-opt-bg: #065f46;
             --hover-bg: #374151;
             --btn-primary: #3b82f6;
             --btn-primary-hover: #2563eb;
@@ -87,7 +95,6 @@
             width: 100%;
         }
 
-        /* Theme Toggle Button */
         .theme-toggle {
             position: fixed;
             bottom: 20px;
@@ -144,8 +151,8 @@
             color: rgba(255,255,255,0.9);
         }
 
-        /* Tab Navigation */
-        .tab-navigation {
+        /* Haupt-Tab Navigation (Vorfälle + Themen) */
+        .main-tab-navigation {
             display: flex;
             gap: 10px;
             padding: 0 20px;
@@ -157,11 +164,11 @@
             white-space: nowrap;
         }
 
-        .tab-navigation::-webkit-scrollbar {
+        .main-tab-navigation::-webkit-scrollbar {
             display: none;
         }
 
-        .tab-button {
+        .main-tab-button {
             padding: 15px 25px;
             background: none;
             border: none;
@@ -177,20 +184,20 @@
             flex-shrink: 0;
         }
 
-        .tab-button i {
+        .main-tab-button i {
             font-size: 18px;
         }
 
-        .tab-button:hover {
+        .main-tab-button:hover {
             color: var(--text-primary);
         }
 
-        .tab-button.active {
+        .main-tab-button.active {
             color: var(--btn-primary);
             border-bottom-color: var(--btn-primary);
         }
 
-        .tab-content {
+        .main-tab-content {
             display: none;
             background: var(--bg-secondary);
             border-radius: 0 0 20px 20px;
@@ -198,11 +205,46 @@
             padding: 30px;
         }
 
-        .tab-content.active {
+        .main-tab-content.active {
             display: block;
         }
 
-        /* Form Styles */
+        /* Unter-Tab Navigation für Vorfälle (original) */
+        .sub-tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sub-tab-button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .sub-tab-button.active {
+            color: var(--btn-primary);
+            border-bottom-color: var(--btn-primary);
+        }
+
+        .sub-tab-content {
+            display: none;
+        }
+
+        .sub-tab-content.active {
+            display: block;
+        }
+
+        /* Originale Form Styles für Vorfälle */
         .form-row {
             display: flex;
             gap: 20px;
@@ -391,7 +433,20 @@
             background: var(--bg-secondary);
         }
 
-        /* Image Upload Area */
+        .btn-submit {
+            background: var(--btn-success);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: var(--btn-success-hover);
+        }
+
+        /* Image Upload Area (original) */
         .image-preview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -432,26 +487,6 @@
             font-size: 18px;
             padding: 0;
             line-height: 1;
-        }
-
-        /* Submit Button */
-        .submit-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid var(--border-color);
-        }
-
-        .btn-submit {
-            background: var(--btn-success);
-            color: white;
-            border: none;
-            padding: 16px;
-            font-size: 18px;
-            width: 100%;
-        }
-
-        .btn-submit:hover {
-            background: var(--btn-success-hover);
         }
 
         /* Loading Overlay */
@@ -504,7 +539,7 @@
             color: white;
         }
 
-        /* Listenansicht Styles */
+        /* Listenansicht Styles (original) */
         .list-header {
             margin-bottom: 25px;
         }
@@ -547,11 +582,6 @@
             font-size: 16px;
             background: transparent;
             color: var(--text-primary);
-        }
-
-        .filter-select {
-            flex: 1;
-            min-width: 180px;
         }
 
         /* KW Gruppen Styling */
@@ -646,6 +676,12 @@
         .badge-status.closed {
             background: var(--badge-closed-bg);
         }
+
+        /* Badges für Themen */
+        .badge-long { background: var(--badge-long-bg); }
+        .badge-short { background: var(--badge-short-bg); }
+        .badge-digital { background: var(--badge-digital-bg); }
+        .badge-opt { background: var(--badge-opt-bg); }
 
         .card-date {
             font-size: 13px;
@@ -752,7 +788,7 @@
             color: white;
         }
 
-        /* Modal Styles */
+        /* Modal Styles (original) */
         .modal {
             display: none;
             position: fixed;
@@ -831,7 +867,7 @@
             min-width: 120px;
         }
 
-        /* Detail View Styles */
+        /* Detail View Styles (original) */
         .detail-section {
             margin-bottom: 25px;
         }
@@ -891,7 +927,7 @@
             border-color: var(--btn-primary);
         }
 
-        /* Confirm Modal */
+        /* Confirm Modal (original) */
         .confirm-modal {
             position: fixed;
             top: 0;
@@ -940,7 +976,7 @@
             flex: 1;
         }
 
-        /* Password Modal */
+        /* Password Modal (original) */
         .password-modal {
             position: fixed;
             top: 0;
@@ -1045,7 +1081,7 @@
     </style>
     <!-- Font Awesome für Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Supabase JS -->
+    <!-- Supabase JS (original) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body data-theme="light">
@@ -1059,169 +1095,293 @@
         <div class="app-header">
             <h1>
                 <i class="fas fa-hard-hat"></i>
-                ZfP Vorfälle & Anlagenprobleme
+                ZfP Vorfälle & Themenmanagement
             </h1>
             <div class="subtitle">
                 <i class="fas fa-clipboard-check"></i>
-                Dokumentation von Vorfällen - Gruppiert nach Kalenderwochen
+                Vorfälle (KW) + Langfristige/Kurzfristige Themen mit Digitalisierung
             </div>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="tab-navigation">
-            <button class="tab-button active" onclick="switchTab('new')">
-                <i class="fas fa-plus-circle"></i>
-                Neuer Vorfall
+        <!-- Haupt-Tab Navigation: Vorfälle / Themen -->
+        <div class="main-tab-navigation">
+            <button class="main-tab-button active" onclick="switchMainTab('vorfaelle')">
+                <i class="fas fa-exclamation-triangle"></i>
+                Vorfälle (Original)
             </button>
-            <button class="tab-button" onclick="switchTab('list')">
-                <i class="fas fa-list"></i>
-                Vorfälle Liste (KW)
+            <button class="main-tab-button" onclick="switchMainTab('themen')">
+                <i class="fas fa-tasks"></i>
+                Langfristige / Kurzfristige Themen
             </button>
         </div>
 
-        <!-- Tab: Neuer Vorfall -->
-        <div id="tab-new" class="tab-content active">
-            <!-- Success Message -->
-            <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i>
-                <span>Vorfall erfolgreich dokumentiert!</span>
+        <!-- Haupt-Tab: Vorfälle (ORIGINAL vollständig) -->
+        <div id="main-tab-vorfaelle" class="main-tab-content active">
+            <!-- Originale Tab Navigation für Vorfälle -->
+            <div class="sub-tab-navigation">
+                <button class="sub-tab-button active" onclick="switchSubTab('new')">
+                    <i class="fas fa-plus-circle"></i>
+                    Neuer Vorfall
+                </button>
+                <button class="sub-tab-button" onclick="switchSubTab('list')">
+                    <i class="fas fa-list"></i>
+                    Vorfälle Liste (KW)
+                </button>
             </div>
 
-            <!-- Error Message -->
-            <div class="error-message" id="errorMessage">
-                <i class="fas fa-exclamation-circle"></i>
-                <span id="errorText"></span>
+            <!-- Tab: Neuer Vorfall (original) -->
+            <div id="subtab-new" class="sub-tab-content active">
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Vorfall erfolgreich dokumentiert!</span>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText"></span>
+                </div>
+
+                <!-- Form (original) -->
+                <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
+                    <input type="hidden" id="editId" value="">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> Kategorie *</label>
+                            <select id="category" required onchange="updateCategoryFields()">
+                                <option value="">Bitte wählen...</option>
+                                <option value="ZfP Anlage">🔧 ZfP Anlage</option>
+                                <option value="ZfP Prüfung">🔍 ZfP Prüfung</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-building"></i> Prozess *</label>
+                            <select id="process" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="Seitenschleifen">Seitenschleifen</option>
+                                <option value="Centerless Schleifen">Centerless Schleifen</option>
+                                <option value="Laufbahn Schleifen">Laufbahn Schleifen</option>
+                                <option value="Prüfung">Prüfung</option>
+                                <option value="Sonstiges">Sonstiges</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-cubes"></i> Segment *</label>
+                            <select id="segment" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="Segment 4">Segment 4</option>
+                                <option value="Segment 6">Segment 6</option>
+                                <option value="Segment 11">Segment 11</option>
+                                <option value="Segment 12">Segment 12</option>
+                                <option value="Segment 14">Segment 14</option>
+                                <option value="Segment 15">Segment 15</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-flask"></i> Prüfverfahren *</label>
+                            <select id="inspectionMethod" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="MT">Magnetpulverprüfung (MT)</option>
+                                <option value="UT">Ultraschallprüfung (UT)</option>
+                                <option value="VT">Sichtprüfung (VT)</option>
+                                <option value="RT">Durchstrahlungsprüfung (RT)</option>
+                                <option value="PT">Eindringprüfung (PT)</option>
+                                <option value="ET">Wirbelstromprüfung (ET)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Maschinennummer (für Anlagen) -->
+                    <div class="form-group" id="machineNumberGroup" style="display: none;">
+                        <label><i class="fas fa-industry"></i> Maschinennummer *</label>
+                        <input type="text" id="machineNumber" placeholder="z.B. M-4711">
+                    </div>
+
+                    <!-- Auftragsnummer (für Prüfungen) -->
+                    <div class="form-group" id="orderNumberGroup" style="display: none;">
+                        <label><i class="fas fa-hashtag"></i> Auftragsnummer *</label>
+                        <input type="text" id="orderNumber" placeholder="z.B. A-2024-001">
+                    </div>
+
+                    <!-- Kategorie-spezifische Felder -->
+                    <div id="categorySpecificFields"></div>
+
+                    <!-- Problem / Beschreibung -->
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-exclamation-triangle"></i> Problem / Beschreibung *</label>
+                        <textarea id="problemDescription" rows="4" required placeholder="Beschreiben Sie das Problem..."></textarea>
+                    </div>
+
+                    <!-- Bild Upload -->
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-images"></i> Bilder</label>
+                        <button type="button" class="btn btn-upload" id="uploadButton">
+                            <i class="fas fa-cloud-upload-alt"></i> Bilder auswählen
+                        </button>
+                        <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
+                        <div class="image-preview-grid" id="imagePreview"></div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-submit" id="submitButton">
+                            <i class="fas fa-save"></i> Vorfall dokumentieren
+                        </button>
+                    </div>
+                </form>
             </div>
 
-            <!-- Form -->
-            <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
-                <input type="hidden" id="editId" value="">
-                
-                <div class="form-row">
-                    <!-- Kategorie -->
-                    <div class="form-group">
-                        <label><i class="fas fa-tag"></i> Kategorie *</label>
-                        <select id="category" required onchange="updateCategoryFields()">
-                            <option value="">Bitte wählen...</option>
-                            <option value="ZfP Anlage">🔧 ZfP Anlage</option>
-                            <option value="ZfP Prüfung">🔍 ZfP Prüfung</option>
-                        </select>
+            <!-- Tab: Vorfälle Liste (original) -->
+            <div id="subtab-list" class="sub-tab-content">
+                <div class="list-header">
+                    <div class="list-title">
+                        <i class="fas fa-calendar-week"></i>
+                        Vorfälle gruppiert nach Kalenderwochen
                     </div>
-
-                    <!-- Prozess -->
-                    <div class="form-group">
-                        <label><i class="fas fa-building"></i> Prozess *</label>
-                        <select id="process" required>
-                            <option value="">Bitte wählen...</option>
-                            <option value="Seitenschleifen">Seitenschleifen</option>
-                            <option value="Centerless Schleifen">Centerless Schleifen</option>
-                            <option value="Laufbahn Schleifen">Laufbahn Schleifen</option>
-                            <option value="Prüfung">Prüfung</option>
-                            <option value="Sonstiges">Sonstiges</option>
+                    <div class="filter-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Suchen..." onkeyup="filterIncidents()">
+                        </div>
+                        <select class="filter-select" id="categoryFilter" onchange="filterIncidents()">
+                            <option value="">Alle Kategorien</option>
+                            <option value="ZfP Anlage">ZfP Anlage</option>
+                            <option value="ZfP Prüfung">ZfP Prüfung</option>
+                        </select>
+                        <select class="filter-select" id="statusFilter" onchange="filterIncidents()">
+                            <option value="">Alle Status</option>
+                            <option value="open">Offen</option>
+                            <option value="closed">Geschlossen</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <!-- Segment -->
-                    <div class="form-group">
-                        <label><i class="fas fa-cubes"></i> Segment *</label>
-                        <select id="segment" required>
-                            <option value="">Bitte wählen...</option>
-                            <option value="Segment 4">Segment 4</option>
-                            <option value="Segment 6">Segment 6</option>
-                            <option value="Segment 11">Segment 11</option>
-                            <option value="Segment 12">Segment 12</option>
-                            <option value="Segment 14">Segment 14</option>
-                            <option value="Segment 15">Segment 15</option>
-                        </select>
-                    </div>
-
-                    <!-- Prüfverfahren -->
-                    <div class="form-group">
-                        <label><i class="fas fa-flask"></i> Prüfverfahren *</label>
-                        <select id="inspectionMethod" required>
-                            <option value="">Bitte wählen...</option>
-                            <option value="MT">Magnetpulverprüfung (MT)</option>
-                            <option value="UT">Ultraschallprüfung (UT)</option>
-                            <option value="VT">Sichtprüfung (VT)</option>
-                            <option value="RT">Durchstrahlungsprüfung (RT)</option>
-                            <option value="PT">Eindringprüfung (PT)</option>
-                            <option value="ET">Wirbelstromprüfung (ET)</option>
-                        </select>
+                <div id="incidentList" class="incident-list-container">
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <p style="font-size: 18px;">Lade Vorfälle...</p>
                     </div>
                 </div>
-
-                <!-- Maschinennummer (für Anlagen) -->
-                <div class="form-group" id="machineNumberGroup" style="display: none;">
-                    <label><i class="fas fa-industry"></i> Maschinennummer *</label>
-                    <input type="text" id="machineNumber" placeholder="z.B. M-4711">
-                </div>
-
-                <!-- Auftragsnummer (für Prüfungen) -->
-                <div class="form-group" id="orderNumberGroup" style="display: none;">
-                    <label><i class="fas fa-hashtag"></i> Auftragsnummer *</label>
-                    <input type="text" id="orderNumber" placeholder="z.B. A-2024-001">
-                </div>
-
-                <!-- Kategorie-spezifische Felder -->
-                <div id="categorySpecificFields"></div>
-
-                <!-- Problem / Beschreibung -->
-                <div class="form-group full-width">
-                    <label><i class="fas fa-exclamation-triangle"></i> Problem / Beschreibung *</label>
-                    <textarea id="problemDescription" rows="4" required placeholder="Beschreiben Sie das Problem..."></textarea>
-                </div>
-
-                <!-- Bild Upload -->
-                <div class="form-group full-width">
-                    <label><i class="fas fa-images"></i> Bilder</label>
-                    <button type="button" class="btn btn-upload" id="uploadButton">
-                        <i class="fas fa-cloud-upload-alt"></i> Bilder auswählen
-                    </button>
-                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
-                    <div class="image-preview-grid" id="imagePreview"></div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="submit-section">
-                    <button type="submit" class="btn btn-submit" id="submitButton">
-                        <i class="fas fa-save"></i> Vorfall dokumentieren
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
 
-        <!-- Tab: Vorfälle Liste -->
-        <div id="tab-list" class="tab-content">
-            <div class="list-header">
-                <div class="list-title">
-                    <i class="fas fa-calendar-week"></i>
-                    Vorfälle gruppiert nach Kalenderwochen
-                </div>
+        <!-- Haupt-Tab: Themen (langfristig / kurzfristig) NEU -->
+        <div id="main-tab-themen" class="main-tab-content">
+            <!-- Unter-Navigation für Themen -->
+            <div class="sub-tab-navigation">
+                <button class="sub-tab-button active" onclick="switchThemesTab('langfristig')">
+                    <i class="fas fa-calendar-alt"></i> Langfristige Themen
+                </button>
+                <button class="sub-tab-button" onclick="switchThemesTab('kurzfristig')">
+                    <i class="fas fa-hourglass-half"></i> Kurzfristige Themen
+                </button>
+                <button class="sub-tab-button" onclick="switchThemesTab('neu')">
+                    <i class="fas fa-plus-circle"></i> Neues Thema
+                </button>
+            </div>
+
+            <!-- Langfristige Themen -->
+            <div id="themes-langfristig" class="sub-tab-content active">
                 <div class="filter-section">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Suchen..." onkeyup="filterIncidents()">
-                    </div>
-                    <select class="filter-select" id="categoryFilter" onchange="filterIncidents()">
+                    <select class="filter-select" id="filterLangCategory" onchange="filterLongTerm()">
                         <option value="">Alle Kategorien</option>
                         <option value="ZfP Anlage">ZfP Anlage</option>
                         <option value="ZfP Prüfung">ZfP Prüfung</option>
+                        <option value="Digitalisierung">Digitalisierung</option>
+                        <option value="Prüfprozessoptimierung">Prüfprozessoptimierung</option>
                     </select>
-                    <select class="filter-select" id="statusFilter" onchange="filterIncidents()">
+                    <select class="filter-select" id="filterLangStatus" onchange="filterLongTerm()">
                         <option value="">Alle Status</option>
                         <option value="open">Offen</option>
                         <option value="closed">Geschlossen</option>
                     </select>
                 </div>
+                <div id="langfristigList" class="incident-list-container">
+                    <div style="text-align: center; padding: 60px; color: var(--text-secondary);">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px;"></i>
+                        <p>Lade langfristige Themen...</p>
+                    </div>
+                </div>
             </div>
 
-            <div id="incidentList" class="incident-list-container">
-                <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 20px;"></i>
-                    <p style="font-size: 18px;">Lade Vorfälle...</p>
+            <!-- Kurzfristige Themen -->
+            <div id="themes-kurzfristig" class="sub-tab-content">
+                <div class="filter-section">
+                    <select class="filter-select" id="filterShortCategory" onchange="filterShortTerm()">
+                        <option value="">Alle Kategorien</option>
+                        <option value="ZfP Anlage">ZfP Anlage</option>
+                        <option value="ZfP Prüfung">ZfP Prüfung</option>
+                        <option value="Digitalisierung">Digitalisierung</option>
+                        <option value="Prüfprozessoptimierung">Prüfprozessoptimierung</option>
+                    </select>
+                    <select class="filter-select" id="filterShortStatus" onchange="filterShortTerm()">
+                        <option value="">Alle Status</option>
+                        <option value="open">Offen</option>
+                        <option value="closed">Geschlossen</option>
+                    </select>
                 </div>
+                <div id="kurzfristigList" class="incident-list-container">
+                    <div style="text-align: center; padding: 60px; color: var(--text-secondary);">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px;"></i>
+                        <p>Lade kurzfristige Themen...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neues Thema erfassen -->
+            <div id="themes-neu" class="sub-tab-content">
+                <div class="success-message" id="themeSuccessMessage"><i class="fas fa-check-circle"></i> <span>Gespeichert</span></div>
+                <div class="error-message" id="themeErrorMessage"><i class="fas fa-exclamation-circle"></i> <span id="themeErrorText"></span></div>
+
+                <form id="topicForm" onsubmit="event.preventDefault(); saveTopic();">
+                    <input type="hidden" id="themeEditId" value="">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-clock"></i> Themenhorizont *</label>
+                            <select id="horizon" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="langfristig">🌿 Langfristig</option>
+                                <option value="kurzfristig">⚡ Kurzfristig</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> Kategorie *</label>
+                            <select id="themeCategory" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="ZfP Anlage">🔧 ZfP Anlage</option>
+                                <option value="ZfP Prüfung">🔍 ZfP Prüfung</option>
+                                <option value="Digitalisierung">💻 Digitalisierung</option>
+                                <option value="Prüfprozessoptimierung">⚙️ Prüfprozessoptimierung</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-heading"></i> Titel / Thema *</label>
+                            <input type="text" id="title" placeholder="Kurze Bezeichnung" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-building"></i> Prozess (optional)</label>
+                            <input type="text" id="themeProcess" placeholder="z.B. Seitenschleifen">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-align-left"></i> Beschreibung *</label>
+                        <textarea id="description" rows="4" required placeholder="Detaillierte Beschreibung..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-tasks"></i> Maßnahmen / nächste Schritte</label>
+                        <textarea id="measures" rows="3" placeholder="Geplante Maßnahmen, Verantwortlichkeiten ..."></textarea>
+                    </div>
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-submit" id="themeSubmitBtn"><i class="fas fa-save"></i> Thema speichern</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -1231,7 +1391,7 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Detail Modal -->
+    <!-- Detail Modal (original) -->
     <div class="modal" id="detailModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1259,7 +1419,7 @@
         </div>
     </div>
 
-    <!-- Confirm Modal -->
+    <!-- Confirm Modal (original) -->
     <div class="confirm-modal" id="confirmModal">
         <div class="confirm-content">
             <h3 id="confirmTitle">Bestätigung</h3>
@@ -1271,7 +1431,7 @@
         </div>
     </div>
 
-    <!-- Password Modal für Löschen -->
+    <!-- Password Modal für Löschen (original) -->
     <div class="password-modal" id="passwordModal">
         <div class="password-content">
             <h3><i class="fas fa-lock"></i> Passwort erforderlich</h3>
@@ -1291,23 +1451,270 @@
 
     <script>
         (function() {
-            // Supabase Konfiguration
+            // Supabase Konfiguration (original)
             const SUPABASE_URL = 'https://wqrynlgbspkjzxuxauvq.supabase.co';
             const SUPABASE_ANON_KEY = 'sb_publishable_jkkaIcAKxMhkXSdnJY1Oiw_U-xPWr68';
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
-            
             const SUPERVIOR_PASSWORD = 'Supervisor'; // Das festgelegte Passwort
 
-            // Globale Variablen
+            // Globale Variablen (original)
             let compressedImages = [];
             let existingImages = [];
             let allIncidents = [];
             let currentIncidentId = null;
             let pendingAction = null;
 
-            // Theme Toggle Funktion
+            // ----- NEU: Themen-Management (langfristig/kurzfristig) -----
+            let topics = [];  // { id, horizon, category, title, process, description, measures, status, created_at }
+
+            // Themen aus localStorage laden
+            function loadTopics() {
+                const stored = localStorage.getItem('zfp_topics');
+                if (stored) {
+                    topics = JSON.parse(stored);
+                } else {
+                    // Demo-Einträge
+                    topics = [
+                        { id: 't1', horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', created_at: new Date().toISOString() },
+                        { id: 't2', horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: 'Ultraschall automatisieren', measures: 'Angebote einholen', status: 'open', created_at: new Date().toISOString() },
+                        { id: 't3', horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: 'Jährliche Kalibrierung', measures: 'Servicetermin', status: 'open', created_at: new Date().toISOString() },
+                        { id: 't4', horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: 'Rissverdacht bei Charge X', measures: 'Nachprüfung', status: 'closed', created_at: new Date().toISOString() },
+                    ];
+                    localStorage.setItem('zfp_topics', JSON.stringify(topics));
+                }
+            }
+            function saveTopics() {
+                localStorage.setItem('zfp_topics', JSON.stringify(topics));
+            }
+
+            // Kalenderwoche (für Themenanzeige)
+            function getCalendarWeek(dateStr) {
+                const d = new Date(dateStr);
+                d.setHours(0,0,0,0);
+                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+                const week1 = new Date(d.getFullYear(), 0, 4);
+                const weekNum = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+                return `KW ${weekNum} - ${d.getFullYear()}`;
+            }
+
+            function groupByWeek(items) {
+                const groups = {};
+                items.forEach(t => {
+                    const wk = getCalendarWeek(t.created_at);
+                    if (!groups[wk]) groups[wk] = [];
+                    groups[wk].push(t);
+                });
+                return Object.keys(groups).sort((a,b) => {
+                    const aNum = parseInt(a.split(' ')[1]) + (parseInt(a.split(' - ')[1])*100);
+                    const bNum = parseInt(b.split(' ')[1]) + (parseInt(b.split(' - ')[1])*100);
+                    return bNum - aNum;
+                }).reduce((acc, key) => { acc[key] = groups[key]; return acc; }, {});
+            }
+
+            // Themen rendern
+            function renderThemeList(horizon, containerId, filterCat='', filterStatus='') {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                let filtered = topics.filter(t => t.horizon === horizon);
+                if (filterCat) filtered = filtered.filter(t => t.category === filterCat);
+                if (filterStatus) filtered = filtered.filter(t => t.status === filterStatus);
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-secondary);"><i class="fas fa-folder-open fa-3x"></i><p>Keine Themen</p></div>`;
+                    return;
+                }
+
+                const grouped = groupByWeek(filtered);
+                let html = '';
+                for (let week in grouped) {
+                    html += `<div class="kw-group"><div class="kw-header"><i class="fas fa-calendar-week"></i> ${week} <span class="kw-count">${grouped[week].length}</span></div><div class="incident-grid">`;
+                    grouped[week].forEach(t => {
+                        const statusClass = t.status === 'closed' ? 'closed' : '';
+                        const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+                        const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
+                        const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
+
+                        let catClass = 'badge-category';
+                        if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
+                        else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
+                        else catClass = 'badge-category';
+
+                        html += `
+                            <div class="incident-card">
+                                <div class="card-header">
+                                    <div class="card-badges">
+                                        <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${t.horizon}</span>
+                                        <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
+                                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
+                                    </div>
+                                    <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
+                                </div>
+                                <div class="card-content" onclick="openTopicDetail('${t.id}')">
+                                    <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
+                                    ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
+                                    <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}...</span></div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="action-button view" onclick="openTopicDetail('${t.id}')"><i class="fas fa-eye"></i> Details</button>
+                                    <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                    ${t.status === 'open' ? 
+                                        `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
+                                        `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
+                                    <button class="action-button delete" onclick="showTopicPasswordModal('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+                container.innerHTML = html;
+            }
+
+            // Themen-Filter
+            window.filterLongTerm = function() {
+                const cat = document.getElementById('filterLangCategory').value;
+                const stat = document.getElementById('filterLangStatus').value;
+                renderThemeList('langfristig', 'langfristigList', cat, stat);
+            };
+            window.filterShortTerm = function() {
+                const cat = document.getElementById('filterShortCategory').value;
+                const stat = document.getElementById('filterShortStatus').value;
+                renderThemeList('kurzfristig', 'kurzfristigList', cat, stat);
+            };
+
+            // Themen speichern
+            window.saveTopic = function() {
+                const horizon = document.getElementById('horizon').value;
+                const category = document.getElementById('themeCategory').value;
+                const title = document.getElementById('title').value.trim();
+                const process = document.getElementById('themeProcess').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const measures = document.getElementById('measures').value.trim();
+                const editId = document.getElementById('themeEditId').value;
+
+                if (!horizon || !category || !title || !description) {
+                    document.getElementById('themeErrorText').innerText = 'Bitte alle Pflichtfelder ausfüllen';
+                    document.getElementById('themeErrorMessage').style.display = 'flex';
+                    setTimeout(() => document.getElementById('themeErrorMessage').style.display = 'none', 3000);
+                    return;
+                }
+
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                setTimeout(() => {
+                    if (editId) {
+                        const idx = topics.findIndex(t => t.id === editId);
+                        if (idx !== -1) {
+                            topics[idx] = { ...topics[idx], horizon, category, title, process, description, measures };
+                        }
+                    } else {
+                        const newTopic = {
+                            id: Date.now().toString(),
+                            horizon, category, title, process, description, measures,
+                            status: 'open',
+                            created_at: new Date().toISOString()
+                        };
+                        topics.push(newTopic);
+                    }
+                    saveTopics();
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.getElementById('themeSuccessMessage').style.display = 'flex';
+                    setTimeout(() => document.getElementById('themeSuccessMessage').style.display = 'none', 2000);
+                    document.getElementById('topicForm').reset();
+                    document.getElementById('themeEditId').value = '';
+                    if (horizon === 'langfristig') switchThemesTab('langfristig');
+                    else switchThemesTab('kurzfristig');
+                }, 300);
+            };
+
+            window.openTopicDetail = function(id) {
+                const t = topics.find(t => t.id === id);
+                if (!t) return;
+                alert(`Thema: ${t.title}\nKategorie: ${t.category}\nHorizont: ${t.horizon}\nBeschreibung: ${t.description}\nMaßnahmen: ${t.measures || 'keine'}\nStatus: ${t.status}`);
+            };
+
+            window.editTopic = function(id) {
+                const t = topics.find(t => t.id === id);
+                if (!t) return;
+                switchThemesTab('neu');
+                setTimeout(() => {
+                    document.getElementById('themeEditId').value = t.id;
+                    document.getElementById('horizon').value = t.horizon;
+                    document.getElementById('themeCategory').value = t.category;
+                    document.getElementById('title').value = t.title;
+                    document.getElementById('themeProcess').value = t.process || '';
+                    document.getElementById('description').value = t.description;
+                    document.getElementById('measures').value = t.measures || '';
+                }, 100);
+            };
+
+            window.closeTopic = function(id) {
+                const idx = topics.findIndex(t => t.id === id);
+                if (idx !== -1) {
+                    topics[idx].status = 'closed';
+                    saveTopics();
+                    refreshThemesTab();
+                }
+            };
+            window.reopenTopic = function(id) {
+                const idx = topics.findIndex(t => t.id === id);
+                if (idx !== -1) {
+                    topics[idx].status = 'open';
+                    saveTopics();
+                    refreshThemesTab();
+                }
+            };
+
+            let currentTopicDeleteId = null;
+            window.showTopicPasswordModal = function(id) {
+                currentTopicDeleteId = id;
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordError').classList.remove('show');
+                document.getElementById('passwordModal').classList.add('active');
+                // überschreiben der checkPasswordAndDelete für Themen
+                window.checkPasswordAndDelete = function() {
+                    const pw = document.getElementById('passwordInput').value;
+                    if (pw === SUPERVIOR_PASSWORD) {
+                        if (currentTopicDeleteId) {
+                            topics = topics.filter(t => t.id !== currentTopicDeleteId);
+                            saveTopics();
+                            closePasswordModal();
+                            refreshThemesTab();
+                        }
+                    } else {
+                        document.getElementById('passwordError').classList.add('show');
+                    }
+                };
+            };
+
+            function refreshThemesTab() {
+                const active = document.querySelector('#main-tab-themen .sub-tab-button.active')?.innerText;
+                if (active?.includes('Langfristig')) filterLongTerm();
+                else if (active?.includes('Kurzfristig')) filterShortTerm();
+            }
+
+            // Themen-Tab Umschaltung
+            window.switchThemesTab = function(tab) {
+                document.querySelectorAll('#main-tab-themen .sub-tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#main-tab-themen .sub-tab-content').forEach(c => c.classList.remove('active'));
+                if (tab === 'langfristig') {
+                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[0].classList.add('active');
+                    document.getElementById('themes-langfristig').classList.add('active');
+                    filterLongTerm();
+                } else if (tab === 'kurzfristig') {
+                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[1].classList.add('active');
+                    document.getElementById('themes-kurzfristig').classList.add('active');
+                    filterShortTerm();
+                } else if (tab === 'neu') {
+                    document.querySelectorAll('#main-tab-themen .sub-tab-button')[2].classList.add('active');
+                    document.getElementById('themes-neu').classList.add('active');
+                    document.getElementById('themeEditId').value = '';
+                    document.getElementById('topicForm').reset();
+                }
+            };
+
+            // ----- ORIGINAL FUNKTIONEN (vollständig übernommen) -----
             window.toggleTheme = function() {
                 const body = document.body;
                 const themeIcon = document.getElementById('themeIcon');
@@ -1323,46 +1730,42 @@
                 }
             };
 
-            // Gespeichertes Theme laden
             const savedTheme = localStorage.getItem('zfp-theme-preference');
             if (savedTheme) {
                 document.body.setAttribute('data-theme', savedTheme);
                 document.getElementById('themeIcon').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
             }
 
-            // Tab-Wechsel
-            window.switchTab = function(tab) {
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-                
-                if (tab === 'new') {
-                    document.querySelectorAll('.tab-button')[0].classList.add('active');
-                    document.getElementById('tab-new').classList.add('active');
-                    // Formular zurücksetzen wenn kein Bearbeitungsmodus
-                    if (!document.getElementById('editId').value) {
-                        resetForm();
-                    }
+            // Haupt-Tab Umschaltung
+            window.switchMainTab = function(tab) {
+                document.querySelectorAll('.main-tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.main-tab-content').forEach(c => c.classList.remove('active'));
+                if (tab === 'vorfaelle') {
+                    document.querySelectorAll('.main-tab-button')[0].classList.add('active');
+                    document.getElementById('main-tab-vorfaelle').classList.add('active');
                 } else {
-                    document.querySelectorAll('.tab-button')[1].classList.add('active');
-                    document.getElementById('tab-list').classList.add('active');
+                    document.querySelectorAll('.main-tab-button')[1].classList.add('active');
+                    document.getElementById('main-tab-themen').classList.add('active');
+                    loadTopics();
+                    filterLongTerm();
+                }
+            };
+
+            // Unter-Tab für Vorfälle
+            window.switchSubTab = function(tab) {
+                document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#main-tab-vorfaelle .sub-tab-content').forEach(c => c.classList.remove('active'));
+                if (tab === 'new') {
+                    document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[0].classList.add('active');
+                    document.getElementById('subtab-new').classList.add('active');
+                } else {
+                    document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[1].classList.add('active');
+                    document.getElementById('subtab-list').classList.add('active');
                     loadIncidents();
                 }
             };
 
-            // Formular zurücksetzen
-            function resetForm() {
-                document.getElementById('incidentForm').reset();
-                document.getElementById('editId').value = '';
-                document.getElementById('categorySpecificFields').innerHTML = '';
-                document.getElementById('imagePreview').innerHTML = '';
-                document.getElementById('machineNumberGroup').style.display = 'none';
-                document.getElementById('orderNumberGroup').style.display = 'none';
-                compressedImages = [];
-                existingImages = [];
-                document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Vorfall dokumentieren';
-            }
-
-            // Kategorie-Felder aktualisieren
+            // Kategorie-Felder aktualisieren (original)
             window.updateCategoryFields = function() {
                 const category = document.getElementById('category').value;
                 const categorySpecificFields = document.getElementById('categorySpecificFields');
@@ -1372,7 +1775,6 @@
                 categorySpecificFields.innerHTML = '';
                 
                 if (category === 'ZfP Prüfung') {
-                    // Prüfungs-Felder anzeigen
                     machineGroup.style.display = 'none';
                     orderGroup.style.display = 'block';
                     document.getElementById('machineNumber').required = false;
@@ -1394,7 +1796,6 @@
                         </div>
                     `;
                 } else if (category === 'ZfP Anlage') {
-                    // Anlagen-Felder anzeigen
                     machineGroup.style.display = 'block';
                     orderGroup.style.display = 'none';
                     document.getElementById('machineNumber').required = true;
@@ -1420,12 +1821,12 @@
                 }
             };
 
-            // Bild Upload
-            document.getElementById('uploadButton').addEventListener('click', function() {
+            // Bild Upload (original)
+            document.getElementById('uploadButton')?.addEventListener('click', function() {
                 document.getElementById('imageUpload').click();
             });
 
-            document.getElementById('imageUpload').addEventListener('change', async function(e) {
+            document.getElementById('imageUpload')?.addEventListener('change', async function(e) {
                 const files = Array.from(e.target.files);
                 
                 for (const file of files) {
@@ -1445,8 +1846,7 @@
                 }
             });
 
-            // Bildkomprimierung
-            function compressImage(file) {
+            async function compressImage(file) {
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
@@ -1484,7 +1884,6 @@
                 });
             }
 
-            // Bild-Preview hinzufügen
             function addImagePreview(imageData, isExisting = false) {
                 const previewGrid = document.getElementById('imagePreview');
                 const previewItem = document.createElement('div');
@@ -1498,7 +1897,6 @@
                 previewGrid.appendChild(previewItem);
             }
 
-            // Bild entfernen
             window.removeImage = function(button, isExisting = false) {
                 const previewItem = button.parentElement;
                 const index = Array.from(previewItem.parentElement.children).indexOf(previewItem);
@@ -1512,9 +1910,8 @@
                 previewItem.remove();
             };
 
-            // Vorfall speichern (neu oder bearbeiten)
+            // Vorfall speichern (original)
             window.saveIncident = async function() {
-                // Formular validierung
                 const editId = document.getElementById('editId').value;
                 const category = document.getElementById('category').value;
                 const machineNumber = document.getElementById('machineNumber').value;
@@ -1529,7 +1926,6 @@
                     return;
                 }
 
-                // Kategorie-spezifische Validierung
                 if (category === 'ZfP Anlage' && !machineNumber) {
                     showError('Bitte geben Sie eine Maschinennummer ein.');
                     return;
@@ -1540,7 +1936,6 @@
                     return;
                 }
 
-                // Fehlerbild/Fehlerart validieren
                 const errorType = document.getElementById('errorType');
                 if (errorType && !errorType.value) {
                     showError('Bitte wählen Sie ein Fehlerbild / eine Fehlerart aus.');
@@ -1553,7 +1948,6 @@
                 try {
                     let imageUrls = [...existingImages];
                     
-                    // Neue Bilder hochladen
                     for (const image of compressedImages) {
                         const fileName = `incident_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
                         
@@ -1573,7 +1967,6 @@
                         imageUrls.push(publicUrl);
                     }
                     
-                    // Daten für Supabase vorbereiten
                     const formData = {
                         category: category,
                         process: process,
@@ -1583,7 +1976,6 @@
                         image_urls: imageUrls.length > 0 ? imageUrls : null,
                     };
                     
-                    // Nummern je nach Kategorie
                     if (category === 'ZfP Anlage') {
                         formData.machine_number = machineNumber;
                         formData.order_number = null;
@@ -1592,7 +1984,6 @@
                         formData.machine_number = null;
                     }
                     
-                    // Kategorie-spezifische Felder
                     if (category === 'ZfP Prüfung') {
                         formData.error_type = document.getElementById('errorType').value;
                         const typeInput = document.getElementById('type');
@@ -1606,7 +1997,6 @@
                     let result;
                     
                     if (editId) {
-                        // Update existing incident
                         result = await supabase
                             .from('incidents')
                             .update(formData)
@@ -1615,7 +2005,6 @@
                         if (result.error) throw result.error;
                         showSuccess('Vorfall erfolgreich aktualisiert!');
                     } else {
-                        // Insert new incident
                         formData.status = 'open';
                         formData.created_at = new Date().toISOString();
                         
@@ -1627,11 +2016,8 @@
                         showSuccess('Vorfall erfolgreich dokumentiert!');
                     }
                     
-                    // Formular zurücksetzen
                     resetForm();
-                    
-                    // Zur Liste wechseln
-                    switchTab('list');
+                    switchSubTab('list');
                     
                 } catch (error) {
                     console.error('Fehler:', error);
@@ -1641,194 +2027,39 @@
                 }
             };
 
-            // Fehlermeldung anzeigen
+            function resetForm() {
+                document.getElementById('incidentForm').reset();
+                document.getElementById('editId').value = '';
+                document.getElementById('categorySpecificFields').innerHTML = '';
+                document.getElementById('imagePreview').innerHTML = '';
+                document.getElementById('machineNumberGroup').style.display = 'none';
+                document.getElementById('orderNumberGroup').style.display = 'none';
+                compressedImages = [];
+                existingImages = [];
+                document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Vorfall dokumentieren';
+            }
+
             function showError(message) {
                 document.getElementById('errorText').textContent = message;
                 document.getElementById('errorMessage').style.display = 'flex';
-                
                 setTimeout(() => {
                     document.getElementById('errorMessage').style.display = 'none';
                 }, 5000);
             }
 
-            // Fehlermeldung ausblenden
             function hideError() {
                 document.getElementById('errorMessage').style.display = 'none';
             }
 
-            // Erfolgsmeldung anzeigen
             function showSuccess(message) {
                 document.getElementById('successMessage').querySelector('span').textContent = message;
                 document.getElementById('successMessage').style.display = 'flex';
-                
                 setTimeout(() => {
                     document.getElementById('successMessage').style.display = 'none';
                 }, 3000);
             }
 
-            // Funktion zur Berechnung der Kalenderwoche
-            function getCalendarWeek(date) {
-                const d = new Date(date);
-                d.setHours(0, 0, 0, 0);
-                // Auf Donnerstag der aktuellen Woche setzen
-                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
-                const week1 = new Date(d.getFullYear(), 0, 4);
-                const weekNumber = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-                
-                // Format: "KW 12 - 2024"
-                return `KW ${weekNumber} - ${d.getFullYear()}`;
-            }
-
-            // Vorfälle nach KW gruppieren
-            function groupIncidentsByWeek(incidents) {
-                const grouped = {};
-                
-                incidents.forEach(incident => {
-                    const week = getCalendarWeek(incident.created_at);
-                    if (!grouped[week]) {
-                        grouped[week] = [];
-                    }
-                    grouped[week].push(incident);
-                });
-                
-                // Nach Datum sortieren (neueste KW zuerst)
-                const sortedWeeks = Object.keys(grouped).sort((a, b) => {
-                    const weekA = parseInt(a.split(' ')[1]);
-                    const yearA = parseInt(a.split(' - ')[1]);
-                    const weekB = parseInt(b.split(' ')[1]);
-                    const yearB = parseInt(b.split(' - ')[1]);
-                    
-                    if (yearA !== yearB) return yearB - yearA;
-                    return weekB - weekA;
-                });
-                
-                const sortedGrouped = {};
-                sortedWeeks.forEach(week => {
-                    sortedGrouped[week] = grouped[week];
-                });
-                
-                return sortedGrouped;
-            }
-
-            // Vorfälle anzeigen (gruppiert nach KW)
-            function displayIncidents(incidents) {
-                const container = document.getElementById('incidentList');
-                
-                if (incidents.length === 0) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 60px; color: var(--text-secondary);">
-                            <i class="fas fa-folder-open" style="font-size: 64px; margin-bottom: 20px;"></i>
-                            <p style="font-size: 18px;">Keine Vorfälle gefunden</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                const groupedIncidents = groupIncidentsByWeek(incidents);
-                let html = '';
-                
-                for (const [week, weekIncidents] of Object.entries(groupedIncidents)) {
-                    html += `
-                        <div class="kw-group">
-                            <div class="kw-header">
-                                <i class="fas fa-calendar-week"></i>
-                                ${week}
-                                <span class="kw-count">${weekIncidents.length} Vorfälle</span>
-                            </div>
-                            <div class="incident-grid">
-                    `;
-                    
-                    weekIncidents.forEach(incident => {
-                        const date = new Date(incident.created_at).toLocaleDateString('de-DE');
-                        const categoryIcon = incident.category === 'ZfP Anlage' ? 'fa-industry' : 'fa-search';
-                        const statusClass = incident.status === 'closed' ? 'closed' : '';
-                        const statusIcon = incident.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
-                        const statusText = incident.status === 'open' ? 'Offen' : 'Geschlossen';
-                        
-                        // Anzeigenummer je nach Kategorie
-                        let numberDisplay = '';
-                        if (incident.category === 'ZfP Anlage' && incident.machine_number) {
-                            numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-industry"></i> Maschine:</span><span class="info-value">${incident.machine_number}</span></div>`;
-                        } else if (incident.category === 'ZfP Prüfung' && incident.order_number) {
-                            numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-hashtag"></i> Auftrag:</span><span class="info-value">${incident.order_number}</span></div>`;
-                        }
-                        
-                        html += `
-                            <div class="incident-card">
-                                <div class="card-header">
-                                    <div class="card-badges">
-                                        <span class="badge badge-category">
-                                            <i class="fas ${categoryIcon}"></i>
-                                            ${incident.category}
-                                        </span>
-                                        <span class="badge badge-method">
-                                            <i class="fas fa-flask"></i>
-                                            ${incident.inspection_method}
-                                        </span>
-                                        <span class="badge badge-status ${statusClass}">
-                                            <i class="fas ${statusIcon}"></i>
-                                            ${statusText}
-                                        </span>
-                                    </div>
-                                    <div class="card-date">
-                                        <i class="far fa-calendar-alt"></i>
-                                        ${date}
-                                    </div>
-                                </div>
-                                
-                                <div class="card-content" onclick="openIncident('${incident.id}')">
-                                    ${numberDisplay}
-                                    <div class="info-row">
-                                        <span class="info-label"><i class="fas fa-building"></i> Prozess:</span>
-                                        <span class="info-value">${incident.process}</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-label"><i class="fas fa-exclamation"></i> Problem:</span>
-                                        <span class="info-value">${incident.problem_description.substring(0, 80)}${incident.problem_description.length > 80 ? '...' : ''}</span>
-                                    </div>
-                                    
-                                    <div class="card-preview">
-                                        ${incident.image_urls && incident.image_urls.length > 0 ? 
-                                            `<img src="${incident.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${incident.image_urls[0]}', '_blank')">` : 
-                                            '<div style="width: 60px; height: 60px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary); font-size: 24px;"></i></div>'
-                                        }
-                                    </div>
-                                </div>
-                                
-                                <div class="card-actions">
-                                    <button class="action-button view" onclick="openIncident('${incident.id}')">
-                                        <i class="fas fa-eye"></i> Details
-                                    </button>
-                                    <button class="action-button edit" onclick="editIncident('${incident.id}')">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    ${incident.status === 'open' ? `
-                                        <button class="action-button close" onclick="closeIncident('${incident.id}')">
-                                            <i class="fas fa-check-circle"></i> Fertig
-                                        </button>
-                                    ` : `
-                                        <button class="action-button reopen" onclick="reopenIncident('${incident.id}')">
-                                            <i class="fas fa-undo-alt"></i> Wieder öffnen
-                                        </button>
-                                    `}
-                                    <button class="action-button delete" onclick="showPasswordModalForId('${incident.id}')">
-                                        <i class="fas fa-trash"></i> Löschen
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                container.innerHTML = html;
-            }
-
-            // Vorfälle laden
+            // Vorfälle laden und anzeigen (original)
             async function loadIncidents() {
                 document.getElementById('loadingOverlay').style.display = 'flex';
                 
@@ -1855,61 +2086,132 @@
                 }
             }
 
-            // Vorfälle filtern
+            function getCalendarWeekIncident(date) {
+                const d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+                const week1 = new Date(d.getFullYear(), 0, 4);
+                const weekNumber = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+                return `KW ${weekNumber} - ${d.getFullYear()}`;
+            }
+
+            function groupIncidentsByWeek(incidents) {
+                const grouped = {};
+                incidents.forEach(incident => {
+                    const week = getCalendarWeekIncident(incident.created_at);
+                    if (!grouped[week]) grouped[week] = [];
+                    grouped[week].push(incident);
+                });
+                const sortedWeeks = Object.keys(grouped).sort((a, b) => {
+                    const weekA = parseInt(a.split(' ')[1]);
+                    const yearA = parseInt(a.split(' - ')[1]);
+                    const weekB = parseInt(b.split(' ')[1]);
+                    const yearB = parseInt(b.split(' - ')[1]);
+                    if (yearA !== yearB) return yearB - yearA;
+                    return weekB - weekA;
+                });
+                const sortedGrouped = {};
+                sortedWeeks.forEach(week => { sortedGrouped[week] = grouped[week]; });
+                return sortedGrouped;
+            }
+
+            function displayIncidents(incidents) {
+                const container = document.getElementById('incidentList');
+                if (incidents.length === 0) {
+                    container.innerHTML = `<div style="text-align: center; padding: 60px; color: var(--text-secondary);"><i class="fas fa-folder-open" style="font-size: 64px; margin-bottom: 20px;"></i><p style="font-size: 18px;">Keine Vorfälle gefunden</p></div>`;
+                    return;
+                }
+                const groupedIncidents = groupIncidentsByWeek(incidents);
+                let html = '';
+                for (const [week, weekIncidents] of Object.entries(groupedIncidents)) {
+                    html += `<div class="kw-group"><div class="kw-header"><i class="fas fa-calendar-week"></i> ${week}<span class="kw-count">${weekIncidents.length} Vorfälle</span></div><div class="incident-grid">`;
+                    weekIncidents.forEach(incident => {
+                        const date = new Date(incident.created_at).toLocaleDateString('de-DE');
+                        const categoryIcon = incident.category === 'ZfP Anlage' ? 'fa-industry' : 'fa-search';
+                        const statusClass = incident.status === 'closed' ? 'closed' : '';
+                        const statusIcon = incident.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+                        const statusText = incident.status === 'open' ? 'Offen' : 'Geschlossen';
+                        
+                        let numberDisplay = '';
+                        if (incident.category === 'ZfP Anlage' && incident.machine_number) {
+                            numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-industry"></i> Maschine:</span><span class="info-value">${incident.machine_number}</span></div>`;
+                        } else if (incident.category === 'ZfP Prüfung' && incident.order_number) {
+                            numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-hashtag"></i> Auftrag:</span><span class="info-value">${incident.order_number}</span></div>`;
+                        }
+                        
+                        html += `
+                            <div class="incident-card">
+                                <div class="card-header">
+                                    <div class="card-badges">
+                                        <span class="badge badge-category"><i class="fas ${categoryIcon}"></i> ${incident.category}</span>
+                                        <span class="badge badge-method"><i class="fas fa-flask"></i> ${incident.inspection_method}</span>
+                                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span>
+                                    </div>
+                                    <div class="card-date"><i class="far fa-calendar-alt"></i> ${date}</div>
+                                </div>
+                                <div class="card-content" onclick="openIncident('${incident.id}')">
+                                    ${numberDisplay}
+                                    <div class="info-row"><span class="info-label"><i class="fas fa-building"></i> Prozess:</span><span class="info-value">${incident.process}</span></div>
+                                    <div class="info-row"><span class="info-label"><i class="fas fa-exclamation"></i> Problem:</span><span class="info-value">${incident.problem_description.substring(0, 80)}${incident.problem_description.length > 80 ? '...' : ''}</span></div>
+                                    <div class="card-preview">
+                                        ${incident.image_urls && incident.image_urls.length > 0 ? 
+                                            `<img src="${incident.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${incident.image_urls[0]}', '_blank')">` : 
+                                            '<div style="width: 60px; height: 60px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary); font-size: 24px;"></i></div>'
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="action-button view" onclick="openIncident('${incident.id}')"><i class="fas fa-eye"></i> Details</button>
+                                    <button class="action-button edit" onclick="editIncident('${incident.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                    ${incident.status === 'open' ? 
+                                        `<button class="action-button close" onclick="closeIncident('${incident.id}')"><i class="fas fa-check-circle"></i> Fertig</button>` : 
+                                        `<button class="action-button reopen" onclick="reopenIncident('${incident.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
+                                    <button class="action-button delete" onclick="showPasswordModalForId('${incident.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+                container.innerHTML = html;
+            }
+
             window.filterIncidents = function() {
                 const searchTerm = document.getElementById('searchInput').value.toLowerCase();
                 const categoryFilter = document.getElementById('categoryFilter').value;
                 const statusFilter = document.getElementById('statusFilter').value;
                 
                 const filtered = allIncidents.filter(incident => {
-                    const searchString = (incident.problem_description + ' ' + 
-                                        (incident.machine_number || '') + ' ' + 
-                                        (incident.order_number || '') + ' ' + 
-                                        (incident.process || '')).toLowerCase();
+                    const searchString = (incident.problem_description + ' ' + (incident.machine_number || '') + ' ' + (incident.order_number || '') + ' ' + (incident.process || '')).toLowerCase();
                     const matchesSearch = !searchTerm || searchString.includes(searchTerm);
-                    
                     const matchesCategory = !categoryFilter || incident.category === categoryFilter;
                     const matchesStatus = !statusFilter || incident.status === statusFilter;
-                    
                     return matchesSearch && matchesCategory && matchesStatus;
                 });
-                
                 displayIncidents(filtered);
             };
 
-            // Vorfall öffnen
             window.openIncident = async function(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
-                
                 try {
-                    const { data, error } = await supabase
-                        .from('incidents')
-                        .select('*')
-                        .eq('id', id)
-                        .single();
-                    
+                    const { data, error } = await supabase.from('incidents').select('*').eq('id', id).single();
                     if (error) throw error;
-                    
                     currentIncidentId = id;
                     showIncidentDetails(data);
                 } catch (error) {
-                    console.error('Fehler beim Laden:', error);
                     showError('Fehler beim Laden der Details: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
             };
 
-            // Details anzeigen
             function showIncidentDetails(incident) {
                 const modalBody = document.getElementById('modalBody');
                 const date = new Date(incident.created_at).toLocaleString('de-DE');
-                const week = getCalendarWeek(incident.created_at);
+                const week = getCalendarWeekIncident(incident.created_at);
                 
-                // Buttons im Modal anpassen
                 const closeBtn = document.getElementById('modalCloseBtn');
                 const reopenBtn = document.getElementById('modalReopenBtn');
-                
                 if (incident.status === 'closed') {
                     closeBtn.style.display = 'none';
                     reopenBtn.style.display = 'inline-flex';
@@ -1918,7 +2220,6 @@
                     reopenBtn.style.display = 'none';
                 }
                 
-                // Nummer anzeigen
                 let numberDisplay = '';
                 if (incident.category === 'ZfP Anlage' && incident.machine_number) {
                     numberDisplay = `<div class="detail-item"><div class="detail-label">Maschinennummer</div><div class="detail-value">${incident.machine_number}</div></div>`;
@@ -1930,39 +2231,14 @@
                     <div class="detail-section">
                         <h3><i class="fas fa-info-circle"></i> Allgemeine Informationen</h3>
                         <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Kategorie</div>
-                                <div class="detail-value">${incident.category}</div>
-                            </div>
+                            <div class="detail-item"><div class="detail-label">Kategorie</div><div class="detail-value">${incident.category}</div></div>
                             ${numberDisplay}
-                            <div class="detail-item">
-                                <div class="detail-label">Prozess</div>
-                                <div class="detail-value">${incident.process}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Segment</div>
-                                <div class="detail-value">${incident.segment}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Prüfverfahren</div>
-                                <div class="detail-value">${incident.inspection_method}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Kalenderwoche</div>
-                                <div class="detail-value">${week}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Status</div>
-                                <div class="detail-value">
-                                    <span class="badge badge-status ${incident.status === 'closed' ? 'closed' : ''}">
-                                        ${incident.status === 'open' ? 'Offen' : 'Geschlossen'}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Erstellt am</div>
-                                <div class="detail-value">${date}</div>
-                            </div>
+                            <div class="detail-item"><div class="detail-label">Prozess</div><div class="detail-value">${incident.process}</div></div>
+                            <div class="detail-item"><div class="detail-label">Segment</div><div class="detail-value">${incident.segment}</div></div>
+                            <div class="detail-item"><div class="detail-label">Prüfverfahren</div><div class="detail-value">${incident.inspection_method}</div></div>
+                            <div class="detail-item"><div class="detail-label">Kalenderwoche</div><div class="detail-value">${week}</div></div>
+                            <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value"><span class="badge badge-status ${incident.status === 'closed' ? 'closed' : ''}">${incident.status === 'open' ? 'Offen' : 'Geschlossen'}</span></div></div>
+                            <div class="detail-item"><div class="detail-label">Erstellt am</div><div class="detail-value">${date}</div></div>
                         </div>
                     </div>
                 `;
@@ -1972,16 +2248,8 @@
                         <div class="detail-section">
                             <h3><i class="fas fa-exclamation-triangle"></i> Fehlerdetails</h3>
                             <div class="detail-grid">
-                                <div class="detail-item">
-                                    <div class="detail-label">Fehlerart</div>
-                                    <div class="detail-value">${incident.error_type}</div>
-                                </div>
-                                ${incident.type ? `
-                                <div class="detail-item">
-                                    <div class="detail-label">Type / Modell</div>
-                                    <div class="detail-value">${incident.type}</div>
-                                </div>
-                                ` : ''}
+                                <div class="detail-item"><div class="detail-label">Fehlerart</div><div class="detail-value">${incident.error_type}</div></div>
+                                ${incident.type ? `<div class="detail-item"><div class="detail-label">Type / Modell</div><div class="detail-value">${incident.type}</div></div>` : ''}
                             </div>
                         </div>
                     `;
@@ -1999,9 +2267,7 @@
                         <div class="detail-section">
                             <h3><i class="fas fa-images"></i> Bilder</h3>
                             <div class="image-gallery">
-                                ${incident.image_urls.map(url => `
-                                    <img src="${url}" class="gallery-image" onclick="window.open('${url}', '_blank')">
-                                `).join('')}
+                                ${incident.image_urls.map(url => `<img src="${url}" class="gallery-image" onclick="window.open('${url}', '_blank')">`).join('')}
                             </div>
                         </div>
                     `;
@@ -2011,104 +2277,65 @@
                 document.getElementById('detailModal').classList.add('active');
             }
 
-            // Modal schließen
             window.closeModal = function() {
                 document.getElementById('detailModal').classList.remove('active');
                 currentIncidentId = null;
             };
 
-            // Vorfall bearbeiten (vom Modal aus)
             window.editIncidentFromModal = function() {
                 if (currentIncidentId) {
                     closeModal();
                     editIncident(currentIncidentId);
-                } else {
-                    console.error('Keine Incident ID vorhanden');
-                    showError('Fehler beim Bearbeiten: Keine ID gefunden');
                 }
             };
 
-            // Vorfall bearbeiten
             window.editIncident = async function(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
-                
                 try {
-                    const { data, error } = await supabase
-                        .from('incidents')
-                        .select('*')
-                        .eq('id', id)
-                        .single();
-                    
+                    const { data, error } = await supabase.from('incidents').select('*').eq('id', id).single();
                     if (error) throw error;
                     
-                    // Zum Eingabe-Tab wechseln
-                    switchTab('new');
-                    
-                    // Kurze Pause damit der Tab geladen ist
+                    switchSubTab('new');
                     setTimeout(() => {
-                        // Formular mit den Daten füllen
                         document.getElementById('editId').value = data.id;
                         document.getElementById('category').value = data.category || '';
-                        
-                        // Kategorie-spezifische Felder aktualisieren
                         updateCategoryFields();
-                        
-                        // Weitere Felder nach der Aktualisierung füllen
                         setTimeout(() => {
                             if (data.category === 'ZfP Anlage') {
                                 document.getElementById('machineNumber').value = data.machine_number || '';
                             } else if (data.category === 'ZfP Prüfung') {
                                 document.getElementById('orderNumber').value = data.order_number || '';
-                                
                                 const typeInput = document.getElementById('type');
-                                if (typeInput && data.type) {
-                                    typeInput.value = data.type;
-                                }
+                                if (typeInput && data.type) typeInput.value = data.type;
                             }
-                            
                             document.getElementById('process').value = data.process || '';
                             document.getElementById('segment').value = data.segment || '';
                             document.getElementById('inspectionMethod').value = data.inspection_method || '';
                             document.getElementById('problemDescription').value = data.problem_description || '';
-                            
                             const errorTypeSelect = document.getElementById('errorType');
-                            if (errorTypeSelect && data.error_type) {
-                                errorTypeSelect.value = data.error_type;
-                            }
+                            if (errorTypeSelect && data.error_type) errorTypeSelect.value = data.error_type;
                         }, 100);
                         
-                        // Vorhandene Bilder anzeigen
                         existingImages = data.image_urls || [];
                         const previewGrid = document.getElementById('imagePreview');
                         previewGrid.innerHTML = '';
-                        
-                        existingImages.forEach(url => {
-                            addImagePreview(url, true);
-                        });
-                        
-                        // Submit Button Text ändern
+                        existingImages.forEach(url => addImagePreview(url, true));
                         document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Änderungen speichern';
-                        
                         showSuccess('Vorfall kann bearbeitet werden');
                     }, 200);
-                    
                 } catch (error) {
-                    console.error('Fehler beim Laden für Bearbeitung:', error);
                     showError('Fehler beim Laden: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
             };
 
-            // Vorfall als erledigt markieren (vom Modal aus)
             window.closeIncidentFromModal = function() {
                 if (currentIncidentId) {
                     closeIncident(currentIncidentId);
                     closeModal();
                 }
             };
-
-            // Vorfall wieder öffnen (vom Modal aus)
             window.reopenIncidentFromModal = function() {
                 if (currentIncidentId) {
                     reopenIncident(currentIncidentId);
@@ -2116,158 +2343,88 @@
                 }
             };
 
-            // Passwort Modal für Löschen anzeigen (mit ID)
             window.showPasswordModalForId = function(id) {
                 currentIncidentId = id;
                 pendingAction = 'delete';
                 document.getElementById('passwordInput').value = '';
                 document.getElementById('passwordError').classList.remove('show');
                 document.getElementById('passwordModal').classList.add('active');
+                window.checkPasswordAndDelete = function() {
+                    const password = document.getElementById('passwordInput').value;
+                    if (password === SUPERVIOR_PASSWORD) {
+                        closePasswordModal();
+                        if (currentIncidentId) deleteIncident(currentIncidentId);
+                    } else {
+                        document.getElementById('passwordError').classList.add('show');
+                    }
+                };
             };
 
-            // Passwort Modal anzeigen (vom Modal aus)
             window.showPasswordModal = function() {
-                pendingAction = 'delete';
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordError').classList.remove('show');
-                document.getElementById('passwordModal').classList.add('active');
+                // wird überschrieben
             };
 
-            // Passwort Modal schließen
             window.closePasswordModal = function() {
                 document.getElementById('passwordModal').classList.remove('active');
                 pendingAction = null;
             };
 
-            // Passwort prüfen und löschen
-            window.checkPasswordAndDelete = function() {
-                const password = document.getElementById('passwordInput').value;
-                
-                if (password === SUPERVIOR_PASSWORD) {
-                    // Passwort korrekt - löschen
-                    closePasswordModal();
-                    if (currentIncidentId) {
-                        deleteIncident(currentIncidentId);
-                    }
-                } else {
-                    // Falsches Passwort
-                    document.getElementById('passwordError').classList.add('show');
-                }
-            };
-
-            // Vorfall löschen
             async function deleteIncident(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
-                
                 try {
-                    // 1. Vorfall laden
-                    const { data: incident, error: fetchError } = await supabase
-                        .from('incidents')
-                        .select('*')
-                        .eq('id', id)
-                        .maybeSingle();
+                    const { data: incident, error: fetchError } = await supabase.from('incidents').select('*').eq('id', id).maybeSingle();
+                    if (fetchError) throw new Error('Vorfall nicht gefunden: ' + fetchError.message);
+                    if (!incident) throw new Error('Vorfall nicht gefunden');
                     
-                    if (fetchError) {
-                        console.error('Fehler beim Laden des Vorfalls:', fetchError);
-                        throw new Error('Vorfall nicht gefunden: ' + fetchError.message);
-                    }
-                    
-                    if (!incident) {
-                        throw new Error('Vorfall nicht gefunden');
-                    }
-                    
-                    // 2. Bilder löschen
                     const imageUrls = incident.image_urls || [];
-                    if (imageUrls.length > 0) {
-                        for (const url of imageUrls) {
-                            try {
-                                const urlParts = url.split('/');
-                                const fileName = urlParts[urlParts.length - 1];
-                                
-                                const { error: deleteError } = await supabase.storage
-                                    .from('incident_images')
-                                    .remove([fileName]);
-                                
-                                if (deleteError) {
-                                    console.error('Fehler beim Löschen des Bildes:', deleteError);
-                                }
-                            } catch (imageError) {
-                                console.error('Fehler bei Bild-Löschung:', imageError);
-                            }
-                        }
+                    for (const url of imageUrls) {
+                        try {
+                            const fileName = url.split('/').pop();
+                            await supabase.storage.from('incident_images').remove([fileName]);
+                        } catch (imageError) { console.error('Bild löschen fehlgeschlagen'); }
                     }
                     
-                    // 3. Vorfall aus Datenbank löschen
-                    const { error: deleteError } = await supabase
-                        .from('incidents')
-                        .delete()
-                        .eq('id', id);
-                    
-                    if (deleteError) {
-                        throw new Error('Datenbank-Fehler: ' + deleteError.message);
-                    }
+                    const { error: deleteError } = await supabase.from('incidents').delete().eq('id', id);
+                    if (deleteError) throw new Error('Datenbank-Fehler: ' + deleteError.message);
                     
                     showSuccess('Vorfall wurde gelöscht');
-                    
-                    // Modal schließen falls offen
                     closeModal();
-                    
-                    // Liste neu laden
-                    await loadIncidents();
-                    
+                    loadIncidents();
                 } catch (error) {
-                    console.error('Hauptfehler beim Löschen:', error);
                     showError('Fehler beim Löschen: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
             }
 
-            // Vorfall als erledigt markieren
             window.closeIncident = async function(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
-                
                 try {
-                    const { error } = await supabase
-                        .from('incidents')
-                        .update({ status: 'closed' })
-                        .eq('id', id);
-                    
+                    const { error } = await supabase.from('incidents').update({ status: 'closed' }).eq('id', id);
                     if (error) throw error;
-                    
                     showSuccess('Vorfall wurde als erledigt markiert');
                     loadIncidents();
                 } catch (error) {
-                    console.error('Fehler beim Schließen:', error);
                     showError('Fehler beim Schließen: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
             };
 
-            // Vorfall wieder öffnen
             window.reopenIncident = async function(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
-                
                 try {
-                    const { error } = await supabase
-                        .from('incidents')
-                        .update({ status: 'open' })
-                        .eq('id', id);
-                    
+                    const { error } = await supabase.from('incidents').update({ status: 'open' }).eq('id', id);
                     if (error) throw error;
-                    
                     showSuccess('Vorfall wurde wieder geöffnet');
                     loadIncidents();
                 } catch (error) {
-                    console.error('Fehler beim Öffnen:', error);
                     showError('Fehler beim Öffnen: ' + error.message);
                 } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
             };
 
-            // Löschen bestätigen (für andere Aktionen)
             window.confirmDelete = function(id) {
                 currentIncidentId = id;
                 document.getElementById('confirmTitle').textContent = 'Vorfall löschen';
@@ -2279,18 +2436,15 @@
                 document.getElementById('confirmModal').classList.add('active');
             };
 
-            // Confirm Modal schließen
             window.closeConfirmModal = function() {
                 document.getElementById('confirmModal').classList.remove('active');
             };
 
             // Initialisierung
             document.addEventListener('DOMContentLoaded', function() {
-                // Event-Listener für Kategorie-Änderung
-                document.getElementById('category').addEventListener('change', updateCategoryFields);
-                
-                // Stellen Sie sicher, dass die Kategorie-Felder beim Laden korrekt sind
+                document.getElementById('category')?.addEventListener('change', updateCategoryFields);
                 updateCategoryFields();
+                loadTopics(); // Themen für später
             });
         })();
     </script>
