@@ -3,12 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ZfP Vorfälle + Themen · Komplett · Supabase Sync</title><!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ZfP Vorfälle + Themen · Löschen FIX · Supabase Sync</title>
+    <title>ZfP Vorfälle + Themen · Komplett · Supabase Sync</title>
     <style>
         * {
             margin: 0;
@@ -214,7 +209,7 @@
             display: block;
         }
 
-        /* Unter-Tab Navigation */
+        /* Unter-Tab Navigation - GETAUSCHT: Jetzt ist Liste zuerst, dann Neuer Vorfall */
         .sub-tab-navigation {
             display: flex;
             gap: 10px;
@@ -1087,17 +1082,49 @@
         <!-- Haupt-Tab: Vorfälle -->
         <div id="main-tab-vorfaelle" class="main-tab-content active">
             <div class="sub-tab-navigation">
-                <button class="sub-tab-button active" onclick="switchSubTab('new')">
+                <button class="sub-tab-button active" onclick="switchSubTab('list')">
+                    <i class="fas fa-list"></i>
+                    Vorfälle Liste
+                </button>
+                <button class="sub-tab-button" onclick="switchSubTab('new')">
                     <i class="fas fa-plus-circle"></i>
                     Neuer Vorfall
                 </button>
-                <button class="sub-tab-button" onclick="switchSubTab('list')">
-                    <i class="fas fa-list"></i>
-                    Vorfälle Liste (KW)
-                </button>
             </div>
 
-            <div id="subtab-new" class="sub-tab-content active">
+            <div id="subtab-list" class="sub-tab-content active">
+                <div class="list-header">
+                    <div class="list-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        Vorfälle gruppiert nach Kalenderwochen
+                    </div>
+                    <div class="filter-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Suchen..." onkeyup="filterIncidents()">
+                        </div>
+                        <select class="filter-select" id="categoryFilter" onchange="filterIncidents()">
+                            <option value="">Alle Kategorien</option>
+                            <option value="ZfP Anlage">ZfP Anlage</option>
+                            <option value="ZfP Prüfung">ZfP Prüfung</option>
+                        </select>
+                        <select class="filter-select" id="statusFilter" onchange="filterIncidents()">
+                            <option value="">Alle Status</option>
+                            <option value="open">Offen</option>
+                            <option value="closed">Geschlossen</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="incidentList" class="incident-list-container">
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <p style="font-size: 18px;">Lade Vorfälle...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="subtab-new" class="sub-tab-content">
                 <div class="success-message" id="successMessage">
                     <i class="fas fa-check-circle"></i>
                     <span>Vorfall erfolgreich dokumentiert!</span>
@@ -1192,41 +1219,9 @@
                     </div>
                 </form>
             </div>
-
-            <div id="subtab-list" class="sub-tab-content">
-                <div class="list-header">
-                    <div class="list-title">
-                        <i class="fas fa-calendar-week"></i>
-                        Vorfälle gruppiert nach Kalenderwochen
-                    </div>
-                    <div class="filter-section">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="searchInput" placeholder="Suchen..." onkeyup="filterIncidents()">
-                        </div>
-                        <select class="filter-select" id="categoryFilter" onchange="filterIncidents()">
-                            <option value="">Alle Kategorien</option>
-                            <option value="ZfP Anlage">ZfP Anlage</option>
-                            <option value="ZfP Prüfung">ZfP Prüfung</option>
-                        </select>
-                        <select class="filter-select" id="statusFilter" onchange="filterIncidents()">
-                            <option value="">Alle Status</option>
-                            <option value="open">Offen</option>
-                            <option value="closed">Geschlossen</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="incidentList" class="incident-list-container">
-                    <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 20px;"></i>
-                        <p style="font-size: 18px;">Lade Vorfälle...</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Haupt-Tab: Themen -->
+        <!-- Haupt-Tab: Themen (unverändert) -->
         <div id="main-tab-themen" class="main-tab-content">
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchThemesTab('langfristig')">
@@ -1342,7 +1337,7 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- EIN EINZIGES MODAL FÜR BEIDE (Vorfälle UND Themen) - OHNE BEARBEITEN BUTTON -->
+    <!-- MODAL FÜR DETAILS -->
     <div class="modal" id="detailModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1350,9 +1345,7 @@
                 <button class="close-modal" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer" id="modalFooter">
-                <!-- Dynamisch befüllt - OHNE Bearbeiten Button -->
-            </div>
+            <div class="modal-footer" id="modalFooter"></div>
         </div>
     </div>
 
@@ -1440,22 +1433,22 @@
                 }
             };
 
-            // Unter-Tab für Vorfälle
+            // Unter-Tab für Vorfälle - Jetzt ist Liste standardmäßig aktiv
             window.switchSubTab = function(tab) {
                 document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('#main-tab-vorfaelle .sub-tab-content').forEach(c => c.classList.remove('active'));
                 
-                if (tab === 'new') {
+                if (tab === 'list') {
                     document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[0].classList.add('active');
-                    document.getElementById('subtab-new').classList.add('active');
-                } else {
-                    document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[1].classList.add('active');
                     document.getElementById('subtab-list').classList.add('active');
                     loadIncidents();
+                } else if (tab === 'new') {
+                    document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[1].classList.add('active');
+                    document.getElementById('subtab-new').classList.add('active');
                 }
             };
 
-            // Themen-Tab Umschaltung
+            // Themen-Tab Umschaltung (unverändert)
             window.switchThemesTab = function(tab) {
                 document.querySelectorAll('#main-tab-themen .sub-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('#main-tab-themen .sub-tab-content').forEach(c => c.classList.remove('active'));
@@ -1979,7 +1972,6 @@
                 
                 modalBody.innerHTML = details;
                 
-                // Footer Buttons - OHNE Bearbeiten Button
                 modalFooter.innerHTML = `
                     ${incident.status === 'open' ? 
                         `<button class="btn btn-success" onclick="closeIncidentFromModal()">
@@ -2413,7 +2405,6 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 
                 modalBody.innerHTML = details;
                 
-                // Footer Buttons - OHNE Bearbeiten Button
                 modalFooter.innerHTML = `
                     ${topic.status === 'open' ? 
                         `<button class="btn btn-success" onclick="closeTopicFromModal()">
@@ -2507,7 +2498,7 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 }
             };
 
-            // ----- PASSWORT & LÖSCHEN (ENDGÜLTIG FIX) -----
+            // ----- PASSWORT & LÖSCHEN -----
             
             window.showPasswordModalForIncident = function(id) {
                 console.log('Löschen für Vorfall:', id);
@@ -2531,7 +2522,6 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
 
             window.closePasswordModal = function() {
                 document.getElementById('passwordModal').classList.remove('active');
-                // pendingAction nicht zurücksetzen, da wir sie noch brauchen
             };
 
             window.checkPasswordAndDelete = async function() {
@@ -2627,11 +2617,11 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 }
             };
 
-            // Initialisierung
+            // Initialisierung - Liste ist jetzt standardmäßig aktiv
             document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('category')?.addEventListener('change', updateCategoryFields);
                 updateCategoryFields();
-                loadIncidents();
+                loadIncidents(); // Lädt die Liste automatisch
             });
         })();
     </script>
