@@ -1221,7 +1221,7 @@
             </div>
         </div>
 
-        <!-- Haupt-Tab: Themen (unverändert) -->
+        <!-- Haupt-Tab: Themen (mit Bild-Upload) -->
         <div id="main-tab-themen" class="main-tab-content">
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchThemesTab('langfristig')">
@@ -1287,6 +1287,7 @@
 
                 <form id="topicForm" onsubmit="event.preventDefault(); saveTopic();">
                     <input type="hidden" id="themeEditId" value="">
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-clock"></i> Themenhorizont *</label>
@@ -1307,6 +1308,7 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-heading"></i> Titel / Thema *</label>
@@ -1317,14 +1319,26 @@
                             <input type="text" id="themeProcess" placeholder="z.B. Seitenschleifen">
                         </div>
                     </div>
+                    
                     <div class="form-group full-width">
                         <label><i class="fas fa-align-left"></i> Beschreibung *</label>
                         <textarea id="description" rows="4" required placeholder="Detaillierte Beschreibung..."></textarea>
                     </div>
+                    
                     <div class="form-group full-width">
                         <label><i class="fas fa-tasks"></i> Maßnahmen / nächste Schritte</label>
                         <textarea id="measures" rows="3" placeholder="Geplante Maßnahmen, Verantwortlichkeiten ..."></textarea>
                     </div>
+
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-images"></i> Bilder</label>
+                        <button type="button" class="btn btn-upload" id="themeUploadButton">
+                            <i class="fas fa-cloud-upload-alt"></i> Bilder auswählen
+                        </button>
+                        <input type="file" id="themeImageUpload" accept="image/*" multiple style="display: none;">
+                        <div class="image-preview-grid" id="themeImagePreview"></div>
+                    </div>
+                    
                     <div class="submit-section">
                         <button type="submit" class="btn btn-submit" id="themeSubmitBtn"><i class="fas fa-save"></i> Thema speichern</button>
                     </div>
@@ -1395,6 +1409,10 @@
             let currentIncidentId = null;
             let currentTopicId = null;
             let pendingAction = null; // 'deleteIncident' oder 'deleteTopic'
+            
+            // Themen-Bild-Variablen
+            let themeCompressedImages = [];
+            let themeExistingImages = [];
 
             // Theme Toggle
             window.toggleTheme = function() {
@@ -1448,7 +1466,7 @@
                 }
             };
 
-            // Themen-Tab Umschaltung (unverändert)
+            // Themen-Tab Umschaltung
             window.switchThemesTab = function(tab) {
                 document.querySelectorAll('#main-tab-themen .sub-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('#main-tab-themen .sub-tab-content').forEach(c => c.classList.remove('active'));
@@ -1464,10 +1482,17 @@
                 } else if (tab === 'neu') {
                     document.querySelectorAll('#main-tab-themen .sub-tab-button')[2].classList.add('active');
                     document.getElementById('themes-neu').classList.add('active');
-                    document.getElementById('themeEditId').value = '';
-                    document.getElementById('topicForm').reset();
+                    resetThemeForm();
                 }
             };
+
+            function resetThemeForm() {
+                document.getElementById('themeEditId').value = '';
+                document.getElementById('topicForm').reset();
+                themeCompressedImages = [];
+                themeExistingImages = [];
+                document.getElementById('themeImagePreview').innerHTML = '';
+            }
 
             // ----- VORFÄLLE -----
             
@@ -1588,27 +1613,38 @@
                 });
             }
 
-            function addImagePreview(imageData, isExisting = false) {
-                const previewGrid = document.getElementById('imagePreview');
+            function addImagePreview(imageData, isExisting = false, isTheme = false) {
+                const previewGridId = isTheme ? 'themeImagePreview' : 'imagePreview';
+                const previewGrid = document.getElementById(previewGridId);
+                
                 const previewItem = document.createElement('div');
                 previewItem.className = 'image-preview-item';
                 
                 previewItem.innerHTML = `
                     <img src="${imageData}" alt="Preview">
-                    <button class="remove-image" onclick="removeImage(this, ${isExisting})">×</button>
+                    <button class="remove-image" onclick="removeImage(this, ${isExisting}, ${isTheme})">×</button>
                 `;
                 
                 previewGrid.appendChild(previewItem);
             }
 
-            window.removeImage = function(button, isExisting = false) {
+            window.removeImage = function(button, isExisting = false, isTheme = false) {
                 const previewItem = button.parentElement;
-                const index = Array.from(previewItem.parentElement.children).indexOf(previewItem);
+                const previewGrid = previewItem.parentElement;
+                const index = Array.from(previewGrid.children).indexOf(previewItem);
                 
-                if (isExisting) {
-                    existingImages.splice(index, 1);
+                if (isTheme) {
+                    if (isExisting) {
+                        themeExistingImages.splice(index, 1);
+                    } else {
+                        themeCompressedImages.splice(index, 1);
+                    }
                 } else {
-                    compressedImages.splice(index, 1);
+                    if (isExisting) {
+                        existingImages.splice(index, 1);
+                    } else {
+                        compressedImages.splice(index, 1);
+                    }
                 }
                 
                 previewItem.remove();
@@ -1719,7 +1755,7 @@
                         showSuccess('Vorfall erfolgreich dokumentiert!');
                     }
                     
-                    resetForm();
+                    resetIncidentForm();
                     switchSubTab('list');
                     
                 } catch (error) {
@@ -1730,7 +1766,7 @@
                 }
             };
 
-            function resetForm() {
+            function resetIncidentForm() {
                 document.getElementById('incidentForm').reset();
                 document.getElementById('editId').value = '';
                 document.getElementById('categorySpecificFields').innerHTML = '';
@@ -2031,7 +2067,7 @@
                         existingImages = data.image_urls || [];
                         const previewGrid = document.getElementById('imagePreview');
                         previewGrid.innerHTML = '';
-                        existingImages.forEach(url => addImagePreview(url, true));
+                        existingImages.forEach(url => addImagePreview(url, true, false));
                         document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Änderungen speichern';
                         showSuccess('Vorfall kann bearbeitet werden');
                     }, 200);
@@ -2086,8 +2122,41 @@
                 }
             };
 
-            // ----- THEMEN -----
+            // ----- THEMEN MIT BILDERN -----
             
+            // Themen-Bild-Upload
+            document.getElementById('themeUploadButton')?.addEventListener('click', function() {
+                document.getElementById('themeImageUpload').click();
+            });
+
+            document.getElementById('themeImageUpload')?.addEventListener('change', async function(e) {
+                const files = Array.from(e.target.files);
+                
+                for (const file of files) {
+                    try {
+                        const compressedFile = await compressImage(file);
+                        themeCompressedImages.push(compressedFile);
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            addImagePreview(e.target.result, false, true);
+                        };
+                        reader.readAsDataURL(compressedFile);
+                    } catch (error) {
+                        console.error('Fehler bei der Bildkomprimierung:', error);
+                        showThemeError('Fehler bei der Bildverarbeitung');
+                    }
+                }
+            });
+
+            function showThemeError(message) {
+                document.getElementById('themeErrorText').innerText = message;
+                document.getElementById('themeErrorMessage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('themeErrorMessage').style.display = 'none';
+                }, 3000);
+            }
+
             async function loadTopics() {
                 document.getElementById('loadingOverlay').style.display = 'flex';
                 
@@ -2114,6 +2183,7 @@ CREATE TABLE topics (
     process TEXT,
     description TEXT NOT NULL,
     measures TEXT,
+    image_urls TEXT[],
     status TEXT DEFAULT 'open'
 );
 ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
@@ -2131,10 +2201,10 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     
                     if (allTopics.length === 0) {
                         const demoTopics = [
-                            { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', created_at: new Date().toISOString() },
-                            { horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: 'Ultraschall automatisieren', measures: 'Angebote einholen', status: 'open', created_at: new Date().toISOString() },
-                            { horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: 'Jährliche Kalibrierung', measures: 'Servicetermin', status: 'open', created_at: new Date().toISOString() },
-                            { horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: 'Rissverdacht bei Charge X', measures: 'Nachprüfung', status: 'closed', created_at: new Date().toISOString() },
+                            { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: 'Ultraschall automatisieren', measures: 'Angebote einholen', status: 'open', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: 'Jährliche Kalibrierung', measures: 'Servicetermin', status: 'open', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: 'Rissverdacht bei Charge X', measures: 'Nachprüfung', status: 'closed', image_urls: null, created_at: new Date().toISOString() },
                         ];
                         
                         for (const topic of demoTopics) {
@@ -2159,29 +2229,6 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 }
             }
 
-            function getCalendarWeek(dateStr) {
-                const d = new Date(dateStr);
-                d.setHours(0,0,0,0);
-                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
-                const week1 = new Date(d.getFullYear(), 0, 4);
-                const weekNum = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-                return `KW ${weekNum} - ${d.getFullYear()}`;
-            }
-
-            function groupTopicsByWeek(items) {
-                const groups = {};
-                items.forEach(t => {
-                    const wk = getCalendarWeek(t.created_at);
-                    if (!groups[wk]) groups[wk] = [];
-                    groups[wk].push(t);
-                });
-                return Object.keys(groups).sort((a,b) => {
-                    const aNum = parseInt(a.split(' ')[1]) + (parseInt(a.split(' - ')[1])*100);
-                    const bNum = parseInt(b.split(' ')[1]) + (parseInt(b.split(' - ')[1])*100);
-                    return bNum - aNum;
-                }).reduce((acc, key) => { acc[key] = groups[key]; return acc; }, {});
-            }
-
             function renderThemeList(horizon, containerId, filterCat='', filterStatus='') {
                 const container = document.getElementById(containerId);
                 if (!container) return;
@@ -2195,50 +2242,53 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     return;
                 }
 
-                const grouped = groupTopicsByWeek(filtered);
-                let html = '';
-                for (let week in grouped) {
-                    html += `<div class="kw-group"><div class="kw-header"><i class="fas fa-calendar-week"></i> ${week} <span class="kw-count">${grouped[week].length}</span></div><div class="incident-grid">`;
-                    grouped[week].forEach(t => {
-                        const statusClass = t.status === 'closed' ? 'closed' : '';
-                        const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
-                        const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
-                        const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
+                // Keine KW-Gruppierung mehr, einfach alle untereinander anzeigen
+                let html = '<div class="incident-grid">';
+                filtered.forEach(t => {
+                    const statusClass = t.status === 'closed' ? 'closed' : '';
+                    const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+                    const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
+                    const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
 
-                        let catClass = 'badge-category';
-                        if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
-                        else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
-                        else catClass = 'badge-category';
+                    let catClass = 'badge-category';
+                    if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
+                    else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
+                    else catClass = 'badge-category';
 
-                        html += `
-                            <div class="incident-card">
-                                <div class="card-header">
-                                    <div class="card-badges">
-                                        <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig'}</span>
-                                        <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
-                                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
-                                    </div>
-                                    <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
+                    html += `
+                        <div class="incident-card">
+                            <div class="card-header">
+                                <div class="card-badges">
+                                    <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig'}</span>
+                                    <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
+                                    <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
                                 </div>
-                                <div class="card-content" onclick="openTopic('${t.id}')">
-                                    <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
-                                    ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
-                                    <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}...</span></div>
-                                    ${t.measures ? `<div class="info-row"><span class="info-label">Maßnahmen:</span><span class="info-value">${t.measures.substring(0,50)}...</span></div>` : ''}
-                                </div>
-                                <div class="card-actions">
-                                    <button class="action-button view" onclick="openTopic('${t.id}')"><i class="fas fa-eye"></i> Details</button>
-                                    <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
-                                    ${t.status === 'open' ? 
-                                        `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
-                                        `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
-                                    <button class="action-button delete" onclick="showPasswordModalForTopic('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                                <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
+                            </div>
+                            <div class="card-content" onclick="openTopic('${t.id}')">
+                                <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
+                                ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
+                                <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}${t.description.length > 70 ? '...' : ''}</span></div>
+                                ${t.measures ? `<div class="info-row"><span class="info-label">Maßnahmen:</span><span class="info-value">${t.measures.substring(0,50)}${t.measures.length > 50 ? '...' : ''}</span></div>` : ''}
+                                <div class="card-preview">
+                                    ${t.image_urls && t.image_urls.length > 0 ? 
+                                        `<img src="${t.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${t.image_urls[0]}', '_blank')">` : 
+                                        '<div style="width: 60px; height: 60px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary); font-size: 24px;"></i></div>'
+                                    }
                                 </div>
                             </div>
-                        `;
-                    });
-                    html += '</div></div>';
-                }
+                            <div class="card-actions">
+                                <button class="action-button view" onclick="openTopic('${t.id}')"><i class="fas fa-eye"></i> Details</button>
+                                <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                ${t.status === 'open' ? 
+                                    `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
+                                    `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
+                                <button class="action-button delete" onclick="showPasswordModalForTopic('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
                 container.innerHTML = html;
             }
 
@@ -2273,13 +2323,36 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 document.getElementById('loadingOverlay').style.display = 'flex';
                 
                 try {
+                    // Bilder hochladen
+                    let imageUrls = [...themeExistingImages];
+                    
+                    for (const image of themeCompressedImages) {
+                        const fileName = `topic_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
+                        
+                        const { data: uploadData, error: uploadError } = await supabase.storage
+                            .from('incident_images') // Gleicher Bucket wie bei Vorfällen
+                            .upload(fileName, image);
+                        
+                        if (uploadError) {
+                            console.error('Upload Error:', uploadError);
+                            throw new Error('Fehler beim Bild-Upload: ' + uploadError.message);
+                        }
+                        
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('incident_images')
+                            .getPublicUrl(fileName);
+                        
+                        imageUrls.push(publicUrl);
+                    }
+                    
                     const topicData = {
                         horizon,
                         category,
                         title,
                         process: process || null,
                         description,
-                        measures: measures || null
+                        measures: measures || null,
+                        image_urls: imageUrls.length > 0 ? imageUrls : null
                     };
                     
                     if (editId) {
@@ -2289,6 +2362,7 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                             .eq('id', editId);
                         
                         if (error) throw error;
+                        showThemeSuccess('Thema aktualisiert!');
                     } else {
                         topicData.status = 'open';
                         topicData.created_at = new Date().toISOString();
@@ -2298,15 +2372,10 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                             .insert([topicData]);
                         
                         if (error) throw error;
+                        showThemeSuccess('Thema gespeichert!');
                     }
                     
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    document.getElementById('themeSuccessMessage').style.display = 'flex';
-                    setTimeout(() => document.getElementById('themeSuccessMessage').style.display = 'none', 2000);
-                    
-                    document.getElementById('topicForm').reset();
-                    document.getElementById('themeEditId').value = '';
-                    
+                    resetThemeForm();
                     await loadTopics();
                     
                     if (horizon === 'langfristig') switchThemesTab('langfristig');
@@ -2316,9 +2385,18 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     console.error('Fehler beim Speichern:', error);
                     document.getElementById('themeErrorText').innerText = 'Fehler: ' + error.message;
                     document.getElementById('themeErrorMessage').style.display = 'flex';
+                } finally {
                     document.getElementById('loadingOverlay').style.display = 'none';
                 }
             };
+
+            function showThemeSuccess(message) {
+                document.getElementById('themeSuccessMessage').querySelector('span').textContent = message;
+                document.getElementById('themeSuccessMessage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('themeSuccessMessage').style.display = 'none';
+                }, 3000);
+            }
 
             window.openTopic = async function(id) {
                 document.getElementById('loadingOverlay').style.display = 'flex';
@@ -2342,7 +2420,6 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 modalTitle.innerHTML = '<i class="fas fa-tasks"></i> Thema Details';
                 
                 const date = new Date(topic.created_at).toLocaleString('de-DE');
-                const week = getCalendarWeek(topic.created_at);
                 
                 let horizonClass = topic.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
                 let horizonText = topic.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig';
@@ -2374,10 +2451,6 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                             </div>
                             ` : ''}
                             <div class="detail-item">
-                                <div class="detail-label">Kalenderwoche</div>
-                                <div class="detail-value">${week}</div>
-                            </div>
-                            <div class="detail-item">
                                 <div class="detail-label">Status</div>
                                 <div class="detail-value"><span class="badge badge-status ${topic.status === 'closed' ? 'closed' : ''}">${topic.status === 'open' ? 'Offen' : 'Geschlossen'}</span></div>
                             </div>
@@ -2399,6 +2472,17 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                         <div class="detail-section">
                             <h3><i class="fas fa-tasks"></i> Maßnahmen / nächste Schritte</h3>
                             <p style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">${topic.measures}</p>
+                        </div>
+                    `;
+                }
+                
+                if (topic.image_urls && topic.image_urls.length > 0) {
+                    details += `
+                        <div class="detail-section">
+                            <h3><i class="fas fa-images"></i> Bilder</h3>
+                            <div class="image-gallery">
+                                ${topic.image_urls.map(url => `<img src="${url}" class="gallery-image" onclick="window.open('${url}', '_blank')">`).join('')}
+                            </div>
                         </div>
                     `;
                 }
@@ -2441,6 +2525,11 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     document.getElementById('themeProcess').value = t.process || '';
                     document.getElementById('description').value = t.description;
                     document.getElementById('measures').value = t.measures || '';
+                    
+                    themeExistingImages = t.image_urls || [];
+                    const previewGrid = document.getElementById('themeImagePreview');
+                    previewGrid.innerHTML = '';
+                    themeExistingImages.forEach(url => addImagePreview(url, true, true));
                 }, 100);
             };
 
@@ -2462,7 +2551,7 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     if (error) throw error;
                     
                     await loadTopics();
-                    showSuccess('Thema erledigt');
+                    showThemeSuccess('Thema erledigt');
                     closeModal();
                 } catch (error) {
                     showError('Fehler: ' + error.message);
@@ -2489,7 +2578,7 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     if (error) throw error;
                     
                     await loadTopics();
-                    showSuccess('Thema wieder geöffnet');
+                    showThemeSuccess('Thema wieder geöffnet');
                     closeModal();
                 } catch (error) {
                     showError('Fehler: ' + error.message);
@@ -2589,6 +2678,33 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     } else if (pendingAction === 'deleteTopic' && currentTopicId) {
                         console.log('Lösche Thema mit ID:', currentTopicId);
                         
+                        // Erst die Bilder laden
+                        const { data: topic, error: fetchError } = await supabase
+                            .from('topics')
+                            .select('*')
+                            .eq('id', currentTopicId)
+                            .single();
+                        
+                        if (fetchError) {
+                            console.error('Fehler beim Laden des Themas:', fetchError);
+                            throw fetchError;
+                        }
+                        
+                        // Bilder löschen (falls vorhanden)
+                        if (topic && topic.image_urls && topic.image_urls.length > 0) {
+                            for (const url of topic.image_urls) {
+                                try {
+                                    const fileName = url.split('/').pop();
+                                    console.log('Lösche Bild:', fileName);
+                                    await supabase.storage.from('incident_images').remove([fileName]);
+                                } catch (e) {
+                                    console.error('Fehler beim Löschen eines Bildes:', e);
+                                    // Weiter machen, auch wenn Bild nicht gelöscht werden kann
+                                }
+                            }
+                        }
+                        
+                        // Dann das Thema löschen
                         const { error } = await supabase
                             .from('topics')
                             .delete()
@@ -2600,7 +2716,7 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                         }
                         
                         console.log('Thema erfolgreich gelöscht');
-                        showSuccess('Thema gelöscht');
+                        showThemeSuccess('Thema gelöscht');
                         
                         // Modal schließen und Liste neu laden
                         closeModal();
