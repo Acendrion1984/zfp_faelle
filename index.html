@@ -151,7 +151,6 @@
             color: rgba(255,255,255,0.9);
         }
 
-        /* Haupt-Tab Navigation */
         .main-tab-navigation {
             display: flex;
             gap: 10px;
@@ -209,7 +208,6 @@
             display: block;
         }
 
-        /* Unter-Tab Navigation - GETAUSCHT: Jetzt ist Liste zuerst, dann Neuer Vorfall */
         .sub-tab-navigation {
             display: flex;
             gap: 10px;
@@ -244,7 +242,6 @@
             display: block;
         }
 
-        /* Form Styles */
         .form-row {
             display: flex;
             gap: 20px;
@@ -652,11 +649,18 @@
             background: var(--badge-closed-bg);
         }
 
-        .badge-long { background: var(--badge-long-bg); }
-        .badge-short { background: var(--badge-short-bg); }
-        .badge-digital { background: var(--badge-digital-bg); }
-        .badge-opt { background: var(--badge-opt-bg); }
-
+.badge-long { 
+    background: #FDD0AF; /* Orange für langfristig */
+}
+.badge-short { 
+    background: var(--badge-short-bg); 
+}
+.badge-digital { 
+    background: var(--badge-digital-bg); 
+}
+.badge-opt { 
+    background: var(--badge-opt-bg); 
+}
         .card-date {
             font-size: 13px;
             color: var(--text-secondary);
@@ -690,6 +694,18 @@
             color: var(--text-primary);
             flex: 1;
             font-size: 14px;
+            white-space: pre-line;
+        }
+
+        /* Listenstil für Beschreibungen */
+        .info-value.list-format {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0;
+        }
+        
+        .info-value.list-format li {
+            margin-bottom: 4px;
         }
 
         .card-preview {
@@ -705,6 +721,7 @@
             border-radius: 8px;
             object-fit: cover;
             border: 2px solid var(--border-color);
+            cursor: pointer;
         }
 
         .card-actions {
@@ -761,7 +778,6 @@
             color: white;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -1063,7 +1079,7 @@
             </h1>
             <div class="subtitle">
                 <i class="fas fa-clipboard-check"></i>
-                ZfP Vorfälle + ZfP Themen
+                Vorfälle + Langfristige/Kurzfristige Themen
             </div>
         </div>
 
@@ -1075,11 +1091,11 @@
             </button>
             <button class="main-tab-button" onclick="switchMainTab('themen')">
                 <i class="fas fa-tasks"></i>
-                ZfP Vorfälle + ZfP Themen
+                ZfP Themen
             </button>
         </div>
 
-        <!-- Haupt-Tab: Vorfälle -->
+        <!-- Haupt-Tab: ZfP Vorfälle -->
         <div id="main-tab-vorfaelle" class="main-tab-content active">
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchSubTab('list')">
@@ -1096,7 +1112,7 @@
                 <div class="list-header">
                     <div class="list-title">
                         <i class="fas fa-calendar-alt"></i>
-                        Vorfälle gruppiert nach Kalenderwochen
+                        ZfP Vorfälle gruppiert nach Kalenderwochen
                     </div>
                     <div class="filter-section">
                         <div class="search-box">
@@ -1119,7 +1135,7 @@
                 <div id="incidentList" class="incident-list-container">
                     <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
                         <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 20px;"></i>
-                        <p style="font-size: 18px;">Lade Vorfälle...</p>
+                        <p style="font-size: 18px;">Lade ZfP Vorfälle...</p>
                     </div>
                 </div>
             </div>
@@ -1135,7 +1151,6 @@
                 </div>
 
                 <form id="incidentForm" onsubmit="event.preventDefault(); saveIncident();">
-                    <!-- ... (Formular bleibt unverändert) ... -->
                     <input type="hidden" id="editId" value="">
                     
                     <div class="form-row">
@@ -1201,7 +1216,7 @@
 
                     <div class="form-group full-width">
                         <label><i class="fas fa-exclamation-triangle"></i> Problem / Beschreibung *</label>
-                        <textarea id="problemDescription" rows="4" required placeholder="Beschreiben Sie das Problem..."></textarea>
+                        <textarea id="problemDescription" rows="4" required placeholder="• Stichpunkt 1&#10;• Stichpunkt 2&#10;• Stichpunkt 3" style="white-space: pre-line;"></textarea>
                     </div>
 
                     <div class="form-group full-width">
@@ -1224,7 +1239,6 @@
 
         <!-- Haupt-Tab: Themen (EIN REITER mit beiden Kategorien, Badge zeigt lang/kurz) -->
         <div id="main-tab-themen" class="main-tab-content">
-            <!-- Nur zwei Unter-Tabs: Liste & Neu -->
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchThemesSubTab('list')">
                     <i class="fas fa-list"></i> Themen Liste
@@ -1305,12 +1319,12 @@
                     
                     <div class="form-group full-width">
                         <label><i class="fas fa-align-left"></i> Beschreibung *</label>
-                        <textarea id="description" rows="4" required placeholder="Detaillierte Beschreibung..."></textarea>
+                        <textarea id="description" rows="4" required placeholder="• Stichpunkt 1&#10;• Stichpunkt 2&#10;• Stichpunkt 3" style="white-space: pre-line;"></textarea>
                     </div>
                     
                     <div class="form-group full-width">
                         <label><i class="fas fa-tasks"></i> Maßnahmen / nächste Schritte</label>
-                        <textarea id="measures" rows="3" placeholder="Geplante Maßnahmen, Verantwortlichkeiten ..."></textarea>
+                        <textarea id="measures" rows="3" placeholder="• Stichpunkt 1&#10;• Stichpunkt 2&#10;• Stichpunkt 3" style="white-space: pre-line;"></textarea>
                     </div>
 
                     <div class="form-group full-width">
@@ -1391,7 +1405,7 @@
             let allTopics = [];
             let currentIncidentId = null;
             let currentTopicId = null;
-            let pendingAction = null; // 'deleteIncident' oder 'deleteTopic'
+            let pendingAction = null;
             
             // Themen-Bild-Variablen
             let themeCompressedImages = [];
@@ -1427,18 +1441,16 @@
                 if (tab === 'vorfaelle') {
                     document.querySelectorAll('.main-tab-button')[0].classList.add('active');
                     document.getElementById('main-tab-vorfaelle').classList.add('active');
-                    // Sicherstellen, dass Vorfall-Liste aktiv ist (Standard)
                     switchSubTab('list');
                 } else {
                     document.querySelectorAll('.main-tab-button')[1].classList.add('active');
                     document.getElementById('main-tab-themen').classList.add('active');
-                    // Themen Liste aktivieren
                     switchThemesSubTab('list');
-                    loadTopics(); // Themen laden
+                    loadTopics();
                 }
             };
 
-            // Unter-Tab für Vorfälle
+            // Unter-Tab für ZfP Vorfälle
             window.switchSubTab = function(tab) {
                 document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('#main-tab-vorfaelle .sub-tab-content').forEach(c => c.classList.remove('active'));
@@ -1450,10 +1462,11 @@
                 } else if (tab === 'new') {
                     document.querySelectorAll('#main-tab-vorfaelle .sub-tab-button')[1].classList.add('active');
                     document.getElementById('subtab-new').classList.add('active');
+                    resetIncidentForm();
                 }
             };
 
-            // NEUE Funktion: Themen Unter-Tabs (Liste vs Neu)
+            // Unter-Tab für Themen
             window.switchThemesSubTab = function(tab) {
                 document.querySelectorAll('#main-tab-themen .sub-tab-button').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('#main-tab-themen .sub-tab-content').forEach(c => c.classList.remove('active'));
@@ -1461,13 +1474,26 @@
                 if (tab === 'list') {
                     document.querySelectorAll('#main-tab-themen .sub-tab-button')[0].classList.add('active');
                     document.getElementById('themes-list').classList.add('active');
-                    filterThemes(); // aktuelle Filter anwenden
+                    filterThemes();
                 } else if (tab === 'neu') {
                     document.querySelectorAll('#main-tab-themen .sub-tab-button')[1].classList.add('active');
                     document.getElementById('themes-neu').classList.add('active');
                     resetThemeForm();
                 }
             };
+
+            // Formular-Reset
+            function resetIncidentForm() {
+                document.getElementById('incidentForm').reset();
+                document.getElementById('editId').value = '';
+                document.getElementById('categorySpecificFields').innerHTML = '';
+                document.getElementById('imagePreview').innerHTML = '';
+                document.getElementById('machineNumberGroup').style.display = 'none';
+                document.getElementById('orderNumberGroup').style.display = 'none';
+                compressedImages = [];
+                existingImages = [];
+                document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Vorfall dokumentieren';
+            }
 
             function resetThemeForm() {
                 document.getElementById('themeEditId').value = '';
@@ -1477,28 +1503,715 @@
                 document.getElementById('themeImagePreview').innerHTML = '';
             }
 
-            // ----- VORFÄLLE (aus Platzgründen gekürzt, aber voll funktionsfähig) -----
-            window.updateCategoryFields = function() { /* ... */ };
-            // Wichtig: Der originale Code für Vorfälle muss hier vollständig sein.
-            // Aus Platzgründen hier nur die für Themen relevanten Ergänzungen.
-            // Der vollständige Code aus der vorherigen Antwort ist im Hintergrund vorhanden.
-            
-            // Wir definieren hier nur die für die Themenansicht wichtigen Funktionen,
-            // der Rest (Incidents) ist aus der vorherigen Antwort implizit vorhanden.
-            // Da wir nicht den gesamten Code duplizieren können, fokussieren wir auf die Themen-Neuerungen.
-            
-            // Kurzfassung der benötigten Funktionen für Vorfälle (nur damit es nicht zu Fehlern kommt)
-            window.filterIncidents = function() { /* ... */ };
-            window.openIncident = function(id) { /* ... */ };
-            window.editIncident = function(id) { /* ... */ };
-            window.closeIncident = function(id) { /* ... */ };
-            window.reopenIncident = function(id) { /* ... */ };
-            window.showPasswordModalForIncident = function(id) { /* ... */ };
-            window.closeModal = function() { document.getElementById('detailModal').classList.remove('active'); };
-            window.closePasswordModal = function() { document.getElementById('passwordModal').classList.remove('active'); };
-            // Ende der Platzhalter – in der echten Implementierung sind diese Funktionen natürlich vollständig.
+            // Hilfsfunktionen
+            function showError(message) {
+                document.getElementById('errorText').textContent = message;
+                document.getElementById('errorMessage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 5000);
+            }
 
-            // ----- THEMEN (angepasste Listenansicht mit Badges) -----
+            function hideError() {
+                document.getElementById('errorMessage').style.display = 'none';
+            }
+
+            function showSuccess(message) {
+                document.getElementById('successMessage').querySelector('span').textContent = message;
+                document.getElementById('successMessage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 3000);
+            }
+
+            function showThemeSuccess(message) {
+                document.getElementById('themeSuccessMessage').querySelector('span').textContent = message;
+                document.getElementById('themeSuccessMessage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('themeSuccessMessage').style.display = 'none';
+                }, 3000);
+            }
+
+            function showThemeError(message) {
+                document.getElementById('themeErrorText').innerText = message;
+                document.getElementById('themeErrorMessage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('themeErrorMessage').style.display = 'none';
+                }, 3000);
+            }
+
+            // Bildkomprimierung
+            async function compressImage(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.src = e.target.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            const maxWidth = 1024;
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            canvas.toBlob((blob) => {
+                                const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                });
+                                resolve(compressedFile);
+                            }, 'image/jpeg', 0.8);
+                        };
+                        img.onerror = reject;
+                    };
+                    reader.onerror = reject;
+                });
+            }
+
+            // Bildvorschau
+            function addImagePreview(imageData, isExisting = false, isTheme = false) {
+                const previewGridId = isTheme ? 'themeImagePreview' : 'imagePreview';
+                const previewGrid = document.getElementById(previewGridId);
+                
+                const previewItem = document.createElement('div');
+                previewItem.className = 'image-preview-item';
+                
+                previewItem.innerHTML = `
+                    <img src="${imageData}" alt="Preview">
+                    <button class="remove-image" onclick="removeImage(this, ${isExisting}, ${isTheme})">×</button>
+                `;
+                
+                previewGrid.appendChild(previewItem);
+            }
+
+            window.removeImage = function(button, isExisting = false, isTheme = false) {
+                const previewItem = button.parentElement;
+                const previewGrid = previewItem.parentElement;
+                const index = Array.from(previewGrid.children).indexOf(previewItem);
+                
+                if (isTheme) {
+                    if (isExisting) {
+                        themeExistingImages.splice(index, 1);
+                    } else {
+                        themeCompressedImages.splice(index, 1);
+                    }
+                } else {
+                    if (isExisting) {
+                        existingImages.splice(index, 1);
+                    } else {
+                        compressedImages.splice(index, 1);
+                    }
+                }
+                
+                previewItem.remove();
+            };
+
+            // Bild-Upload-Listener
+            document.getElementById('uploadButton')?.addEventListener('click', function() {
+                document.getElementById('imageUpload').click();
+            });
+
+            document.getElementById('imageUpload')?.addEventListener('change', async function(e) {
+                const files = Array.from(e.target.files);
+                
+                for (const file of files) {
+                    try {
+                        const compressedFile = await compressImage(file);
+                        compressedImages.push(compressedFile);
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            addImagePreview(e.target.result, false, false);
+                        };
+                        reader.readAsDataURL(compressedFile);
+                    } catch (error) {
+                        console.error('Fehler bei der Bildkomprimierung:', error);
+                        showError('Fehler bei der Bildverarbeitung');
+                    }
+                }
+            });
+
+            document.getElementById('themeUploadButton')?.addEventListener('click', function() {
+                document.getElementById('themeImageUpload').click();
+            });
+
+            document.getElementById('themeImageUpload')?.addEventListener('change', async function(e) {
+                const files = Array.from(e.target.files);
+                
+                for (const file of files) {
+                    try {
+                        const compressedFile = await compressImage(file);
+                        themeCompressedImages.push(compressedFile);
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            addImagePreview(e.target.result, false, true);
+                        };
+                        reader.readAsDataURL(compressedFile);
+                    } catch (error) {
+                        console.error('Fehler bei der Bildkomprimierung:', error);
+                        showThemeError('Fehler bei der Bildverarbeitung');
+                    }
+                }
+            });
+
+            // Kategorie-Felder aktualisieren
+            window.updateCategoryFields = function() {
+                const category = document.getElementById('category').value;
+                const categorySpecificFields = document.getElementById('categorySpecificFields');
+                const machineGroup = document.getElementById('machineNumberGroup');
+                const orderGroup = document.getElementById('orderNumberGroup');
+                
+                categorySpecificFields.innerHTML = '';
+                
+                if (category === 'ZfP Prüfung') {
+                    machineGroup.style.display = 'none';
+                    orderGroup.style.display = 'block';
+                    document.getElementById('machineNumber').required = false;
+                    document.getElementById('orderNumber').required = true;
+                    
+                    categorySpecificFields.innerHTML = `
+                        <div class="form-group">
+                            <label><i class="fas fa-exclamation-circle"></i> Fehlerbild *</label>
+                            <select id="errorType" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="Schleifbrand">Schleifbrand</option>
+                                <option value="Risse">Risse</option>
+                                <option value="Sonstiges">Sonstiges</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-cog"></i> Type / Modell</label>
+                            <input type="text" id="type" placeholder="z.B. Typ X-2000">
+                        </div>
+                    `;
+                } else if (category === 'ZfP Anlage') {
+                    machineGroup.style.display = 'block';
+                    orderGroup.style.display = 'none';
+                    document.getElementById('machineNumber').required = true;
+                    document.getElementById('orderNumber').required = false;
+                    
+                    categorySpecificFields.innerHTML = `
+                        <div class="form-group">
+                            <label><i class="fas fa-exclamation-circle"></i> Fehlerart *</label>
+                            <select id="errorType" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="Störung">Störung</option>
+                                <option value="Wartung">Wartung</option>
+                                <option value="Defekt">Defekt</option>
+                                <option value="Sonstiges">Sonstiges</option>
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    machineGroup.style.display = 'none';
+                    orderGroup.style.display = 'none';
+                    document.getElementById('machineNumber').required = false;
+                    document.getElementById('orderNumber').required = false;
+                }
+            };
+
+            document.getElementById('category')?.addEventListener('change', updateCategoryFields);
+            updateCategoryFields();
+
+            // Textformatierung für Listen
+            function formatTextAsList(text) {
+                if (!text) return '';
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                if (lines.length === 0) return '';
+                
+                let formattedLines = [];
+                lines.forEach(line => {
+                    // Wenn die Zeile nicht bereits mit einem Listenpunkt beginnt, füge • hinzu
+                    if (!line.trim().startsWith('•') && !line.trim().startsWith('-') && !line.trim().startsWith('*')) {
+                        formattedLines.push('• ' + line.trim());
+                    } else {
+                        formattedLines.push(line.trim());
+                    }
+                });
+                
+                return formattedLines.join('\n');
+            }
+
+            function renderTextAsList(text) {
+                if (!text) return '';
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                if (lines.length === 0) return text;
+                
+                let html = '<ul style="margin: 0; padding-left: 20px; list-style-type: disc;">';
+                lines.forEach(line => {
+                    // Entferne führende Listenzeichen, falls vorhanden
+                    let cleanLine = line.replace(/^[•\-*]\s*/, '');
+                    html += `<li style="margin-bottom: 4px;">${cleanLine}</li>`;
+                });
+                html += '</ul>';
+                return html;
+            }
+
+            // ZfP Vorfälle speichern
+            window.saveIncident = async function() {
+                const editId = document.getElementById('editId').value;
+                const category = document.getElementById('category').value;
+                const machineNumber = document.getElementById('machineNumber').value;
+                const orderNumber = document.getElementById('orderNumber').value;
+                const process = document.getElementById('process').value;
+                const segment = document.getElementById('segment').value;
+                const inspectionMethod = document.getElementById('inspectionMethod').value;
+                let problemDescription = document.getElementById('problemDescription').value;
+
+                if (!category || !process || !segment || !inspectionMethod || !problemDescription) {
+                    showError('Bitte füllen Sie alle Pflichtfelder aus.');
+                    return;
+                }
+
+                if (category === 'ZfP Anlage' && !machineNumber) {
+                    showError('Bitte geben Sie eine Maschinennummer ein.');
+                    return;
+                }
+
+                if (category === 'ZfP Prüfung' && !orderNumber) {
+                    showError('Bitte geben Sie eine Auftragsnummer ein.');
+                    return;
+                }
+
+                const errorTypeSelect = document.getElementById('errorType');
+                if (errorTypeSelect && !errorTypeSelect.value) {
+                    showError('Bitte wählen Sie ein Fehlerbild / eine Fehlerart aus.');
+                    return;
+                }
+
+                // Text als Liste formatieren
+                problemDescription = formatTextAsList(problemDescription);
+
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                hideError();
+                
+                try {
+                    let imageUrls = [...existingImages];
+                    
+                    for (const image of compressedImages) {
+                        const fileName = `incident_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
+                        
+                        const { data: uploadData, error: uploadError } = await supabase.storage
+                            .from('incident_images')
+                            .upload(fileName, image);
+                        
+                        if (uploadError) {
+                            console.error('Upload Error:', uploadError);
+                            throw new Error('Fehler beim Bild-Upload: ' + uploadError.message);
+                        }
+                        
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('incident_images')
+                            .getPublicUrl(fileName);
+                        
+                        imageUrls.push(publicUrl);
+                    }
+                    
+                    const formData = {
+                        category: category,
+                        process: process,
+                        segment: segment,
+                        inspection_method: inspectionMethod,
+                        problem_description: problemDescription,
+                        image_urls: imageUrls.length > 0 ? imageUrls : null,
+                    };
+                    
+                    if (category === 'ZfP Anlage') {
+                        formData.machine_number = machineNumber;
+                        formData.order_number = null;
+                    } else if (category === 'ZfP Prüfung') {
+                        formData.order_number = orderNumber;
+                        formData.machine_number = null;
+                    }
+                    
+                    if (category === 'ZfP Prüfung') {
+                        formData.error_type = document.getElementById('errorType').value;
+                        const typeInput = document.getElementById('type');
+                        if (typeInput && typeInput.value) {
+                            formData.type = typeInput.value;
+                        }
+                    } else if (category === 'ZfP Anlage') {
+                        formData.error_type = document.getElementById('errorType').value;
+                    }
+                    
+                    let result;
+                    
+                    if (editId) {
+                        result = await supabase
+                            .from('incidents')
+                            .update(formData)
+                            .eq('id', editId);
+                        
+                        if (result.error) throw result.error;
+                        showSuccess('Vorfall erfolgreich aktualisiert!');
+                    } else {
+                        formData.status = 'open';
+                        formData.created_at = new Date().toISOString();
+                        
+                        result = await supabase
+                            .from('incidents')
+                            .insert([formData]);
+                        
+                        if (result.error) throw result.error;
+                        showSuccess('Vorfall erfolgreich dokumentiert!');
+                    }
+                    
+                    resetIncidentForm();
+                    switchSubTab('list');
+                    
+                } catch (error) {
+                    console.error('Fehler:', error);
+                    showError(error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            // ZfP Vorfälle laden
+            async function loadIncidents() {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                try {
+                    const { data, error } = await supabase
+                        .from('incidents')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    
+                    if (error) throw error;
+                    
+                    allIncidents = data || [];
+                    displayIncidents(allIncidents);
+                } catch (error) {
+                    console.error('Fehler beim Laden:', error);
+                    document.getElementById('incidentList').innerHTML = `
+                        <div style="text-align: center; padding: 50px; color: var(--btn-danger);">
+                            <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+                            <p>Fehler beim Laden: ${error.message}</p>
+                        </div>
+                    `;
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            }
+
+            function getCalendarWeekIncident(date) {
+                const d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+                const week1 = new Date(d.getFullYear(), 0, 4);
+                const weekNumber = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+                return `KW ${weekNumber} - ${d.getFullYear()}`;
+            }
+
+            function groupIncidentsByWeek(incidents) {
+                const grouped = {};
+                incidents.forEach(incident => {
+                    const week = getCalendarWeekIncident(incident.created_at);
+                    if (!grouped[week]) grouped[week] = [];
+                    grouped[week].push(incident);
+                });
+                const sortedWeeks = Object.keys(grouped).sort((a, b) => {
+                    const weekA = parseInt(a.split(' ')[1]);
+                    const yearA = parseInt(a.split(' - ')[1]);
+                    const weekB = parseInt(b.split(' ')[1]);
+                    const yearB = parseInt(b.split(' - ')[1]);
+                    if (yearA !== yearB) return yearB - yearA;
+                    return weekB - weekA;
+                });
+                const sortedGrouped = {};
+                sortedWeeks.forEach(week => { sortedGrouped[week] = grouped[week]; });
+                return sortedGrouped;
+            }
+
+            function displayIncidents(incidents) {
+                const container = document.getElementById('incidentList');
+                if (incidents.length === 0) {
+                    container.innerHTML = `<div style="text-align: center; padding: 60px; color: var(--text-secondary);"><i class="fas fa-folder-open" style="font-size: 64px; margin-bottom: 20px;"></i><p style="font-size: 18px;">Keine ZfP Vorfälle gefunden</p></div>`;
+                    return;
+                }
+                const groupedIncidents = groupIncidentsByWeek(incidents);
+                let html = '';
+                for (const [week, weekIncidents] of Object.entries(groupedIncidents)) {
+                    html += `<div class="kw-group"><div class="kw-header"><i class="fas fa-calendar-week"></i> ${week}<span class="kw-count">${weekIncidents.length} ZfP Vorfälle</span></div><div class="incident-grid">`;
+                    weekIncidents.forEach(incident => {
+                        const date = new Date(incident.created_at).toLocaleDateString('de-DE');
+                        const categoryIcon = incident.category === 'ZfP Anlage' ? 'fa-industry' : 'fa-search';
+                        const statusClass = incident.status === 'closed' ? 'closed' : '';
+                        const statusIcon = incident.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+                        const statusText = incident.status === 'open' ? 'Offen' : 'Geschlossen';
+                        
+                        let numberDisplay = '';
+                        if (incident.category === 'ZfP Anlage' && incident.machine_number) {
+                            numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-industry"></i> Maschine:</span><span class="info-value">${incident.machine_number}</span></div>`;
+                        } else if (incident.category === 'ZfP Prüfung' && incident.order_number) {
+                            numberDisplay = `<div class="info-row"><span class="info-label"><i class="fas fa-hashtag"></i> Auftrag:</span><span class="info-value">${incident.order_number}</span></div>`;
+                        }
+                        
+                        // Beschreibung als Liste formatieren
+                        const descriptionPreview = incident.problem_description.split('\n')[0].replace(/^[•\-*]\s*/, '');
+                        
+                        html += `
+                            <div class="incident-card">
+                                <div class="card-header">
+                                    <div class="card-badges">
+                                        <span class="badge badge-category"><i class="fas ${categoryIcon}"></i> ${incident.category}</span>
+                                        <span class="badge badge-method"><i class="fas fa-flask"></i> ${incident.inspection_method}</span>
+                                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span>
+                                    </div>
+                                    <div class="card-date"><i class="far fa-calendar-alt"></i> ${date}</div>
+                                </div>
+                                <div class="card-content" onclick="openIncident('${incident.id}')">
+                                    ${numberDisplay}
+                                    <div class="info-row"><span class="info-label"><i class="fas fa-building"></i> Prozess:</span><span class="info-value">${incident.process}</span></div>
+                                    <div class="info-row"><span class="info-label"><i class="fas fa-exclamation"></i> Problem:</span><span class="info-value">${descriptionPreview.substring(0, 80)}${descriptionPreview.length > 80 ? '...' : ''}</span></div>
+                                    <div class="card-preview">
+                                        ${incident.image_urls && incident.image_urls.length > 0 ? 
+                                            `<img src="${incident.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${incident.image_urls[0]}', '_blank')">` : 
+                                            '<div style="width: 60px; height: 60px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary); font-size: 24px;"></i></div>'
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="action-button view" onclick="openIncident('${incident.id}')"><i class="fas fa-eye"></i> Details</button>
+                                    <button class="action-button edit" onclick="editIncident('${incident.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                    ${incident.status === 'open' ? 
+                                        `<button class="action-button close" onclick="closeIncident('${incident.id}')"><i class="fas fa-check-circle"></i> Fertig</button>` : 
+                                        `<button class="action-button reopen" onclick="reopenIncident('${incident.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
+                                    <button class="action-button delete" onclick="showPasswordModalForIncident('${incident.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+                container.innerHTML = html;
+            }
+
+            window.filterIncidents = function() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const categoryFilter = document.getElementById('categoryFilter').value;
+                const statusFilter = document.getElementById('statusFilter').value;
+                
+                const filtered = allIncidents.filter(incident => {
+                    const searchString = (incident.problem_description + ' ' + (incident.machine_number || '') + ' ' + (incident.order_number || '') + ' ' + (incident.process || '')).toLowerCase();
+                    const matchesSearch = !searchTerm || searchString.includes(searchTerm);
+                    const matchesCategory = !categoryFilter || incident.category === categoryFilter;
+                    const matchesStatus = !statusFilter || incident.status === statusFilter;
+                    return matchesSearch && matchesCategory && matchesStatus;
+                });
+                displayIncidents(filtered);
+            };
+
+            window.openIncident = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { data, error } = await supabase.from('incidents').select('*').eq('id', id).single();
+                    if (error) throw error;
+                    currentIncidentId = id;
+                    showIncidentDetails(data);
+                } catch (error) {
+                    showError('Fehler beim Laden der Details: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            function showIncidentDetails(incident) {
+                const modalBody = document.getElementById('modalBody');
+                const modalFooter = document.getElementById('modalFooter');
+                const modalTitle = document.getElementById('modalTitle');
+                
+                modalTitle.innerHTML = '<i class="fas fa-file-alt"></i> Vorfall Details';
+                
+                const date = new Date(incident.created_at).toLocaleString('de-DE');
+                const week = getCalendarWeekIncident(incident.created_at);
+                
+                let numberDisplay = '';
+                if (incident.category === 'ZfP Anlage' && incident.machine_number) {
+                    numberDisplay = `<div class="detail-item"><div class="detail-label">Maschinennummer</div><div class="detail-value">${incident.machine_number}</div></div>`;
+                } else if (incident.category === 'ZfP Prüfung' && incident.order_number) {
+                    numberDisplay = `<div class="detail-item"><div class="detail-label">Auftragsnummer</div><div class="detail-value">${incident.order_number}</div></div>`;
+                }
+                
+                // Beschreibung als Liste formatieren
+                const descriptionHtml = renderTextAsList(incident.problem_description);
+                
+                let details = `
+                    <div class="detail-section">
+                        <h3><i class="fas fa-info-circle"></i> Allgemeine Informationen</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item"><div class="detail-label">Kategorie</div><div class="detail-value">${incident.category}</div></div>
+                            ${numberDisplay}
+                            <div class="detail-item"><div class="detail-label">Prozess</div><div class="detail-value">${incident.process}</div></div>
+                            <div class="detail-item"><div class="detail-label">Segment</div><div class="detail-value">${incident.segment}</div></div>
+                            <div class="detail-item"><div class="detail-label">Prüfverfahren</div><div class="detail-value">${incident.inspection_method}</div></div>
+                            <div class="detail-item"><div class="detail-label">Kalenderwoche</div><div class="detail-value">${week}</div></div>
+                            <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value"><span class="badge badge-status ${incident.status === 'closed' ? 'closed' : ''}">${incident.status === 'open' ? 'Offen' : 'Geschlossen'}</span></div></div>
+                            <div class="detail-item"><div class="detail-label">Erstellt am</div><div class="detail-value">${date}</div></div>
+                        </div>
+                    </div>
+                `;
+                
+                if (incident.error_type) {
+                    details += `
+                        <div class="detail-section">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Fehlerdetails</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item"><div class="detail-label">Fehlerart</div><div class="detail-value">${incident.error_type}</div></div>
+                                ${incident.type ? `<div class="detail-item"><div class="detail-label">Type / Modell</div><div class="detail-value">${incident.type}</div></div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                details += `
+                    <div class="detail-section">
+                        <h3><i class="fas fa-align-left"></i> Beschreibung</h3>
+                        <div style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">
+                            ${descriptionHtml}
+                        </div>
+                    </div>
+                `;
+                
+                if (incident.image_urls && incident.image_urls.length > 0) {
+                    details += `
+                        <div class="detail-section">
+                            <h3><i class="fas fa-images"></i> Bilder</h3>
+                            <div class="image-gallery">
+                                ${incident.image_urls.map(url => `<img src="${url}" class="gallery-image" onclick="window.open('${url}', '_blank')">`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                modalBody.innerHTML = details;
+                
+                modalFooter.innerHTML = `
+                    ${incident.status === 'open' ? 
+                        `<button class="btn btn-success" onclick="closeIncidentFromModal()">
+                            <i class="fas fa-check-circle"></i> Erledigt
+                        </button>` : 
+                        `<button class="btn btn-reopen" onclick="reopenIncidentFromModal()">
+                            <i class="fas fa-undo-alt"></i> Wieder öffnen
+                        </button>`
+                    }
+                    <button class="btn btn-danger" onclick="showPasswordModalForIncident('${incident.id}')">
+                        <i class="fas fa-trash"></i> Löschen
+                    </button>
+                    <button class="btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Schließen
+                    </button>
+                `;
+                
+                document.getElementById('detailModal').classList.add('active');
+            }
+
+            window.closeModal = function() {
+                document.getElementById('detailModal').classList.remove('active');
+                currentIncidentId = null;
+                currentTopicId = null;
+            };
+
+            window.closeIncidentFromModal = function() {
+                if (currentIncidentId) {
+                    closeIncident(currentIncidentId);
+                    closeModal();
+                }
+            };
+            
+            window.reopenIncidentFromModal = function() {
+                if (currentIncidentId) {
+                    reopenIncident(currentIncidentId);
+                    closeModal();
+                }
+            };
+
+            window.closeIncident = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { error } = await supabase.from('incidents').update({ status: 'closed' }).eq('id', id);
+                    if (error) throw error;
+                    showSuccess('Vorfall wurde als erledigt markiert');
+                    loadIncidents();
+                    closeModal();
+                } catch (error) {
+                    showError('Fehler beim Schließen: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            window.reopenIncident = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { error } = await supabase.from('incidents').update({ status: 'open' }).eq('id', id);
+                    if (error) throw error;
+                    showSuccess('Vorfall wurde wieder geöffnet');
+                    loadIncidents();
+                    closeModal();
+                } catch (error) {
+                    showError('Fehler beim Öffnen: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            window.editIncident = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { data, error } = await supabase.from('incidents').select('*').eq('id', id).single();
+                    if (error) throw error;
+                    
+                    switchMainTab('vorfaelle');
+                    switchSubTab('new');
+                    
+                    setTimeout(() => {
+                        document.getElementById('editId').value = data.id;
+                        document.getElementById('category').value = data.category || '';
+                        updateCategoryFields();
+                        setTimeout(() => {
+                            if (data.category === 'ZfP Anlage') {
+                                document.getElementById('machineNumber').value = data.machine_number || '';
+                            } else if (data.category === 'ZfP Prüfung') {
+                                document.getElementById('orderNumber').value = data.order_number || '';
+                                const typeInput = document.getElementById('type');
+                                if (typeInput && data.type) typeInput.value = data.type;
+                            }
+                            document.getElementById('process').value = data.process || '';
+                            document.getElementById('segment').value = data.segment || '';
+                            document.getElementById('inspectionMethod').value = data.inspection_method || '';
+                            document.getElementById('problemDescription').value = data.problem_description || '';
+                            const errorTypeSelect = document.getElementById('errorType');
+                            if (errorTypeSelect && data.error_type) errorTypeSelect.value = data.error_type;
+                        }, 100);
+                        
+                        existingImages = data.image_urls || [];
+                        const previewGrid = document.getElementById('imagePreview');
+                        previewGrid.innerHTML = '';
+                        existingImages.forEach(url => addImagePreview(url, true, false));
+                        document.getElementById('submitButton').innerHTML = '<i class="fas fa-save"></i> Änderungen speichern';
+                        showSuccess('Vorfall kann bearbeitet werden');
+                    }, 200);
+                } catch (error) {
+                    showError('Fehler beim Laden: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            // Themen-Funktionen
             async function loadTopics() {
                 document.getElementById('loadingOverlay').style.display = 'flex';
                 
@@ -1528,7 +2241,6 @@ CREATE TABLE topics (
     image_urls TEXT[],
     status TEXT DEFAULT 'open'
 );
-ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                                     </pre>
                                 </div>
                             `;
@@ -1540,13 +2252,12 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     
                     allTopics = data || [];
                     
-                    // Demodaten wenn leer
                     if (allTopics.length === 0) {
                         const demoTopics = [
-                            { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: 'Digitale Maschinendatenerfassung', measures: 'Lastenheft erstellen', status: 'open', image_urls: null, created_at: new Date().toISOString() },
-                            { horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: 'Ultraschall automatisieren', measures: 'Angebote einholen', status: 'open', image_urls: null, created_at: new Date().toISOString() },
-                            { horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: 'Jährliche Kalibrierung', measures: 'Servicetermin', status: 'open', image_urls: null, created_at: new Date().toISOString() },
-                            { horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: 'Rissverdacht bei Charge X', measures: 'Nachprüfung', status: 'closed', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: '• Maschinendatenerfassung einführen\n• Schnittstellen definieren\n• Schulungen planen', measures: '• Lastenheft erstellen\n• Angebote einholen', status: 'open', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: '• Ultraschallprüfung automatisieren\n• Roboterintegration prüfen', measures: '• Angebote einholen\n• Machbarkeitsstudie', status: 'open', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: '• Jährliche Kalibrierung durchführen\n• Prüfkörper bereitstellen', measures: '• Servicetermin vereinbaren', status: 'open', image_urls: null, created_at: new Date().toISOString() },
+                            { horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: '• Rissverdacht bei Charge X\n• Komplette Charge nachprüfen', measures: '• Nachprüfung organisieren\n• Dokumentation vorbereiten', status: 'closed', image_urls: null, created_at: new Date().toISOString() },
                         ];
                         
                         for (const topic of demoTopics) {
@@ -1598,16 +2309,17 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                     const statusClass = t.status === 'closed' ? 'closed' : '';
                     const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
                     
-                    // Horizont-Badge (lang/kurz)
                     const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
                     const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
                     const horizonText = t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig';
 
-                    // Kategorie-Badge
                     let catClass = 'badge-category';
                     if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
                     else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
 
+                    // Beschreibung als Liste formatieren
+                    const descriptionPreview = t.description.split('\n')[0].replace(/^[•\-*]\s*/, '');
+                    
                     html += `
                         <div class="incident-card">
                             <div class="card-header">
@@ -1621,8 +2333,7 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                             <div class="card-content" onclick="openTopic('${t.id}')">
                                 <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
                                 ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
-                                <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${t.description.substring(0,70)}${t.description.length > 70 ? '...' : ''}</span></div>
-                                ${t.measures ? `<div class="info-row"><span class="info-label">Maßnahmen:</span><span class="info-value">${t.measures.substring(0,50)}${t.measures.length > 50 ? '...' : ''}</span></div>` : ''}
+                                <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${descriptionPreview.substring(0,70)}${descriptionPreview.length > 70 ? '...' : ''}</span></div>
                                 <div class="card-preview">
                                     ${t.image_urls && t.image_urls.length > 0 ? 
                                         `<img src="${t.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${t.image_urls[0]}', '_blank')">` : 
@@ -1645,61 +2356,398 @@ ALTER TABLE topics DISABLE ROW LEVEL SECURITY;
                 container.innerHTML = html;
             }
 
-            // Bild-Upload für Themen
-            document.getElementById('themeUploadButton')?.addEventListener('click', function() {
-                document.getElementById('themeImageUpload').click();
-            });
-
-            document.getElementById('themeImageUpload')?.addEventListener('change', async function(e) {
-                const files = Array.from(e.target.files);
-                
-                for (const file of files) {
-                    try {
-                        const compressedFile = await compressImage(file);
-                        themeCompressedImages.push(compressedFile);
-                        
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            addImagePreview(e.target.result, false, true);
-                        };
-                        reader.readAsDataURL(compressedFile);
-                    } catch (error) {
-                        console.error('Fehler bei der Bildkomprimierung:', error);
-                        showThemeError('Fehler bei der Bildverarbeitung');
-                    }
-                }
-            });
-
-            async function compressImage(file) { /* ... */ } // Wird aus dem Original übernommen
-            function addImagePreview(imageData, isExisting = false, isTheme = false) { /* ... */ } // Wird aus dem Original übernommen
-            window.removeImage = function(button, isExisting = false, isTheme = false) { /* ... */ }; // Wird aus dem Original übernommen
-
-            function showThemeError(message) {
-                document.getElementById('themeErrorText').innerText = message;
-                document.getElementById('themeErrorMessage').style.display = 'flex';
-                setTimeout(() => {
-                    document.getElementById('themeErrorMessage').style.display = 'none';
-                }, 3000);
-            }
-
             window.saveTopic = async function() {
-                // ... (gleiche Logik wie im Original)
-                alert('Thema gespeichert (Demo) – echte Implementierung wie gehabt');
-                // Hier bitte den vollständigen Code aus dem Original einfügen
+                const horizon = document.getElementById('horizon').value;
+                const category = document.getElementById('themeCategory').value;
+                const title = document.getElementById('title').value.trim();
+                const process = document.getElementById('themeProcess').value.trim();
+                let description = document.getElementById('description').value.trim();
+                let measures = document.getElementById('measures').value.trim();
+                const editId = document.getElementById('themeEditId').value;
+
+                if (!horizon || !category || !title || !description) {
+                    showThemeError('Bitte alle Pflichtfelder ausfüllen');
+                    return;
+                }
+
+                // Texte als Liste formatieren
+                description = formatTextAsList(description);
+                if (measures) measures = formatTextAsList(measures);
+
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                try {
+                    let imageUrls = [...themeExistingImages];
+                    
+                    for (const image of themeCompressedImages) {
+                        const fileName = `topic_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
+                        
+                        const { data: uploadData, error: uploadError } = await supabase.storage
+                            .from('incident_images')
+                            .upload(fileName, image);
+                        
+                        if (uploadError) {
+                            console.error('Upload Error:', uploadError);
+                            throw new Error('Fehler beim Bild-Upload: ' + uploadError.message);
+                        }
+                        
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('incident_images')
+                            .getPublicUrl(fileName);
+                        
+                        imageUrls.push(publicUrl);
+                    }
+                    
+                    const topicData = {
+                        horizon,
+                        category,
+                        title,
+                        process: process || null,
+                        description,
+                        measures: measures || null,
+                        image_urls: imageUrls.length > 0 ? imageUrls : null
+                    };
+                    
+                    if (editId) {
+                        const { error } = await supabase
+                            .from('topics')
+                            .update(topicData)
+                            .eq('id', editId);
+                        
+                        if (error) throw error;
+                        showThemeSuccess('Thema aktualisiert!');
+                    } else {
+                        topicData.status = 'open';
+                        topicData.created_at = new Date().toISOString();
+                        
+                        const { error } = await supabase
+                            .from('topics')
+                            .insert([topicData]);
+                        
+                        if (error) throw error;
+                        showThemeSuccess('Thema gespeichert!');
+                    }
+                    
+                    resetThemeForm();
+                    await loadTopics();
+                    switchThemesSubTab('list');
+                    
+                } catch (error) {
+                    console.error('Fehler beim Speichern:', error);
+                    showThemeError('Fehler: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
             };
 
-            window.openTopic = function(id) { /* ... */ };
-            window.editTopic = function(id) { /* ... */ };
-            window.closeTopic = function(id) { /* ... */ };
-            window.reopenTopic = function(id) { /* ... */ };
-            window.showPasswordModalForTopic = function(id) { /* ... */ };
-            window.checkPasswordAndDelete = function() { /* ... */ };
+            window.openTopic = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { data, error } = await supabase.from('topics').select('*').eq('id', id).single();
+                    if (error) throw error;
+                    currentTopicId = id;
+                    showTopicDetails(data);
+                } catch (error) {
+                    showError('Fehler beim Laden der Details: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            function showTopicDetails(topic) {
+                const modalBody = document.getElementById('modalBody');
+                const modalFooter = document.getElementById('modalFooter');
+                const modalTitle = document.getElementById('modalTitle');
+                
+                modalTitle.innerHTML = '<i class="fas fa-tasks"></i> Thema Details';
+                
+                const date = new Date(topic.created_at).toLocaleString('de-DE');
+                
+                let horizonClass = topic.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
+                let horizonText = topic.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig';
+                
+                let catClass = 'badge-category';
+                if (topic.category.includes('Digitalisierung')) catClass = 'badge-digital';
+                else if (topic.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
+                
+                // Beschreibung als Liste formatieren
+                const descriptionHtml = renderTextAsList(topic.description);
+                const measuresHtml = topic.measures ? renderTextAsList(topic.measures) : '';
+                
+                let details = `
+                    <div class="detail-section">
+                        <h3><i class="fas fa-info-circle"></i> Allgemeine Informationen</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Horizont</div>
+                                <div class="detail-value"><span class="badge ${horizonClass}">${horizonText}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Kategorie</div>
+                                <div class="detail-value"><span class="badge ${catClass}">${topic.category}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Titel</div>
+                                <div class="detail-value">${topic.title}</div>
+                            </div>
+                            ${topic.process ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Prozess</div>
+                                <div class="detail-value">${topic.process}</div>
+                            </div>
+                            ` : ''}
+                            <div class="detail-item">
+                                <div class="detail-label">Status</div>
+                                <div class="detail-value"><span class="badge badge-status ${topic.status === 'closed' ? 'closed' : ''}">${topic.status === 'open' ? 'Offen' : 'Geschlossen'}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Erstellt am</div>
+                                <div class="detail-value">${date}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3><i class="fas fa-align-left"></i> Beschreibung</h3>
+                        <div style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">
+                            ${descriptionHtml}
+                        </div>
+                    </div>
+                `;
+                
+                if (topic.measures) {
+                    details += `
+                        <div class="detail-section">
+                            <h3><i class="fas fa-tasks"></i> Maßnahmen / nächste Schritte</h3>
+                            <div style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">
+                                ${measuresHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (topic.image_urls && topic.image_urls.length > 0) {
+                    details += `
+                        <div class="detail-section">
+                            <h3><i class="fas fa-images"></i> Bilder</h3>
+                            <div class="image-gallery">
+                                ${topic.image_urls.map(url => `<img src="${url}" class="gallery-image" onclick="window.open('${url}', '_blank')">`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                modalBody.innerHTML = details;
+                
+                modalFooter.innerHTML = `
+                    ${topic.status === 'open' ? 
+                        `<button class="btn btn-success" onclick="closeTopicFromModal()">
+                            <i class="fas fa-check-circle"></i> Erledigt
+                        </button>` : 
+                        `<button class="btn btn-reopen" onclick="reopenTopicFromModal()">
+                            <i class="fas fa-undo-alt"></i> Wieder öffnen
+                        </button>`
+                    }
+                    <button class="btn btn-danger" onclick="showPasswordModalForTopic('${topic.id}')">
+                        <i class="fas fa-trash"></i> Löschen
+                    </button>
+                    <button class="btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Schließen
+                    </button>
+                `;
+                
+                document.getElementById('detailModal').classList.add('active');
+            }
+
+            window.closeTopicFromModal = function() {
+                if (currentTopicId) {
+                    closeTopic(currentTopicId);
+                    closeModal();
+                }
+            };
+
+            window.reopenTopicFromModal = function() {
+                if (currentTopicId) {
+                    reopenTopic(currentTopicId);
+                    closeModal();
+                }
+            };
+
+            window.closeTopic = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { error } = await supabase
+                        .from('topics')
+                        .update({ status: 'closed' })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    await loadTopics();
+                    showThemeSuccess('Thema erledigt');
+                    closeModal();
+                } catch (error) {
+                    showError('Fehler: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            window.reopenTopic = async function(id) {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                try {
+                    const { error } = await supabase
+                        .from('topics')
+                        .update({ status: 'open' })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    await loadTopics();
+                    showThemeSuccess('Thema wieder geöffnet');
+                    closeModal();
+                } catch (error) {
+                    showError('Fehler: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            };
+
+            window.editTopic = function(id) {
+                const t = allTopics.find(t => t.id == id);
+                if (!t) return;
+                
+                switchMainTab('themen');
+                switchThemesSubTab('neu');
+                
+                setTimeout(() => {
+                    document.getElementById('themeEditId').value = t.id;
+                    document.getElementById('horizon').value = t.horizon;
+                    document.getElementById('themeCategory').value = t.category;
+                    document.getElementById('title').value = t.title;
+                    document.getElementById('themeProcess').value = t.process || '';
+                    document.getElementById('description').value = t.description || '';
+                    document.getElementById('measures').value = t.measures || '';
+                    
+                    themeExistingImages = t.image_urls || [];
+                    const previewGrid = document.getElementById('themeImagePreview');
+                    previewGrid.innerHTML = '';
+                    themeExistingImages.forEach(url => addImagePreview(url, true, true));
+                }, 100);
+            };
+
+            // Passwort-Löschfunktionen
+            window.showPasswordModalForIncident = function(id) {
+                currentIncidentId = id;
+                currentTopicId = null;
+                pendingAction = 'deleteIncident';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordError').classList.remove('show');
+                document.getElementById('passwordModal').classList.add('active');
+            };
+
+            window.showPasswordModalForTopic = function(id) {
+                currentTopicId = id;
+                currentIncidentId = null;
+                pendingAction = 'deleteTopic';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordError').classList.remove('show');
+                document.getElementById('passwordModal').classList.add('active');
+            };
+
+            window.closePasswordModal = function() {
+                document.getElementById('passwordModal').classList.remove('active');
+            };
+
+            window.checkPasswordAndDelete = async function() {
+                const password = document.getElementById('passwordInput').value;
+                
+                if (password !== SUPERVIOR_PASSWORD) {
+                    document.getElementById('passwordError').classList.add('show');
+                    return;
+                }
+                
+                closePasswordModal();
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                try {
+                    if (pendingAction === 'deleteIncident' && currentIncidentId) {
+                        const { data: incident, error: fetchError } = await supabase
+                            .from('incidents')
+                            .select('*')
+                            .eq('id', currentIncidentId)
+                            .single();
+                        
+                        if (fetchError) throw fetchError;
+                        
+                        if (incident && incident.image_urls && incident.image_urls.length > 0) {
+                            for (const url of incident.image_urls) {
+                                try {
+                                    const fileName = url.split('/').pop();
+                                    await supabase.storage.from('incident_images').remove([fileName]);
+                                } catch (e) {
+                                    console.error('Fehler beim Löschen eines Bildes:', e);
+                                }
+                            }
+                        }
+                        
+                        const { error: deleteError } = await supabase
+                            .from('incidents')
+                            .delete()
+                            .eq('id', currentIncidentId);
+                        
+                        if (deleteError) throw deleteError;
+                        
+                        showSuccess('Vorfall gelöscht');
+                        closeModal();
+                        await loadIncidents();
+                        
+                    } else if (pendingAction === 'deleteTopic' && currentTopicId) {
+                        const { data: topic, error: fetchError } = await supabase
+                            .from('topics')
+                            .select('*')
+                            .eq('id', currentTopicId)
+                            .single();
+                        
+                        if (fetchError) throw fetchError;
+                        
+                        if (topic && topic.image_urls && topic.image_urls.length > 0) {
+                            for (const url of topic.image_urls) {
+                                try {
+                                    const fileName = url.split('/').pop();
+                                    await supabase.storage.from('incident_images').remove([fileName]);
+                                } catch (e) {
+                                    console.error('Fehler beim Löschen eines Bildes:', e);
+                                }
+                            }
+                        }
+                        
+                        const { error } = await supabase
+                            .from('topics')
+                            .delete()
+                            .eq('id', currentTopicId);
+                        
+                        if (error) throw error;
+                        
+                        showThemeSuccess('Thema gelöscht');
+                        closeModal();
+                        await loadTopics();
+                    }
+                } catch (error) {
+                    console.error('Fehler beim Löschen:', error);
+                    showError('Fehler beim Löschen: ' + error.message);
+                } finally {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    pendingAction = null;
+                    currentIncidentId = null;
+                    currentTopicId = null;
+                }
+            };
 
             // Initialisierung
             document.addEventListener('DOMContentLoaded', function() {
-                // Sicherstellen, dass Vorfall-Tab und Liste aktiv sind
-                switchMainTab('vorfaelle');
-                // Die weiteren Funktionen werden durch die Aufrufe gestartet
+                // ZfP Vorfälle laden
+                loadIncidents();
             });
         })();
     </script>
