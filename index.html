@@ -59,7 +59,7 @@
             --badge-method-bg: #5b21b6;
             --badge-open-bg: #065f46;
             --badge-closed-bg: #991b1b;
-            --badge-long-bg: #1e3a8a;
+            --badge-long-bg: #b45f2a;
             --badge-short-bg: #92400e;
             --badge-digital-bg: #5b21b6;
             --badge-opt-bg: #065f46;
@@ -650,7 +650,16 @@
         }
 
 .badge-long { 
-    background: #FDD0AF; /* Orange für langfristig */
+    background: #FDD0AF; /* Helles Orange für Light Mode */
+}
+
+[data-theme="dark"] .badge-long {
+    background: #b45f2a; /* Dunkleres Orange für Dark Mode */
+}
+
+.badge-short { 
+    background: var(--badge-short-bg); /* Bleibt gelb (auch im Dark Mode) */
+}
 }
 .badge-short { 
     background: var(--badge-short-bg); 
