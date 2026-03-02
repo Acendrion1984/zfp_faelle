@@ -27,6 +27,7 @@
             --badge-closed-bg: #fecaca;
             --badge-long-bg: #dbeafe;
             --badge-short-bg: #fef3c7;
+            --badge-audit-bg: #fbcfe8;
             --badge-digital-bg: #ede9fe;
             --badge-opt-bg: #d1fae5;
             --hover-bg: #f1f5f9;
@@ -43,6 +44,11 @@
             --link-color: #2563eb;
             --text-on-badge: #0f172a;
             --kw-group-bg: #e2e8f0;
+            --progress-bg: #e5e7eb;
+            --progress-color: #003366;
+            --progress-success: #10b981;
+            --progress-warning: #f59e0b;
+            --progress-danger: #ef4444;
         }
 
         [data-theme="dark"] {
@@ -61,6 +67,7 @@
             --badge-closed-bg: #991b1b;
             --badge-long-bg: #b45f2a;
             --badge-short-bg: #92400e;
+            --badge-audit-bg: #9d174d;
             --badge-digital-bg: #5b21b6;
             --badge-opt-bg: #065f46;
             --hover-bg: #374151;
@@ -77,6 +84,8 @@
             --link-color: #60a5fa;
             --text-on-badge: #ffffff;
             --kw-group-bg: #2d3748;
+            --progress-bg: #4a4a4a;
+            --progress-color: #3b82f6;
         }
 
         body {
@@ -591,7 +600,7 @@
 
         .incident-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
             gap: 20px;
         }
 
@@ -620,6 +629,7 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .badge {
@@ -649,27 +659,31 @@
             background: var(--badge-closed-bg);
         }
 
-.badge-long { 
-    background: #FDD0AF; /* Helles Orange für Light Mode */
-}
+        .badge-long { 
+            background: var(--badge-long-bg);
+        }
 
-[data-theme="dark"] .badge-long {
-    background: #b45f2a; /* Dunkleres Orange für Dark Mode */
-}
+        .badge-short { 
+            background: var(--badge-short-bg); 
+        }
+        
+        .badge-audit { 
+            background: var(--badge-audit-bg); 
+        }
 
-.badge-short { 
-    background: var(--badge-short-bg); /* Bleibt gelb (auch im Dark Mode) */
-}
-}
-.badge-short { 
-    background: var(--badge-short-bg); 
-}
-.badge-digital { 
-    background: var(--badge-digital-bg); 
-}
-.badge-opt { 
-    background: var(--badge-opt-bg); 
-}
+        .badge-digital { 
+            background: var(--badge-digital-bg); 
+        }
+
+        .badge-opt { 
+            background: var(--badge-opt-bg); 
+        }
+
+        .badge-date {
+            background: var(--hover-bg);
+            border: 1px solid var(--border-color);
+        }
+
         .card-date {
             font-size: 13px;
             color: var(--text-secondary);
@@ -706,7 +720,6 @@
             white-space: pre-line;
         }
 
-        /* Listenstil für Beschreibungen */
         .info-value.list-format {
             list-style-type: disc;
             padding-left: 20px;
@@ -785,6 +798,82 @@
         .action-button.delete {
             background: var(--btn-danger);
             color: white;
+        }
+
+        /* Progress Indicator Styles */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: var(--hover-bg);
+            border-radius: 12px;
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .progress-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .progress-bg {
+            fill: none;
+            stroke: var(--progress-bg);
+            stroke-width: 8;
+        }
+
+        .progress-fill {
+            fill: none;
+            stroke: var(--progress-color);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.3s;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .progress-smiley {
+            font-size: 40px;
+            line-height: 1;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .progress-info {
+            flex: 1;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .progress-select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
         }
 
         .modal {
@@ -1246,7 +1335,7 @@
             </div>
         </div>
 
-        <!-- Haupt-Tab: Themen (EIN REITER mit beiden Kategorien, Badge zeigt lang/kurz) -->
+        <!-- Haupt-Tab: Themen (MIT NEUEM AUDIT-HORIZONT, PRÜFVERFAHREN-BADGE, STATUS-PROGRESS, START/ZIEL-DATUM) -->
         <div id="main-tab-themen" class="main-tab-content">
             <div class="sub-tab-navigation">
                 <button class="sub-tab-button active" onclick="switchThemesSubTab('list')">
@@ -1257,13 +1346,14 @@
                 </button>
             </div>
 
-            <!-- Themen Liste (zeigt lang- & kurzfristig gemischt) -->
+            <!-- Themen Liste (mit Progress-Indikator und Datums-Badges) -->
             <div id="themes-list" class="sub-tab-content active">
                 <div class="filter-section" style="margin-bottom: 20px;">
                     <select class="filter-select" id="filterHorizon" onchange="filterThemes()">
                         <option value="">Alle Horizonte</option>
                         <option value="langfristig">🌿 Langfristig</option>
                         <option value="kurzfristig">⚡ Kurzfristig</option>
+                        <option value="audit">📋 Audit</option>
                     </select>
                     <select class="filter-select" id="filterThemeCategory" onchange="filterThemes()">
                         <option value="">Alle Kategorien</option>
@@ -1286,7 +1376,7 @@
                 </div>
             </div>
 
-            <!-- Neues Thema Formular -->
+            <!-- Neues Thema Formular (mit Horizont "Audit", Prüfverfahren, Start-/Zieldatum, Status-Dropdown) -->
             <div id="themes-neu" class="sub-tab-content">
                 <div class="success-message" id="themeSuccessMessage"><i class="fas fa-check-circle"></i> <span>Gespeichert</span></div>
                 <div class="error-message" id="themeErrorMessage"><i class="fas fa-exclamation-circle"></i> <span id="themeErrorText"></span></div>
@@ -1301,6 +1391,7 @@
                                 <option value="">Bitte wählen...</option>
                                 <option value="langfristig">🌿 Langfristig</option>
                                 <option value="kurzfristig">⚡ Kurzfristig</option>
+                                <option value="audit">📋 Audit</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1317,12 +1408,48 @@
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label><i class="fas fa-heading"></i> Titel / Thema *</label>
-                            <input type="text" id="title" placeholder="Kurze Bezeichnung" required>
+                            <label><i class="fas fa-flask"></i> Prüfverfahren</label>
+                            <select id="themeInspectionMethod">
+                                <option value="">Kein Prüfverfahren</option>
+                                <option value="MT">Magnetpulverprüfung (MT)</option>
+                                <option value="UT">Ultraschallprüfung (UT)</option>
+                                <option value="VT">Sichtprüfung (VT)</option>
+                                <option value="RT">Durchstrahlungsprüfung (RT)</option>
+                                <option value="PT">Eindringprüfung (PT)</option>
+                                <option value="ET">Wirbelstromprüfung (ET)</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-building"></i> Prozess (optional)</label>
                             <input type="text" id="themeProcess" placeholder="z.B. Seitenschleifen">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-play"></i> Starttermin</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-flag-checkered"></i> Zieltermin</label>
+                            <input type="date" id="targetDate">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-percent"></i> Status *</label>
+                            <select id="progressStatus" required>
+                                <option value="0">0% - Nicht begonnen</option>
+                                <option value="25">25% - Gestartet</option>
+                                <option value="50">50% - In Arbeit</option>
+                                <option value="75">75% - Fast fertig</option>
+                                <option value="100">100% - Abgeschlossen</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-heading"></i> Titel / Thema *</label>
+                            <input type="text" id="title" placeholder="Kurze Bezeichnung" required>
                         </div>
                     </div>
                     
@@ -1510,6 +1637,8 @@
                 themeCompressedImages = [];
                 themeExistingImages = [];
                 document.getElementById('themeImagePreview').innerHTML = '';
+                // Setze Default-Status auf 0%
+                document.getElementById('progressStatus').value = '0';
             }
 
             // Hilfsfunktionen
@@ -1766,6 +1895,51 @@
                 });
                 html += '</ul>';
                 return html;
+            }
+
+            // Progress-Indikator mit Smiley erstellen
+            function getSmileyForProgress(progress) {
+                const p = parseInt(progress) || 0;
+                if (p === 0) return '😢'; // traurig
+                if (p === 25) return '😐'; // neutral mit leicht nach unten
+                if (p === 50) return '😐'; // neutral
+                if (p === 75) return '🙂'; // leicht lächelnd
+                if (p === 100) return '😊'; // lächelnd
+                return '😐'; // Fallback
+            }
+
+            function createProgressIndicator(progress, onProgressChange, id) {
+                const p = parseInt(progress) || 0;
+                const percentage = p;
+                const circumference = 2 * Math.PI * 36; // r=36
+                const strokeDasharray = circumference;
+                const strokeDashoffset = circumference - (percentage / 100) * circumference;
+                
+                const container = document.createElement('div');
+                container.className = 'progress-container';
+                
+                container.innerHTML = `
+                    <div class="progress-circle">
+                        <svg class="progress-svg" viewBox="0 0 100 100">
+                            <circle class="progress-bg" cx="50" cy="50" r="36"></circle>
+                            <circle class="progress-fill" cx="50" cy="50" r="36" stroke-dasharray="${strokeDasharray}" stroke-dashoffset="${strokeDashoffset}"></circle>
+                        </svg>
+                        <div class="progress-text">${percentage}%</div>
+                    </div>
+                    <div class="progress-smiley">${getSmileyForProgress(percentage)}</div>
+                    <div class="progress-info">
+                        <div class="progress-label">Status:</div>
+                        <select class="progress-select" onchange="${onProgressChange}(this.value, '${id}')">
+                            <option value="0" ${percentage === 0 ? 'selected' : ''}>0% - Nicht begonnen</option>
+                            <option value="25" ${percentage === 25 ? 'selected' : ''}>25% - Gestartet</option>
+                            <option value="50" ${percentage === 50 ? 'selected' : ''}>50% - In Arbeit</option>
+                            <option value="75" ${percentage === 75 ? 'selected' : ''}>75% - Fast fertig</option>
+                            <option value="100" ${percentage === 100 ? 'selected' : ''}>100% - Abgeschlossen</option>
+                        </select>
+                    </div>
+                `;
+                
+                return container;
             }
 
             // ZfP Vorfälle speichern
@@ -2245,10 +2419,14 @@ CREATE TABLE topics (
     category TEXT NOT NULL,
     title TEXT NOT NULL,
     process TEXT,
+    inspection_method TEXT,
     description TEXT NOT NULL,
     measures TEXT,
     image_urls TEXT[],
-    status TEXT DEFAULT 'open'
+    status TEXT DEFAULT 'open',
+    progress INTEGER DEFAULT 0,
+    start_date DATE,
+    target_date DATE
 );
                                     </pre>
                                 </div>
@@ -2263,10 +2441,66 @@ CREATE TABLE topics (
                     
                     if (allTopics.length === 0) {
                         const demoTopics = [
-                            { horizon: 'langfristig', category: 'Digitalisierung', title: 'Einführung MDE', process: 'alle', description: '• Maschinendatenerfassung einführen\n• Schnittstellen definieren\n• Schulungen planen', measures: '• Lastenheft erstellen\n• Angebote einholen', status: 'open', image_urls: null, created_at: new Date().toISOString() },
-                            { horizon: 'langfristig', category: 'Prüfprozessoptimierung', title: 'Automatisierung UT', process: 'Laufbahn', description: '• Ultraschallprüfung automatisieren\n• Roboterintegration prüfen', measures: '• Angebote einholen\n• Machbarkeitsstudie', status: 'open', image_urls: null, created_at: new Date().toISOString() },
-                            { horizon: 'kurzfristig', category: 'ZfP Anlage', title: 'MT-Anlage kalibrieren', process: 'Seitenschleifen', description: '• Jährliche Kalibrierung durchführen\n• Prüfkörper bereitstellen', measures: '• Servicetermin vereinbaren', status: 'open', image_urls: null, created_at: new Date().toISOString() },
-                            { horizon: 'kurzfristig', category: 'ZfP Prüfung', title: 'Nacharbeit Chargenprüfung', process: 'Centerless', description: '• Rissverdacht bei Charge X\n• Komplette Charge nachprüfen', measures: '• Nachprüfung organisieren\n• Dokumentation vorbereiten', status: 'closed', image_urls: null, created_at: new Date().toISOString() },
+                            { 
+                                horizon: 'langfristig', 
+                                category: 'Digitalisierung', 
+                                title: 'Einführung MDE', 
+                                process: 'alle',
+                                inspection_method: 'UT',
+                                description: '• Maschinendatenerfassung einführen\n• Schnittstellen definieren\n• Schulungen planen', 
+                                measures: '• Lastenheft erstellen\n• Angebote einholen', 
+                                status: 'open', 
+                                progress: 50,
+                                start_date: new Date().toISOString().split('T')[0],
+                                target_date: new Date(Date.now() + 90*24*60*60*1000).toISOString().split('T')[0],
+                                image_urls: null, 
+                                created_at: new Date().toISOString() 
+                            },
+                            { 
+                                horizon: 'langfristig', 
+                                category: 'Prüfprozessoptimierung', 
+                                title: 'Automatisierung UT', 
+                                process: 'Laufbahn',
+                                inspection_method: 'UT',
+                                description: '• Ultraschallprüfung automatisieren\n• Roboterintegration prüfen', 
+                                measures: '• Angebote einholen\n• Machbarkeitsstudie', 
+                                status: 'open', 
+                                progress: 25,
+                                start_date: new Date().toISOString().split('T')[0],
+                                target_date: new Date(Date.now() + 180*24*60*60*1000).toISOString().split('T')[0],
+                                image_urls: null, 
+                                created_at: new Date().toISOString() 
+                            },
+                            { 
+                                horizon: 'kurzfristig', 
+                                category: 'ZfP Anlage', 
+                                title: 'MT-Anlage kalibrieren', 
+                                process: 'Seitenschleifen',
+                                inspection_method: 'MT',
+                                description: '• Jährliche Kalibrierung durchführen\n• Prüfkörper bereitstellen', 
+                                measures: '• Servicetermin vereinbaren', 
+                                status: 'open', 
+                                progress: 75,
+                                start_date: new Date().toISOString().split('T')[0],
+                                target_date: new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0],
+                                image_urls: null, 
+                                created_at: new Date().toISOString() 
+                            },
+                            { 
+                                horizon: 'audit', 
+                                category: 'ZfP Prüfung', 
+                                title: 'Nacharbeit Chargenprüfung', 
+                                process: 'Centerless',
+                                inspection_method: 'PT',
+                                description: '• Rissverdacht bei Charge X\n• Komplette Charge nachprüfen', 
+                                measures: '• Nachprüfung organisieren\n• Dokumentation vorbereiten', 
+                                status: 'closed', 
+                                progress: 100,
+                                start_date: new Date(Date.now() - 60*24*60*60*1000).toISOString().split('T')[0],
+                                target_date: new Date().toISOString().split('T')[0],
+                                image_urls: null, 
+                                created_at: new Date().toISOString() 
+                            },
                         ];
                         
                         for (const topic of demoTopics) {
@@ -2318,9 +2552,9 @@ CREATE TABLE topics (
                     const statusClass = t.status === 'closed' ? 'closed' : '';
                     const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
                     
-                    const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : 'fa-hourglass-half';
-                    const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
-                    const horizonText = t.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig';
+                    const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : (t.horizon === 'kurzfristig' ? 'fa-hourglass-half' : 'fa-clipboard-list');
+                    const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : (t.horizon === 'kurzfristig' ? 'badge-short' : 'badge-audit');
+                    const horizonText = t.horizon === 'langfristig' ? 'Langfristig' : (t.horizon === 'kurzfristig' ? 'Kurzfristig' : 'Audit');
 
                     let catClass = 'badge-category';
                     if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
@@ -2329,20 +2563,51 @@ CREATE TABLE topics (
                     // Beschreibung als Liste formatieren
                     const descriptionPreview = t.description.split('\n')[0].replace(/^[•\-*]\s*/, '');
                     
+                    // Datums-Badges
+                    const startDate = t.start_date ? new Date(t.start_date).toLocaleDateString('de-DE') : null;
+                    const targetDate = t.target_date ? new Date(t.target_date).toLocaleDateString('de-DE') : null;
+                    
+                    // Progress-Indikator
+                    const progress = t.progress || 0;
+                    const circumference = 2 * Math.PI * 36;
+                    const strokeDashoffset = circumference - (progress / 100) * circumference;
+                    
                     html += `
                         <div class="incident-card">
                             <div class="card-header">
                                 <div class="card-badges">
                                     <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${horizonText}</span>
                                     <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
+                                    ${t.inspection_method ? `<span class="badge badge-method"><i class="fas fa-flask"></i> ${t.inspection_method}</span>` : ''}
                                     <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
                                 </div>
-                                <div class="card-date"><i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}</div>
+                                <div class="card-date">
+                                    <i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}
+                                </div>
+                                ${startDate || targetDate ? `
+                                <div class="card-badges" style="margin-top: 5px;">
+                                    ${startDate ? `<span class="badge badge-date"><i class="fas fa-play"></i> Start: ${startDate}</span>` : ''}
+                                    ${targetDate ? `<span class="badge badge-date"><i class="fas fa-flag-checkered"></i> Ziel: ${targetDate}</span>` : ''}
+                                </div>
+                                ` : ''}
                             </div>
                             <div class="card-content" onclick="openTopic('${t.id}')">
                                 <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
                                 ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
                                 <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${descriptionPreview.substring(0,70)}${descriptionPreview.length > 70 ? '...' : ''}</span></div>
+                                
+                                <!-- Progress Indicator -->
+                                <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0; padding: 8px; background: var(--hover-bg); border-radius: 8px;">
+                                    <div style="width: 50px; height: 50px; position: relative; flex-shrink: 0;">
+                                        <svg width="50" height="50" viewBox="0 0 100 100" style="transform: rotate(-90deg);">
+                                            <circle cx="50" cy="50" r="36" fill="none" stroke="var(--progress-bg)" stroke-width="8"/>
+                                            <circle cx="50" cy="50" r="36" fill="none" stroke="var(--progress-color)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${2 * Math.PI * 36}" stroke-dashoffset="${(2 * Math.PI * 36) * (1 - progress/100)}"/>
+                                        </svg>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; font-weight: 600;">${progress}%</div>
+                                    </div>
+                                    <div style="font-size: 24px;">${getSmileyForProgress(progress)}</div>
+                                </div>
+                                
                                 <div class="card-preview">
                                     ${t.image_urls && t.image_urls.length > 0 ? 
                                         `<img src="${t.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${t.image_urls[0]}', '_blank')">` : 
@@ -2370,8 +2635,12 @@ CREATE TABLE topics (
                 const category = document.getElementById('themeCategory').value;
                 const title = document.getElementById('title').value.trim();
                 const process = document.getElementById('themeProcess').value.trim();
+                const inspectionMethod = document.getElementById('themeInspectionMethod').value;
                 let description = document.getElementById('description').value.trim();
                 let measures = document.getElementById('measures').value.trim();
+                const progress = parseInt(document.getElementById('progressStatus').value) || 0;
+                const startDate = document.getElementById('startDate').value;
+                const targetDate = document.getElementById('targetDate').value;
                 const editId = document.getElementById('themeEditId').value;
 
                 if (!horizon || !category || !title || !description) {
@@ -2412,8 +2681,12 @@ CREATE TABLE topics (
                         category,
                         title,
                         process: process || null,
+                        inspection_method: inspectionMethod || null,
                         description,
                         measures: measures || null,
+                        progress: progress,
+                        start_date: startDate || null,
+                        target_date: targetDate || null,
                         image_urls: imageUrls.length > 0 ? imageUrls : null
                     };
                     
@@ -2472,8 +2745,19 @@ CREATE TABLE topics (
                 
                 const date = new Date(topic.created_at).toLocaleString('de-DE');
                 
-                let horizonClass = topic.horizon === 'langfristig' ? 'badge-long' : 'badge-short';
-                let horizonText = topic.horizon === 'langfristig' ? 'Langfristig' : 'Kurzfristig';
+                let horizonClass = 'badge-long';
+                let horizonText = 'Langfristig';
+                let horizonIcon = 'fa-calendar-alt';
+                
+                if (topic.horizon === 'kurzfristig') {
+                    horizonClass = 'badge-short';
+                    horizonText = 'Kurzfristig';
+                    horizonIcon = 'fa-hourglass-half';
+                } else if (topic.horizon === 'audit') {
+                    horizonClass = 'badge-audit';
+                    horizonText = 'Audit';
+                    horizonIcon = 'fa-clipboard-list';
+                }
                 
                 let catClass = 'badge-category';
                 if (topic.category.includes('Digitalisierung')) catClass = 'badge-digital';
@@ -2483,18 +2767,29 @@ CREATE TABLE topics (
                 const descriptionHtml = renderTextAsList(topic.description);
                 const measuresHtml = topic.measures ? renderTextAsList(topic.measures) : '';
                 
+                // Progress-Indikator mit Smiley
+                const progress = topic.progress || 0;
+                const circumference = 2 * Math.PI * 36;
+                const strokeDashoffset = circumference - (progress / 100) * circumference;
+                
                 let details = `
                     <div class="detail-section">
                         <h3><i class="fas fa-info-circle"></i> Allgemeine Informationen</h3>
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <div class="detail-label">Horizont</div>
-                                <div class="detail-value"><span class="badge ${horizonClass}">${horizonText}</span></div>
+                                <div class="detail-value"><span class="badge ${horizonClass}"><i class="fas ${horizonIcon}"></i> ${horizonText}</span></div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Kategorie</div>
                                 <div class="detail-value"><span class="badge ${catClass}">${topic.category}</span></div>
                             </div>
+                            ${topic.inspection_method ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Prüfverfahren</div>
+                                <div class="detail-value"><span class="badge badge-method">${topic.inspection_method}</span></div>
+                            </div>
+                            ` : ''}
                             <div class="detail-item">
                                 <div class="detail-label">Titel</div>
                                 <div class="detail-value">${topic.title}</div>
@@ -2513,9 +2808,37 @@ CREATE TABLE topics (
                                 <div class="detail-label">Erstellt am</div>
                                 <div class="detail-value">${date}</div>
                             </div>
+                            ${topic.start_date ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Starttermin</div>
+                                <div class="detail-value">${new Date(topic.start_date).toLocaleDateString('de-DE')}</div>
+                            </div>
+                            ` : ''}
+                            ${topic.target_date ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Zieltermin</div>
+                                <div class="detail-value">${new Date(topic.target_date).toLocaleDateString('de-DE')}</div>
+                            </div>
+                            ` : ''}
                         </div>
                     </div>
                     
+                    <div class="detail-section">
+                        <h3><i class="fas fa-chart-pie"></i> Fortschritt</h3>
+                        <div style="display: flex; align-items: center; gap: 30px; background: var(--hover-bg); padding: 20px; border-radius: 12px;">
+                            <div style="width: 120px; height: 120px; position: relative;">
+                                <svg width="120" height="120" viewBox="0 0 100 100" style="transform: rotate(-90deg);">
+                                    <circle cx="50" cy="50" r="36" fill="none" stroke="var(--progress-bg)" stroke-width="8"/>
+                                    <circle cx="50" cy="50" r="36" fill="none" stroke="var(--progress-color)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${2 * Math.PI * 36}" stroke-dashoffset="${(2 * Math.PI * 36) * (1 - progress/100)}"/>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; font-weight: 600;">${progress}%</div>
+                            </div>
+                            <div style="font-size: 48px;">${getSmileyForProgress(progress)}</div>
+                        </div>
+                    </div>
+                `;
+                
+                details += `
                     <div class="detail-section">
                         <h3><i class="fas fa-align-left"></i> Beschreibung</h3>
                         <div style="background: var(--hover-bg); padding: 20px; border-radius: 12px; font-size: 16px; line-height: 1.5;">
@@ -2633,10 +2956,14 @@ CREATE TABLE topics (
                     document.getElementById('themeEditId').value = t.id;
                     document.getElementById('horizon').value = t.horizon;
                     document.getElementById('themeCategory').value = t.category;
+                    document.getElementById('themeInspectionMethod').value = t.inspection_method || '';
                     document.getElementById('title').value = t.title;
                     document.getElementById('themeProcess').value = t.process || '';
                     document.getElementById('description').value = t.description || '';
                     document.getElementById('measures').value = t.measures || '';
+                    document.getElementById('progressStatus').value = t.progress || 0;
+                    document.getElementById('startDate').value = t.start_date || '';
+                    document.getElementById('targetDate').value = t.target_date || '';
                     
                     themeExistingImages = t.image_urls || [];
                     const previewGrid = document.getElementById('themeImagePreview');
