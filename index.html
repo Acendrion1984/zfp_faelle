@@ -2538,97 +2538,101 @@ CREATE TABLE topics (
                 renderThemeList(filtered);
             };
 
-            function renderThemeList(themes) {
-                const container = document.getElementById('themenList');
-                if (!container) return;
+ function renderThemeList(themes) {
+    const container = document.getElementById('themenList');
+    if (!container) return;
+    
+    if (themes.length === 0) {
+        container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-secondary);"><i class="fas fa-folder-open fa-3x"></i><p>Keine Themen</p></div>`;
+        return;
+    }
+
+    let html = '<div class="incident-grid">';
+    themes.forEach(t => {
+        const statusClass = t.status === 'closed' ? 'closed' : '';
+        const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+        
+        const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : (t.horizon === 'kurzfristig' ? 'fa-hourglass-half' : 'fa-clipboard-list');
+        const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : (t.horizon === 'kurzfristig' ? 'badge-short' : 'badge-audit');
+        const horizonText = t.horizon === 'langfristig' ? 'Langfristig' : (t.horizon === 'kurzfristig' ? 'Kurzfristig' : 'Audit');
+
+        let catClass = 'badge-category';
+        if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
+        else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
+
+        // Beschreibung als Liste formatieren
+        const descriptionPreview = t.description.split('\n')[0].replace(/^[•\-*]\s*/, '');
+        
+        // Datums-Badges für Start und Ziel
+        const startDate = t.start_date ? new Date(t.start_date).toLocaleDateString('de-DE') : null;
+        const targetDate = t.target_date ? new Date(t.target_date).toLocaleDateString('de-DE') : null;
+        
+        // Progress und Smiley als kompaktes Badge
+        const progress = t.progress || 0;
+        const smiley = getSmileyForProgress(progress);
+        
+        html += `
+            <div class="incident-card">
+                <div class="card-header">
+                    <div class="card-badges" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                        <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${horizonText}</span>
+                        <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
+                        ${t.inspection_method ? `<span class="badge badge-method"><i class="fas fa-flask"></i> ${t.inspection_method}</span>` : ''}
+                        <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
+                        <!-- Kompaktes Progress-Badge mit Smiley und Prozent -->
+                        <span class="badge" style="background: var(--progress-color); color: white; display: inline-flex; align-items: center; gap: 4px;">
+                            <span style="font-size: 16px;">${smiley}</span>
+                            <span>${progress}%</span>
+                        </span>
+                    </div>
+                    
+                    <!-- Start- und Zieltermine als separate Badges (optional) -->
+                    ${startDate || targetDate ? `
+                    <div class="card-badges" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${startDate ? `<span class="badge badge-date"><i class="fas fa-play"></i> Start: ${startDate}</span>` : ''}
+                        ${targetDate ? `<span class="badge badge-date"><i class="fas fa-flag-checkered"></i> Ziel: ${targetDate}</span>` : ''}
+                    </div>
+                    ` : ''}
+                </div>
                 
-                if (themes.length === 0) {
-                    container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-secondary);"><i class="fas fa-folder-open fa-3x"></i><p>Keine Themen</p></div>`;
-                    return;
-                }
-
-                let html = '<div class="incident-grid">';
-                themes.forEach(t => {
-                    const statusClass = t.status === 'closed' ? 'closed' : '';
-                    const statusIcon = t.status === 'open' ? 'fa-hourglass-half' : 'fa-check-circle';
+                <div class="card-content" onclick="openTopic('${t.id}')">
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-heading"></i> Titel:</span>
+                        <span class="info-value">${t.title}</span>
+                    </div>
+                    ${t.process ? `
+                    <div class="info-row">
+                        <span class="info-label">Prozess:</span>
+                        <span class="info-value">${t.process}</span>
+                    </div>
+                    ` : ''}
+                    <div class="info-row">
+                        <span class="info-label">Beschreibung:</span>
+                        <span class="info-value">${descriptionPreview.substring(0,70)}${descriptionPreview.length > 70 ? '...' : ''}</span>
+                    </div>
                     
-                    const horizonIcon = t.horizon === 'langfristig' ? 'fa-calendar-alt' : (t.horizon === 'kurzfristig' ? 'fa-hourglass-half' : 'fa-clipboard-list');
-                    const horizonBadgeClass = t.horizon === 'langfristig' ? 'badge-long' : (t.horizon === 'kurzfristig' ? 'badge-short' : 'badge-audit');
-                    const horizonText = t.horizon === 'langfristig' ? 'Langfristig' : (t.horizon === 'kurzfristig' ? 'Kurzfristig' : 'Audit');
-
-                    let catClass = 'badge-category';
-                    if (t.category.includes('Digitalisierung')) catClass = 'badge-digital';
-                    else if (t.category.includes('Prüfprozessoptimierung')) catClass = 'badge-opt';
-
-                    // Beschreibung als Liste formatieren
-                    const descriptionPreview = t.description.split('\n')[0].replace(/^[•\-*]\s*/, '');
-                    
-                    // Datums-Badges
-                    const startDate = t.start_date ? new Date(t.start_date).toLocaleDateString('de-DE') : null;
-                    const targetDate = t.target_date ? new Date(t.target_date).toLocaleDateString('de-DE') : null;
-                    
-                    // Progress-Indikator
-                    const progress = t.progress || 0;
-                    const circumference = 2 * Math.PI * 36;
-                    const strokeDashoffset = circumference - (progress / 100) * circumference;
-                    
-                    html += `
-                        <div class="incident-card">
-                            <div class="card-header">
-                                <div class="card-badges">
-                                    <span class="badge ${horizonBadgeClass}"><i class="fas ${horizonIcon}"></i> ${horizonText}</span>
-                                    <span class="badge ${catClass}"><i class="fas fa-tag"></i> ${t.category}</span>
-                                    ${t.inspection_method ? `<span class="badge badge-method"><i class="fas fa-flask"></i> ${t.inspection_method}</span>` : ''}
-                                    <span class="badge badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${t.status==='open'?'Offen':'Geschlossen'}</span>
-                                </div>
-                                <div class="card-date">
-                                    <i class="far fa-calendar-alt"></i> ${new Date(t.created_at).toLocaleDateString('de-DE')}
-                                </div>
-                                ${startDate || targetDate ? `
-                                <div class="card-badges" style="margin-top: 5px;">
-                                    ${startDate ? `<span class="badge badge-date"><i class="fas fa-play"></i> Start: ${startDate}</span>` : ''}
-                                    ${targetDate ? `<span class="badge badge-date"><i class="fas fa-flag-checkered"></i> Ziel: ${targetDate}</span>` : ''}
-                                </div>
-                                ` : ''}
-                            </div>
-                            <div class="card-content" onclick="openTopic('${t.id}')">
-                                <div class="info-row"><span class="info-label"><i class="fas fa-heading"></i> Titel:</span><span class="info-value">${t.title}</span></div>
-                                ${t.process ? `<div class="info-row"><span class="info-label">Prozess:</span><span class="info-value">${t.process}</span></div>` : ''}
-                                <div class="info-row"><span class="info-label">Beschreibung:</span><span class="info-value">${descriptionPreview.substring(0,70)}${descriptionPreview.length > 70 ? '...' : ''}</span></div>
-                                
-                                <!-- Progress Indicator -->
-                                <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0; padding: 8px; background: var(--hover-bg); border-radius: 8px;">
-                                    <div style="width: 50px; height: 50px; position: relative; flex-shrink: 0;">
-                                        <svg width="50" height="50" viewBox="0 0 100 100" style="transform: rotate(-90deg);">
-                                            <circle cx="50" cy="50" r="36" fill="none" stroke="var(--progress-bg)" stroke-width="8"/>
-                                            <circle cx="50" cy="50" r="36" fill="none" stroke="var(--progress-color)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${2 * Math.PI * 36}" stroke-dashoffset="${(2 * Math.PI * 36) * (1 - progress/100)}"/>
-                                        </svg>
-                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; font-weight: 600;">${progress}%</div>
-                                    </div>
-                                    <div style="font-size: 24px;">${getSmileyForProgress(progress)}</div>
-                                </div>
-                                
-                                <div class="card-preview">
-                                    ${t.image_urls && t.image_urls.length > 0 ? 
-                                        `<img src="${t.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${t.image_urls[0]}', '_blank')">` : 
-                                        '<div style="width: 60px; height: 60px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary); font-size: 24px;"></i></div>'
-                                    }
-                                </div>
-                            </div>
-                            <div class="card-actions">
-                                <button class="action-button view" onclick="openTopic('${t.id}')"><i class="fas fa-eye"></i> Details</button>
-                                <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
-                                ${t.status === 'open' ? 
-                                    `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
-                                    `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
-                                <button class="action-button delete" onclick="showPasswordModalForTopic('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
-                            </div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-                container.innerHTML = html;
-            }
+                    <div class="card-preview">
+                        ${t.image_urls && t.image_urls.length > 0 ? 
+                            `<img src="${t.image_urls[0]}" class="preview-image" alt="Preview" onclick="event.stopPropagation(); window.open('${t.image_urls[0]}', '_blank')">` : 
+                            '<div style="width: 60px; height: 60px; background: var(--hover-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: var(--text-secondary); font-size: 24px;"></i></div>'
+                        }
+                    </div>
+                </div>
+                
+                <div class="card-actions">
+                    <button class="action-button view" onclick="openTopic('${t.id}')"><i class="fas fa-eye"></i> Details</button>
+                    <button class="action-button edit" onclick="editTopic('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
+                    ${t.status === 'open' ? 
+                        `<button class="action-button close" onclick="closeTopic('${t.id}')"><i class="fas fa-check-circle"></i> Erledigt</button>` : 
+                        `<button class="action-button reopen" onclick="reopenTopic('${t.id}')"><i class="fas fa-undo-alt"></i> Wieder öffnen</button>`}
+                    <button class="action-button delete" onclick="showPasswordModalForTopic('${t.id}')"><i class="fas fa-trash"></i> Löschen</button>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+}
 
             window.saveTopic = async function() {
                 const horizon = document.getElementById('horizon').value;
